@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Limesoda_Cashpresso>
+            <version>0.1.0</version>
+        </Limesoda_Cashpresso>
+    </modules>
+    <global>
+        <models>
+            <ls_cashpresso>
+                <class>Limesoda_Cashpresso_Model</class>
+                <resourceModel>ls_cashpresso_resource</resourceModel>
+            </ls_cashpresso>
+            <ls_cashpresso_resource>
+                <class>Limesoda_Cashpresso_Model_Resource</class>
+            </ls_cashpresso_resource>
+        </models>
+        <blocks>
+            <ls_cashpresso>
+                <class>Limesoda_Cashpresso_Block</class>
+            </ls_cashpresso>
+        </blocks>
+        <helpers>
+            <ls_cashpresso>
+                <class>Limesoda_Cashpresso_Helper</class>
+            </ls_cashpresso>
+        </helpers>
+        <resources>
+            <ls_cashpresso_setup>
+                <setup>
+                    <module>Limesoda_Cashpresso</module>
+                </setup>
+            </ls_cashpresso_setup>
+        </resources>
+    </global>
+</config>
