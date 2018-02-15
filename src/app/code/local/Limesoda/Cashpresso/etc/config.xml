@@ -33,4 +33,58 @@
             </ls_cashpresso_setup>
         </resources>
     </global>
+
+    <frontend>
+        <events>
+            <!--<core_block_abstract_to_html_after>
+                <observers>
+                    <ls_cashpresso_before_print>
+                        <type>singleton</type>
+                        <class>ls_cashpresso/observer_block</class>
+                        <method>coreBlockAbstractToHtmlAfter</method>
+                    </ls_cashpresso_before_print>
+                </observers>
+            </core_block_abstract_to_html_after>-->
+            <!-- <controller_action_predispatch>
+                <observers>
+                    <limesoda_cashpresso>
+                        <type>singleton</type>
+                        <class>ls_cashpresso/observer_block</class>
+                        <method>coreBlockAbstractToHtmlAfter</method>
+                    </limesoda_cashpresso>
+                </observers>
+            </controller_action_predispatch>-->
+        </events>
+    </frontend>
+
+    <phpunit>
+        <suite>
+            <modules>
+                <Limesoda_Cashpresso/>
+            </modules>
+        </suite>
+    </phpunit>
+
+    <crontab>
+        <jobs>
+            <limesoda_cashpresso_setting>
+                <schedule>
+                    <cron_expr>*/30 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>ls_cashpresso/cron::syncSettings</model>
+                </run>
+            </limesoda_cashpresso_setting>
+        </jobs>
+    </crontab>
+
+    <default>
+        <cashpresso>
+            <options>
+                <status>0</status>
+                <mode>0</mode>
+                <widget_type>1</widget_type>
+            </options>
+        </cashpresso>
+    </default>
 </config>
