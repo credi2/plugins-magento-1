@@ -16,6 +16,29 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
 {
     protected function _toHtml()
     {
+        if (!Mage::helper('ls_cashpresso')->isModuleEnabled() || !Mage::helper('ls_cashpresso')->getStatus() || !$apiKey = Mage::helper('ls_cashpresso')->getAPIKey()) {
+            return '';
+        }
+
+        if (Mage::registry('current_product')) {
+            /** @var Mage_Catalog_Model_Product $productModel */
+            $productModel = Mage::registry('current_product');
+
+            if (!in_array($productModel->getTypeId(), array('configurable', 'simple'))) {
+                return '';
+            }
+
+            $price = $productModel->getFinalPrice();
+        } else {
+            return '';
+        }
+
+        if (Mage::helper('ls_cashpresso')->getMode()) {
+
+        } else {
+            $htmlEntry = '<div class="c2-financing-label" data-c2-financing-amount="'.$price.'"></div>';
+        }
+
         /**
          * country  = at|de
          * mode
@@ -23,12 +46,11 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
          *
          */
         $cashPressoButton = <<<EOT
-  <div class="c2-financing-label" data-c2-financing-amount="1500.00"></div> 
-
+{$htmlEntry}
   <script id="c2LabelScript" type="text/javascript" 
     src="https://my.cashpresso.com/ecommerce/v2/label/c2_ecom_wizard.all.min.js" 
     defer
-    data-c2-partnerApiKey="908db109be694529dd0c1331afe4e5ae74b41176c3d64dea99f798ff8f7cc7ab622de47a92d52a560a971e7d0ce68b0ea0d1bab243fc859bf80f76e93987fbe2" 
+    data-c2-partnerApiKey="{$apiKey}" 
     data-c2-interestFreeDaysMerchant="0"
     data-c2-mode="test" 
     data-c2-locale="en"

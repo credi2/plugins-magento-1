@@ -3,7 +3,7 @@
 <layout version="0.1.0">
     <catalog_product_view>
         <reference name="product.info.extrahint">
-            <block type="ls_cashpresso/button" name="product.info.extrahint.cashpresso_button" translate="label" />
+            <block type="ls_cashpresso/button" ifconfig="cashpresso/options/status" name="product.info.extrahint.cashpresso_button" translate="label" />
         </reference>
     </catalog_product_view>
 </layout>

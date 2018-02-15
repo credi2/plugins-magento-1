@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 13.02.18
  * LimeSoda - Default (Template) Project
@@ -10,7 +11,7 @@
  * @copyright   Copyright (c) 2018 LimeSoda. (http://www.limesoda.com)
  *
  * @file app/code/local/Limesoda/Cashpresso/Helper/Data.php
- */ 
+ */
 class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 {
     const XML_PARTNER_INFO = 'cashpresso/partnerinfo';
@@ -65,6 +66,7 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * 1 - live; 0 - test
      * @param null $storeId
      * @return mixed
      */
