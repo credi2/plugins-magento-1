@@ -55,6 +55,14 @@
                 </observers>
             </controller_action_predispatch>-->
         </events>
+
+        <layout>
+            <updates>
+                <limesoda_cashpresso>
+                    <file>limesoda/cashpresso.xml</file>
+                </limesoda_cashpresso>
+            </updates>
+        </layout>
     </frontend>
 
     <phpunit>

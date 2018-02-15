@@ -1,2 +1,3 @@
 src/app/code/local/Limesoda/Cashpresso app/code/local/Limesoda/Cashpresso
 src/app/etc/modules/Limesoda_Cashpresso.xml app/etc/modules/Limesoda_Cashpresso.xml
+src/app/design/frontend/base/default/layout/limesoda/cashpresso.xml app/design/frontend/base/default/layout/limesoda/cashpresso.xml
