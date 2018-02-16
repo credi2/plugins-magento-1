@@ -80,11 +80,29 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <comment></comment>
+                            <comment><![CDATA[
+                            Product level integration is recommended. Static Label Version has several disadvantages:
+                                - No returning cashpresso customer detection
+                                - No indication for successful risk check
+                                - Server side calculation of instalment pricing necessary]]]></comment>
                             <depends>
                                 <status>1</status>
                             </depends>
                         </widget_type>
+                        <template translate="label">
+                            <label>Template</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <comment>An example: or from € {{price}} / month</comment>
+                            <depends>
+                                <status>1</status>
+                                <widget_type>0</widget_type>
+                            </depends>
+                        </template>
                     </fields>
                 </options>
             </groups>

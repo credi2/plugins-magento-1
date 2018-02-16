@@ -14,9 +14,14 @@
 
 class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
 {
+    protected function _helper()
+    {
+        return Mage::helper('ls_cashpresso');
+    }
+
     protected function _toHtml()
     {
-        if (!Mage::helper('ls_cashpresso')->isModuleEnabled() || !Mage::helper('ls_cashpresso')->getStatus() || !$apiKey = Mage::helper('ls_cashpresso')->getAPIKey()) {
+        if (!$this->_helper()->isModuleEnabled() || !$this->_helper()->getStatus() || !$apiKey = $this->_helper()->getAPIKey()) {
             return '';
         }
 
@@ -33,11 +38,33 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
             return '';
         }
 
-        if (Mage::helper('ls_cashpresso')->getMode()) {
+        $widgetProductLevelIntegration = $this->_helper()->getWidgetType();
 
+        if ($widgetProductLevelIntegration) {
+            $htmlEntry = '<div class="c2-financing-label" data-c2-financing-amount="' . $price . '"></div>';
         } else {
-            $htmlEntry = '<div class="c2-financing-label" data-c2-financing-amount="'.$price.'"></div>';
+            $partnerInfo = $this->_helper()->getPartnerInfo();
+
+            $minPayment = 0;
+
+            if (isset($partnerInfo['minPaybackAmount']) && isset($partnerInfo['paybackRate'])) {
+                $minPayment = min($price, max($partnerInfo['minPaybackAmount'], $price * 0.01 * $partnerInfo['paybackRate']));
+            }
+
+            if ($minPayment > 0) {
+                $template = strpos($this->_helper()->getTemplate(), '{{price}}') !== false ? $this->_helper()->getTemplate() : $this->_helper()->__("or from € {{price}} / month");
+                $aText = preg_replace("/{{price}}/", $minPayment, $template);
+
+                $htmlEntry = '<a href="#" onclick="C2EcomWizard.startOverlayWizard(' . $price . ')">' . $aText . '</a>';
+            }
         }
+
+        $mode = $this->_helper()->getMode() ? 'live' : 'test';
+
+        $customerData = Mage::getModel('ls_cashpresso/customer')->getCustomerData();
+
+        $idStatic = !$widgetProductLevelIntegration ? 'Static' : '';
+        $scriptStatic = !$widgetProductLevelIntegration ? '_static' : '';
 
         /**
          * country  = at|de
@@ -47,23 +74,23 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
          */
         $cashPressoButton = <<<EOT
 {$htmlEntry}
-  <script id="c2LabelScript" type="text/javascript" 
-    src="https://my.cashpresso.com/ecommerce/v2/label/c2_ecom_wizard.all.min.js" 
+  <script id="c2{$idStatic}LabelScript" type="text/javascript" 
+    src="https://my.cashpresso.com/ecommerce/v2/label/c2_ecom_wizard{$scriptStatic}.all.min.js" 
     defer
     data-c2-partnerApiKey="{$apiKey}" 
     data-c2-interestFreeDaysMerchant="0"
-    data-c2-mode="test" 
+    data-c2-mode="{$mode}" 
     data-c2-locale="en"
-    data-c2-email="a.sannikov@limesoda.com  "
-    data-c2-given="Anton"
-    data-c2-family="Sannikov"
-    data-c2-birthdate="1950-01-01"
-    data-c2-country="at"
-    data-c2-city="Wien"
-    data-c2-zip="1170"
-    data-c2-addressline="Syringasse"
-    data-c2-phone="+4366666666666"
-    data-c2-iban="1234 1234 1234 12345">
+    data-c2-email="{$customerData->getEmail()}"
+    data-c2-given="{$customerData->getFirstname()}"
+    data-c2-family="{$customerData->getLastname()}"
+    data-c2-birthdate="{$customerData->getDob()}"
+    data-c2-country="{$customerData->getCountryCode()}"
+    data-c2-city="{$customerData->getCity()}"
+    data-c2-zip="{$customerData->getPostcode()}"
+    data-c2-addressline="{$customerData->getStreet()}"
+    data-c2-phone="{$customerData->getTelephone()}"
+    data-c2-iban="{$customerData->getTaxvat()}">
   </script>
 EOT;
 

@@ -24,6 +24,8 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 
     const XML_PARTNER_WIDGET_TYPE = 'cashpresso/options/widget_type';
 
+    const XML_PARTNER_TEMPLATE = 'cashpresso/options/template';
+
     /**
      * @return mixed
      */
@@ -76,11 +78,22 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     *
      * @param null $storeId
      * @return mixed
      */
     public function getWidgetType($storeId = null)
     {
         return Mage::getStoreConfig(self::XML_PARTNER_WIDGET_TYPE, $storeId);
+    }
+
+    /**
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getTemplate($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PARTNER_TEMPLATE, $storeId);
     }
 }

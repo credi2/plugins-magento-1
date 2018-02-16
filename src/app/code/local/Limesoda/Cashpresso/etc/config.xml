@@ -92,6 +92,7 @@
                 <status>0</status>
                 <mode>0</mode>
                 <widget_type>1</widget_type>
+                <tempalte>or from € {{price}} / month</tempalte>
             </options>
         </cashpresso>
     </default>
