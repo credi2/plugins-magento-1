@@ -21,7 +21,7 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
 
     protected function _toHtml()
     {
-        if (!$this->_helper()->isModuleEnabled() || !$this->_helper()->getStatus() || !$apiKey = $this->_helper()->getAPIKey()) {
+        if (!$this->_helper()->isModuleEnabled() || !Mage::getModel('ls_cashpresso/payment_method_cashpresso')->getConfigData('active') || !$this->_helper()->getStatus() || !$apiKey = $this->_helper()->getAPIKey()) {
             return '';
         }
 
@@ -66,6 +66,8 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
         $idStatic = !$widgetProductLevelIntegration ? 'Static' : '';
         $scriptStatic = !$widgetProductLevelIntegration ? '_static' : '';
 
+        list($locale) = explode('_', strtolower(Mage::app()->getLocale()->getLocaleCode()));
+
         /**
          * country  = at|de
          * mode
@@ -80,7 +82,7 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
     data-c2-partnerApiKey="{$apiKey}" 
     data-c2-interestFreeDaysMerchant="0"
     data-c2-mode="{$mode}" 
-    data-c2-locale="en"
+    data-c2-locale="{$locale}"
     data-c2-email="{$customerData->getEmail()}"
     data-c2-given="{$customerData->getFirstname()}"
     data-c2-family="{$customerData->getLastname()}"
@@ -90,7 +92,9 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
     data-c2-zip="{$customerData->getPostcode()}"
     data-c2-addressline="{$customerData->getStreet()}"
     data-c2-phone="{$customerData->getTelephone()}"
-    data-c2-iban="{$customerData->getTaxvat()}">
+    data-c2-iban="{$customerData->getTaxvat()}"
+    data-c2-checkoutCallback="true">
+    
   </script>
 EOT;
 

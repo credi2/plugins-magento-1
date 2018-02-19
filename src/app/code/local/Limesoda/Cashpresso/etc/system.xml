@@ -1,42 +1,26 @@
 <?xml version="1.0"?>
 <config>
-    <tabs>
-        <limesoda module="ls_cashpresso" translate="label">
-            <label>LimeSoda Extensions</label>
-            <sort_order>146</sort_order>
-            <show_in_default>1</show_in_default>
-            <show_in_website>1</show_in_website>
-            <show_in_store>1</show_in_store>
-        </limesoda>
-    </tabs>
     <sections>
-        <cashpresso translate="label">
-            <label>CashPresso</label>
-            <tab>limesoda</tab>
-            <frontend_type>text</frontend_type>
-            <sort_order>105</sort_order>
-            <show_in_default>1</show_in_default>
-            <show_in_website>1</show_in_website>
-            <show_in_store>1</show_in_store>
+        <payment>
             <groups>
-                <options translate="label">
-                    <label>Options</label>
+                <cashpresso translate="label">
+                    <label>Cashpresso</label>
                     <frontend_type>text</frontend_type>
-                    <!--<frontend_model>ls_cashpresso/adminhtml_system_config_form_fieldset_general</frontend_model>-->
-                    <sort_order>1</sort_order>
+                    <sort_order>6</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <status translate="label">
-                            <label>Status</label>
+                        <active translate="label">
+                            <label>Enabled</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </status>
+                            <show_in_store>0</show_in_store>
+                        </active>
+
                         <api_key translate="label comment">
                             <label>API KEY</label>
                             <frontend_type>text</frontend_type>
@@ -46,6 +30,7 @@
                             <show_in_store>0</show_in_store>
                             <comment></comment>
                         </api_key>
+
                         <inforamtion translate="label comment">
                             <label>Information</label>
                             <frontend_type>text</frontend_type>
@@ -55,10 +40,8 @@
                             <show_in_store>0</show_in_store>
                             <frontend_model>ls_cashpresso/adminhtml_system_config_form_field_information</frontend_model>
                             <comment></comment>
-                            <depends>
-                                <status>1</status>
-                            </depends>
                         </inforamtion>
+
                         <mode translate="label">
                             <label>Mode</label>
                             <frontend_type>select</frontend_type>
@@ -68,15 +51,84 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                             <comment></comment>
-                            <depends>
-                                <status>1</status>
-                            </depends>
                         </mode>
+
+                        <title translate="label">
+                            <label>Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <order_status translate="label">
+                            <label>New Order Status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status_new</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </order_status>
+                        <allowspecific translate="label">
+                            <label>Payment from Applicable Countries</label>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>70</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </allowspecific>
+                        <specificcountry translate="label">
+                            <label>Payment from Specific Countries</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>71</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                        </specificcountry>
+                        <instructions translate="label">
+                            <label>Instructions</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </instructions>
+                        <min_order_total translate="label">
+                            <label>Minimum Order Total</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </min_order_total>
+                        <max_order_total translate="label">
+                            <label>Maximum Order Total</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </max_order_total>
+
+                        <status translate="label">
+                            <label>Widget status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </status>
+
                         <widget_type translate="label">
                             <label>Widget integration</label>
                             <frontend_type>select</frontend_type>
                             <source_model>ls_cashpresso/adminhtml_system_config_source_widget</source_model>
-                            <sort_order>50</sort_order>
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -89,10 +141,11 @@
                                 <status>1</status>
                             </depends>
                         </widget_type>
+
                         <template translate="label">
                             <label>Template</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>60</sort_order>
+                            <sort_order>130</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -103,9 +156,18 @@
                                 <widget_type>0</widget_type>
                             </depends>
                         </template>
+
+                        <sort_order translate="label">
+                            <label>Sort Order</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </sort_order>
                     </fields>
-                </options>
+                </cashpresso>
             </groups>
-        </cashpresso>
+        </payment>
     </sections>
 </config>

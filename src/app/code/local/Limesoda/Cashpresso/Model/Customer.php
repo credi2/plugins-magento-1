@@ -14,11 +14,11 @@
 
 class Limesoda_Cashpresso_Model_Customer
 {
-    public function getCustomerData()
+    public function getCustomerData($quotePriority = false)
     {
         $customerData = new Varien_Object();
 
-        if (Mage::getModel('customer/session')->getCustomer()->getId()){
+        if (!$quotePriority && Mage::getModel('customer/session')->getCustomer()->getId()){
             $customer = Mage::getModel('customer/session')->getCustomer();
 
             $customerData->setEmail($customer->getEmail());

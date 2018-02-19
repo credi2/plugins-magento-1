@@ -16,15 +16,15 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 {
     const XML_PARTNER_INFO = 'cashpresso/partnerinfo';
 
-    const XML_PARTNER_API_KEY = 'cashpresso/options/api_key';
+    const XML_PARTNER_API_KEY = 'payment/cashpresso/api_key';
 
-    const XML_PARTNER_STATUS = 'cashpresso/options/status';
+    const XML_PARTNER_STATUS = 'payment/cashpresso/status';
 
-    const XML_PARTNER_MODE = 'cashpresso/options/mode';
+    const XML_PARTNER_MODE = 'payment/cashpresso/mode';
 
-    const XML_PARTNER_WIDGET_TYPE = 'cashpresso/options/widget_type';
+    const XML_PARTNER_WIDGET_TYPE = 'payment/cashpresso/widget_type';
 
-    const XML_PARTNER_TEMPLATE = 'cashpresso/options/template';
+    const XML_PARTNER_TEMPLATE = 'payment/cashpresso/template';
 
     /**
      * @return mixed

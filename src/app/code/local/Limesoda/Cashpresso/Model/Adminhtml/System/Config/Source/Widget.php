@@ -27,7 +27,7 @@ class Limesoda_Cashpresso_Model_Adminhtml_System_Config_Source_Widget
         );
     }
 
-    /**
+    /**⁄
      * Get options in "key-value" format
      *
      * @return array

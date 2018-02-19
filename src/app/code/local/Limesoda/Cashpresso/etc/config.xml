@@ -87,13 +87,20 @@
     </crontab>
 
     <default>
-        <cashpresso>
-            <options>
-                <status>0</status>
+        <payment>
+            <cashpresso>
+                <active>0</active>
+                <model>ls_cashpresso/payment_method_cashpresso</model>
+                <order_status>pending</order_status>
+                <allowspecific>0</allowspecific>
+                <group>offline</group>
+                <status>1</status>
                 <mode>0</mode>
                 <widget_type>1</widget_type>
                 <tempalte>or from € {{price}} / month</tempalte>
-            </options>
-        </cashpresso>
+                <instructions></instructions>
+                <active>0</active>
+            </cashpresso>
+        </payment>
     </default>
 </config>
