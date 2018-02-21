@@ -68,6 +68,8 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
 
         list($locale) = explode('_', strtolower(Mage::app()->getLocale()->getLocaleCode()));
 
+        $interestFreeDays = $this->_helper()->getInterestFreeDay();
+
         /**
          * country  = at|de
          * mode
@@ -80,7 +82,7 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
     src="https://my.cashpresso.com/ecommerce/v2/label/c2_ecom_wizard{$scriptStatic}.all.min.js" 
     defer
     data-c2-partnerApiKey="{$apiKey}" 
-    data-c2-interestFreeDaysMerchant="0"
+    data-c2-interestFreeDaysMerchant="{$interestFreeDays}"
     data-c2-mode="{$mode}" 
     data-c2-locale="{$locale}"
     data-c2-email="{$customerData->getEmail()}"
@@ -94,7 +96,6 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
     data-c2-phone="{$customerData->getTelephone()}"
     data-c2-iban="{$customerData->getTaxvat()}"
     data-c2-checkoutCallback="true">
-    
   </script>
 EOT;
 

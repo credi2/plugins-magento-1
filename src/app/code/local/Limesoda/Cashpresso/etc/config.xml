@@ -36,7 +36,37 @@
 
     <frontend>
         <events>
-            <!--<core_block_abstract_to_html_after>
+            <sales_quote_payment_import_data_before>
+                <observers>
+                    <limesoda_cashpresso>
+                        <type>singleton</type>
+                        <method>addPostHashOrder</method>
+                        <class>ls_cashpresso/observer_payment</class>
+                    </limesoda_cashpresso>
+                </observers>
+            </sales_quote_payment_import_data_before>
+
+            <!-- sales_order_place_after sales_order_place_before -->
+            <sales_order_payment_place_end>
+                <observers>
+                    <limesoda_cashpresso>
+                        <type>singleton</type>
+                        <method>sendOrder</method>
+                        <class>ls_cashpresso/observer_payment</class>
+                    </limesoda_cashpresso>
+                </observers>
+            </sales_order_payment_place_end>
+
+            <checkout_onepage_controller_success_action>
+                <observers>
+                    <ls_cashpresso_order_register>
+                        <type>singleton</type>
+                        <class>ls_cashpresso/observer_block</class>
+                        <method>setOrder</method>
+                    </ls_cashpresso_order_register>
+                </observers>
+            </checkout_onepage_controller_success_action>
+            <core_block_abstract_to_html_after>
                 <observers>
                     <ls_cashpresso_before_print>
                         <type>singleton</type>
@@ -44,7 +74,7 @@
                         <method>coreBlockAbstractToHtmlAfter</method>
                     </ls_cashpresso_before_print>
                 </observers>
-            </core_block_abstract_to_html_after>-->
+            </core_block_abstract_to_html_after>
             <!-- <controller_action_predispatch>
                 <observers>
                     <limesoda_cashpresso>
@@ -98,8 +128,9 @@
                 <mode>0</mode>
                 <widget_type>1</widget_type>
                 <tempalte>or from € {{price}} / month</tempalte>
-                <instructions></instructions>
                 <active>0</active>
+                <timeout>24</timeout>
+                <sign_contract_text><![CDATA[<p class="a-center" style="margin-top:10px;">Um die Finanzierung deines Einkaufs abzuschließen musst du dich via Videocall identifizieren. Bitte halte dazu deinen Pass oder Personalausweis bereit.</p><p class="a-center"><img style="display:inline-block;" src="{{skin url='cashpresso/images/passport.png'}}"/><p>]]></sign_contract_text>
             </cashpresso>
         </payment>
     </default>

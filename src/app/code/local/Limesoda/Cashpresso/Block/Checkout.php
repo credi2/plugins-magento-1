@@ -24,7 +24,7 @@ class Limesoda_Cashpresso_Block_Checkout extends Mage_Core_Block_Template
         if (!$this->_helper()->isModuleEnabled() || !Mage::getModel('ls_cashpresso/payment_method_cashpresso')->getConfigData('active') || !$apiKey = $this->_helper()->getAPIKey()) {
             return '';
         }
-
+        
         $mode = $this->_helper()->getMode() ? 'live' : 'test';
 
         $customerData = Mage::getModel('ls_cashpresso/customer')->getCustomerData();
@@ -32,6 +32,8 @@ class Limesoda_Cashpresso_Block_Checkout extends Mage_Core_Block_Template
         $price = Mage::app()->getStore()->roundPrice(Mage::getModel('checkout/cart')->getQuote()->getGrandTotal());
 
         list($locale) = explode('_', strtolower(Mage::app()->getLocale()->getLocaleCode()));
+
+        $interestFreeDays = $this->_helper()->getInterestFreeDay();
 
         /**
          * country  = at|de
@@ -44,7 +46,7 @@ class Limesoda_Cashpresso_Block_Checkout extends Mage_Core_Block_Template
     src="https://my.cashpresso.com/ecommerce/v2/checkout/c2_ecom_checkout.all.min.js" 
     defer
     data-c2-partnerApiKey="{$apiKey}" 
-    data-c2-interestFreeDaysMerchant="0"
+    data-c2-interestFreeDaysMerchant="{$interestFreeDays}"
     data-c2-mode="{$mode}" 
     data-c2-locale="{$locale}"
     data-c2-email="{$customerData->getEmail()}"
@@ -60,6 +62,31 @@ class Limesoda_Cashpresso_Block_Checkout extends Mage_Core_Block_Template
     data-c2-checkoutCallback="true"
     data-c2-amount="{$price}">
   </script>
+
+<script type="text/javascript">
+    //<![CDATA[
+    Payment.prototype.save = function () {
+        if (checkout.loadWaiting!=false) return;
+    
+        var validator = new Validation(this.form);
+    
+        if (this.validate() && validator.validate()) {
+            checkout.setLoadWaiting('payment');
+            document.getElementById('cashpressoToken').disabled = false;
+            new Ajax.Request(
+                this.saveUrl,
+                {
+                    method:'post',
+                    onComplete: this.onComplete,
+                    onSuccess: this.onSave,
+                    onFailure: checkout.ajaxFailure.bind(checkout),
+                    parameters: Form.serialize(this.form)
+                }
+            );
+        }    
+    };
+    //]]>
+</script> 
 EOT;
 
         return $cashPressoButton;

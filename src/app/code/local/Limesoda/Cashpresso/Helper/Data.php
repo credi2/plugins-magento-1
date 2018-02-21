@@ -26,12 +26,26 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 
     const XML_PARTNER_TEMPLATE = 'payment/cashpresso/template';
 
+    const XML_PARTNER_TIMEOUT = 'payment/cashpresso/timeout';
+
+    const XML_PARTNER_SECRET_KEY = 'payment/cashpresso/secret_key';
+
+    const XML_PARTNER_CONTRACT_TEXT = 'payment/cashpresso/sign_contract_text';
+
     /**
      * @return mixed
      */
     public function getPartnerInfo()
     {
         return Mage::helper('core')->jsonDecode(Mage::getStoreConfig(self::XML_PARTNER_INFO));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSecretKey()
+    {
+        return Mage::getStoreConfig(self::XML_PARTNER_SECRET_KEY);
     }
 
     /**
@@ -44,7 +58,7 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
             return false;
         }
 
-        $partnerInfo = Mage::getModel('ls_cashpresso/api')->setMode($this->getMode())->getPartnerInfo();
+        $partnerInfo = Mage::getModel('ls_cashpresso/api_client')->setMode($this->getMode())->getPartnerInfo();
         Mage::app()->getConfig()->saveConfig(self::XML_PARTNER_INFO, Mage::helper('core')->jsonEncode($partnerInfo));
 
         return $partnerInfo;
@@ -65,6 +79,32 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     public function getStatus($storeId = null)
     {
         return Mage::getStoreConfig(self::XML_PARTNER_STATUS, $storeId);
+    }
+
+    /**
+     * //date("yyyy-MM-dd'T'HH:mm:ss.SSSZ", strtotime('+5 hours'))
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getTimeout($storeId = null)
+    {
+        $hrs = Mage::getStoreConfig(self::XML_PARTNER_TIMEOUT, $storeId);
+        return date(DATE_ATOM, strtotime("+$hrs hours"));
+    }
+
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    public function getInterestFreeDay()
+    {
+        if (!$this->getAPIKey()) {
+            return false;
+        }
+
+        $partnerInfo = $this->generatePartnerInfo();
+
+        return isset($partnerInfo['interestFreeCashpresso']) ? $partnerInfo['interestFreeCashpresso'] : false;
     }
 
     /**
@@ -95,5 +135,15 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     public function getTemplate($storeId = null)
     {
         return Mage::getStoreConfig(self::XML_PARTNER_TEMPLATE, $storeId);
+    }
+
+    /**
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getContractText($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PARTNER_CONTRACT_TEXT, $storeId);
     }
 }

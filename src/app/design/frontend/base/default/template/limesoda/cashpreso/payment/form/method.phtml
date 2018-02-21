@@ -25,7 +25,7 @@
  */
 
 /**
- * @see Saas_Payment_Block_Form_Cashondelivery
+ * @see Limesoda_Cashpresso_Block_Payment_Form_Cashpresso
  */
 ?>
 <?php if ($this->getInstructions()): ?>
@@ -37,3 +37,19 @@
         </li>
     </ul>
 <?php endif; ?>
+
+<input type="hidden" id="cashpressoToken" name="cashpressoToken">
+
+<div id="cashpresso-checkout"></div>
+
+<div id = "cashpresso-availability-banner"></div>
+
+<script type="text/javascript">
+    //<![CDATA[
+    if (window.C2EcomCheckout) {
+        window.C2EcomCheckout.refresh();
+
+        <?php echo $this->refreshOptionalData() ?>
+    }
+    //]]>
+</script>

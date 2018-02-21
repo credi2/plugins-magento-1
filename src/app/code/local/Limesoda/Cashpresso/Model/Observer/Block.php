@@ -14,37 +14,60 @@
 
 class Limesoda_Cashpresso_Model_Observer_Block
 {
+    protected function _helper()
+    {
+        return Mage::helper('ls_cashpresso');
+    }
+
+    public function setOrder(Varien_Event_Observer $observer)
+    {
+        $orderIds = $observer->getEvent()->getOrderIds();
+
+        if (empty($orderIds) || !is_array($orderIds)) {
+            return;
+        }
+
+        $orderId = current($orderIds);
+        Mage::register('ls_success_order', Mage::getModel('sales/order')->load($orderId));
+    }
+
     public function coreBlockAbstractToHtmlAfter(Varien_Event_Observer $observer)
     {
-        $model = Mage::getModel('ls_cashpresso/api');
-
-        $model->setMode(true);
-        
-        $info = $model->getPartnerInfo();
-
-        echo '<pre><br/>';
-        var_dump($info);
-        die();
-        die();
         $block = $observer->getEvent()->getBlock();
 
-        if ($block instanceof Mage_Catalog_Block_Product_Abstract) {
-            $htmlBlock = $observer->getEvent()->getTransport();
+        if ($block instanceof Mage_Checkout_Block_Onepage_Success) {
+            $transport = $observer->getEvent()->getTransport();
+            $html = $transport->getHtml();
 
-            $cashPressoButton = <<<EOT
-  <div class="c2-financing-label" data-c2-financing-amount="1500.00"></div> 
+            $mode = $this->_helper()->getMode() ? 'live' : 'test';
+            $apiKey = $this->_helper()->getAPIKey();
+            list($locale) = explode('_', strtolower(Mage::app()->getLocale()->getLocaleCode()));
 
-  <script id="c2LabelScript" type="text/javascript" 
-    src="https://my.cashpresso.com/ecommerce/v2/label/c2_ecom_wizard.all.min.js" 
+            if ($apiKey && Mage::registry('ls_success_order')){
+
+                /** @var Mage_Sales_Model_Order $order */
+                $order = Mage::registry('ls_success_order');
+                
+                $purchaseId = $order->getPayment()->getAdditionalData();
+                
+                $script = <<<EOT
+<script id="c2PostCheckoutScript" type="text/javascript"
+    src="https://my.cashpresso.com/ecommerce/v2/checkout/c2_ecom_post_checkout.all.min.js"
     defer
-    data-c2-partnerApiKey="908db109be694529dd0c1331afe4e5ae74b41176c3d64dea99f798ff8f7cc7ab622de47a92d52a560a971e7d0ce68b0ea0d1bab243fc859bf80f76e93987fbe2" 
-    data-c2-interestFreeDaysMerchant="0"
-    data-c2-mode="test" 
-    data-c2-locale="en">
-  </script>
+    data-c2-partnerApiKey="{$apiKey}"
+    data-c2-purchaseId="{$purchaseId}"
+    data-c2-mode="{$mode}"
+    data-c2-locale="{$locale}">
+</script>
 EOT;
+                $helper = Mage::helper('cms');
+                $processor = $helper->getPageTemplateProcessor();
+                $message = $processor->filter($this->_helper()->getContractText());
 
-            $htmlBlock->setHtml($htmlBlock->getHtml() . $cashPressoButton);
+
+
+                $transport->setHtml($html . $script . $message);
+            }
         }
     }
 }
