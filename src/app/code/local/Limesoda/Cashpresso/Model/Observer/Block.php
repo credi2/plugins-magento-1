@@ -14,11 +14,18 @@
 
 class Limesoda_Cashpresso_Model_Observer_Block
 {
+    /**
+     * @return Limesoda_Cashpresso_Helper_Data|Mage_Core_Helper_Abstract
+     */
     protected function _helper()
     {
         return Mage::helper('ls_cashpresso');
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     * @throws Mage_Core_Exception
+     */
     public function setOrder(Varien_Event_Observer $observer)
     {
         $orderIds = $observer->getEvent()->getOrderIds();
@@ -31,26 +38,46 @@ class Limesoda_Cashpresso_Model_Observer_Block
         Mage::register('ls_success_order', Mage::getModel('sales/order')->load($orderId));
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     * @throws Exception
+     */
     public function coreBlockAbstractToHtmlAfter(Varien_Event_Observer $observer)
     {
+        if ($this->_helper()->checkStatus()) {
+            return;
+        }
+
         $block = $observer->getEvent()->getBlock();
 
+        $transport = $observer->getEvent()->getTransport();
+
         if ($block instanceof Mage_Checkout_Block_Onepage_Success) {
-            $transport = $observer->getEvent()->getTransport();
-            $html = $transport->getHtml();
+            $this->addScriptSuccessPage($transport);
+        } else if ($block instanceof Mage_Catalog_Block_Product_Price) {
+            $this->addScriptToPrice($transport, $block);
+        }
+    }
 
-            $mode = $this->_helper()->getMode() ? 'live' : 'test';
-            $apiKey = $this->_helper()->getAPIKey();
-            list($locale) = explode('_', strtolower(Mage::app()->getLocale()->getLocaleCode()));
+    /**
+     * @param $transport
+     * @throws Exception
+     */
+    public function addScriptSuccessPage($transport)
+    {
+        $html = $transport->getHtml();
+        $mode = $this->_helper()->getMode() ? 'live' : 'test';
+        $apiKey = $this->_helper()->getAPIKey();
+        list($locale) = explode('_', strtolower(Mage::app()->getLocale()->getLocaleCode()));
 
-            if ($apiKey && Mage::registry('ls_success_order')){
+        if ($apiKey && Mage::registry('ls_success_order')) {
 
-                /** @var Mage_Sales_Model_Order $order */
-                $order = Mage::registry('ls_success_order');
-                
-                $purchaseId = $order->getPayment()->getAdditionalData();
-                
-                $script = <<<EOT
+            /** @var Mage_Sales_Model_Order $order */
+            $order = Mage::registry('ls_success_order');
+
+            $purchaseId = $order->getPayment()->getAdditionalData();
+
+            $script = <<<EOT
 <script id="c2PostCheckoutScript" type="text/javascript"
     src="https://my.cashpresso.com/ecommerce/v2/checkout/c2_ecom_post_checkout.all.min.js"
     defer
@@ -60,14 +87,20 @@ class Limesoda_Cashpresso_Model_Observer_Block
     data-c2-locale="{$locale}">
 </script>
 EOT;
-                $helper = Mage::helper('cms');
-                $processor = $helper->getPageTemplateProcessor();
-                $message = $processor->filter($this->_helper()->getContractText());
+            $helper = Mage::helper('cms');
+            $processor = $helper->getPageTemplateProcessor();
+            $message = $processor->filter($this->_helper()->getContractText());
 
-
-
-                $transport->setHtml($html . $script . $message);
-            }
+            $transport->setHtml($html . $script . $message);
         }
+    }
+
+    /**
+     * @param $transport
+     * @param $block Mage_Catalog_Block_Product_Price
+     */
+    public function addScriptToPrice($transport, $block)
+    {
+        $product = $block->getProduct();
     }
 }

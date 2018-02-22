@@ -32,6 +32,8 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 
     const XML_PARTNER_CONTRACT_TEXT = 'payment/cashpresso/sign_contract_text';
 
+    const XML_PARNTER_PLACE_TO_SHOW = 'payment/cashpresso/sign_contract_text';
+
     /**
      * @return mixed
      */
@@ -82,7 +84,6 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * //date("yyyy-MM-dd'T'HH:mm:ss.SSSZ", strtotime('+5 hours'))
      * @param null $storeId
      * @return mixed
      */
@@ -145,5 +146,13 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     public function getContractText($storeId = null)
     {
         return Mage::getStoreConfig(self::XML_PARTNER_CONTRACT_TEXT, $storeId);
+    }
+
+    /**
+     * @return bool
+     */
+    public function checkStatus()
+    {
+        return !$this->isModuleEnabled() || !Mage::getModel('ls_cashpresso/payment_method_cashpresso')->getConfigData('active') || !$this->getStatus() || !$apiKey = $this->getAPIKey();
     }
 }

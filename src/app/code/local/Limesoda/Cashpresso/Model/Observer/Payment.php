@@ -40,7 +40,6 @@ class Limesoda_Cashpresso_Model_Observer_Payment
         $payment = $observer->getEvent()->getPayment();
 
         if ($hash = $payment->getOrder()->getPayment()->getAdditionalData()) {
-            //Mage::log(print_r($payment->getOrder()->getPayment()->debug(), true), Zend_Log::DEBUG, 'debug.log');
             $purchaseId = Mage::getModel('ls_cashpresso/api_client')->sendOrder($payment->getOrder());
             $payment->getOrder()->getPayment()->setAdditionalData($purchaseId);
         }

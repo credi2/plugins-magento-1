@@ -66,6 +66,7 @@
                     </ls_cashpresso_order_register>
                 </observers>
             </checkout_onepage_controller_success_action>
+
             <core_block_abstract_to_html_after>
                 <observers>
                     <ls_cashpresso_before_print>
@@ -75,6 +76,7 @@
                     </ls_cashpresso_before_print>
                 </observers>
             </core_block_abstract_to_html_after>
+
             <!-- <controller_action_predispatch>
                 <observers>
                     <limesoda_cashpresso>
@@ -93,6 +95,16 @@
                 </limesoda_cashpresso>
             </updates>
         </layout>
+
+        <routers>
+            <cashpresso>
+                <use>standard</use>
+                <args>
+                    <frontName>cashpresso</frontName>
+                    <module>Limesoda_Cashpresso</module>
+                </args>
+            </cashpresso>
+        </routers>
     </frontend>
 
     <phpunit>

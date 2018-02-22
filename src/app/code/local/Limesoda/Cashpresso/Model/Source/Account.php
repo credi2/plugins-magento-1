@@ -27,8 +27,6 @@ class Limesoda_Cashpresso_Model_Source_Account
      */
     public function toOptionArray()
     {
-
-
         return array(
             array('value' => 1, 'label'=>Mage::helper('adminhtml')->__('Live')),
             array('value' => 0, 'label'=>Mage::helper('adminhtml')->__('Test')),

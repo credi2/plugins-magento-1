@@ -5,6 +5,10 @@
         <reference name="product.info.extrahint">
             <block type="ls_cashpresso/button" ifconfig="payment/cashpresso/active"
                    name="product.info.extrahint.cashpresso_button" translate="label"/>
+
+            <!--<block type="core/text" ifconfig="payment/cashpresso/active" name="product.info.extrahint.cashpresso_button" translate="label">
+                <action method="setText"><text helper="ls_cashpresso/button/getButtonScript"><arg>''</arg></text></action>
+            </block>-->
         </reference>
     </catalog_product_view>
 

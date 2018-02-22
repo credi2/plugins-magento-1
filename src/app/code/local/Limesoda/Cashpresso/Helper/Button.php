@@ -1,6 +1,6 @@
 <?php
 /**
- * 14.02.18
+ * 22.02.18
  * LimeSoda - dockerized-magento
  *
  * Created by Anton Sannikov.
@@ -12,7 +12,7 @@
  * @file Button.php
  */
 
-class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
+class Limesoda_Cashpresso_Helper_Button
 {
     protected function _helper()
     {
@@ -41,7 +41,7 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
         return $checkResult->isAvailable;
     }
 
-    protected function _toHtml()
+    public function getButtonScript($forceMode = null)
     {
         if ($this->_helper()->checkStatus()) {
             return '';

@@ -29,9 +29,8 @@ class Limesoda_Cashpresso_Model_Payment_Method_Cashpresso extends Mage_Payment_M
     /**
      * Check whether method is available
      *
-     * @param Mage_Sales_Model_Quote|null $quote
+     * @param null $quote
      * @return bool
-     * @throws Mage_Core_Model_Store_Exception
      */
     public function isAvailable($quote = null)
     {

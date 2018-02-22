@@ -18,6 +18,10 @@ class Limesoda_Cashpresso_Model_Api_Client extends Limesoda_Cashpresso_Model_Api
     const METHOD_BUY = 'buy';
     const METHOD_SIMULATION = 'simulation/callback';
 
+    const CODE_SIMULATION_SUCCESS = 'SUCCESS';
+    const CODE_SIMULATION_CANCEL = 'CANCELLED';
+    const CODE_SIMULATION_TIMEOUT = 'TIMEOUT';
+
     protected $_post = array();
 
     /**
@@ -31,10 +35,10 @@ class Limesoda_Cashpresso_Model_Api_Client extends Limesoda_Cashpresso_Model_Api
         $response = $request->request();
 
         if ($response->isSuccessful()) {
-            $respond =  Mage::helper('core')->jsonDecode($response->getBody());
+            $respond = Mage::helper('core')->jsonDecode($response->getBody());
 
-            if (is_array($respond)){
-                if (empty($respond['success'])){
+            if (is_array($respond)) {
+                if (empty($respond['success'])) {
                     throw new Mage_Core_Exception(Mage::helper('ls_cashpresso')->__($respond['error']['description']));
                 }
 
@@ -66,8 +70,52 @@ class Limesoda_Cashpresso_Model_Api_Client extends Limesoda_Cashpresso_Model_Api
             'bankUsage' => $order->getIncrementId(),
             'interestFreeDaysMerchant' => $this->_helper()->getInterestFreeDay(),
             'description' => 'TEST PAYMENT',
-            'language' => $locale
+            'language' => $locale,
+            'invoiceAddress' => array(),
+            'deliveryAddress' => array(),
+            'basket' => array(),
+            'callbackUrl' => Mage::getUrl('cashpresso/api/callback')
         );
+
+        if ($customerID = Mage::getModel('customer/session')->getCustomer()->getId()) {
+            $data['merchantCustomerId'] = $customerID;
+        }
+
+        if ($address = $order->getBillingAddress()) {
+            $billingAddress = array(
+                "country" => $address->getCountryId(),
+                "zip" => $address->getPostcode(),
+                "city" => $address->getCity(),
+                "street" => isset($address->getStreet()[0]) ? $address->getStreet()[0] : ''
+                //"housenumber" : $ad,
+            );
+
+            $data['invoiceAddress'] = $billingAddress;
+        }
+
+        if ($address = $order->getShippingAddress()) {
+            $shippingAddress = array(
+                "country" => $address->getCountryId(),
+                "zip" => $address->getPostcode(),
+                "city" => $address->getCity(),
+                "street" => isset($address->getStreet()[0]) ? $address->getStreet()[0] : ''
+                //"housenumber" : $ad,
+            );
+
+            $data['deliveryAddress'] = $shippingAddress;
+        }
+
+        $items = $order->getAllItems();
+
+        $cart = array();
+
+        /** @var Mage_Sales_Model_Order_Item $item */
+        foreach ($items as $item) {
+            $cart[] = array(
+                'description' => $item->getName(),
+                'amount' => $item->getQtyOrdered()
+            );
+        }
 
         Mage::log(print_r($data, true), Zend_Log::DEBUG, 'debug.log');
 
@@ -78,38 +126,16 @@ class Limesoda_Cashpresso_Model_Api_Client extends Limesoda_Cashpresso_Model_Api
         Mage::log($response->getBody(), Zend_Log::DEBUG, 'debug.log');
 
         if ($response->isSuccessful()) {
-            $respond =  Mage::helper('core')->jsonDecode($response->getBody());
+            $respond = Mage::helper('core')->jsonDecode($response->getBody());
 
-            if (is_array($respond)){
-                if (empty($respond['success']) || empty($respond['purchaseId'])){
+            if (is_array($respond)) {
+                if (empty($respond['success']) || empty($respond['purchaseId'])) {
                     throw new Mage_Payment_Model_Info_Exception(Mage::helper('ls_cashpresso')->__($respond['error']['description']));
                 }
 
                 return $respond['purchaseId'];
             }
         }
-
-        /* {
-        "callbackUrl" : String (optional),
-        "invoiceAddress" : Address (optional),
-        "deliveryAddress" : Address (optional),
-        "merchantCustomerId" : String (optional),
-        "basket" : [ BasketItem ] (optional)
-      }
-      The Address element:
-      {
-        "country" : String (2 letter iso code e.g. "DE"),
-        "zip" : String,
-        "city" : String,
-        "street" : String,
-        "housenumber" : String,
-      }
-      The BaketItem element:
-      {
-        "description" : String,
-        "amount" : number,
-        "times" : integer
-      }*/
     }
 
     /**
@@ -123,8 +149,44 @@ class Limesoda_Cashpresso_Model_Api_Client extends Limesoda_Cashpresso_Model_Api
         return Mage::helper('core')->decrypt($this->getSecretKey()) . ';' . ($amount * 100) . ';' . $this->_helper()->getInterestFreeDay() . ';' . $bankUsage . ';' . $targetAccountId;
     }
 
-    public function sendSimulationCallbackRequest()
+    /**
+     * @param $code
+     * @return mixed
+     * @throws Exception
+     * @throws Mage_Payment_Model_Info_Exception
+     * @throws Zend_Http_Client_Exception
+     */
+    public function sendSimulationCallbackRequest($code, $purchaseID)
     {
+        if (!in_array($code, array(self::CODE_SIMULATION_CANCEL, self::CODE_SIMULATION_SUCCESS, self::CODE_SIMULATION_TIMEOUT))) {
+            throw new Exception(Mage::helper('ls_cashpresso')->__("Wrong parameter for sendSimulationCallbackRequest"));
+        }
+
         $request = $this->getRequest(self::METHOD_SIMULATION);
+
+        $data = array(
+            'partnerApiKey' => $this->getPartnerApiKey(),
+            'purchaseId' => $purchaseID,
+            'type' => $code
+        );
+
+        $request->setMethod(Varien_Http_Client::POST);
+        $request->setRawData(json_encode($data), 'application/json');
+
+        $response = $request->request();
+
+        if ($response->isSuccessful()) {
+            $respond = Mage::helper('core')->jsonDecode($response->getBody());
+            echo '<pre><br/>';
+            var_dump($response->getBody());
+            die();
+            if (is_array($respond)) {
+                if (empty($respond['success']) || empty($respond['purchaseId'])) {
+                    throw new Mage_Payment_Model_Info_Exception(Mage::helper('ls_cashpresso')->__($respond['error']['description']));
+                }
+
+                return $respond['purchaseId'];
+            }
+        }
     }
 }
