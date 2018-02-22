@@ -32,3 +32,7 @@ class Limesoda_Cashpresso_Model_Observer_Sample
     }
 }
 ```
+
+
+Show checkout button option:
+in Limesoda_Cashpresso_Helper_Button its possible to define custom checkout page url using observer cashpresso_js_c2checkout_url 

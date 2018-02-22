@@ -59,7 +59,6 @@ class Limesoda_Cashpresso_Block_Checkout extends Mage_Core_Block_Template
     data-c2-addressline="{$customerData->getStreet()}"
     data-c2-phone="{$customerData->getTelephone()}"
     data-c2-iban="{$customerData->getTaxvat()}"
-    data-c2-checkoutCallback="true"
     data-c2-amount="{$price}">
   </script>
 

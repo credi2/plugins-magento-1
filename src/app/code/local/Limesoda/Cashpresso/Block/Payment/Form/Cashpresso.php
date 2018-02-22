@@ -27,7 +27,7 @@ class Limesoda_Cashpresso_Block_Payment_Form_Cashpresso extends Mage_Payment_Blo
     protected function _construct()
     {
         parent::_construct();
-        $this->setTemplate('limesoda/cashpreso/payment/form/method.phtml');
+        $this->setTemplate('limesoda/cashpresso/payment/form/method.phtml');
     }
 
     /**

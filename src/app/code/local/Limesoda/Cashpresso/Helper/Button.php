@@ -12,115 +12,34 @@
  * @file Button.php
  */
 
-class Limesoda_Cashpresso_Helper_Button
+class Limesoda_Cashpresso_Helper_Button extends Mage_Core_Helper_Abstract
 {
+    /**
+     * @return Limesoda_Cashpresso_Helper_Data|Mage_Core_Helper_Abstract
+     */
     protected function _helper()
     {
         return Mage::helper('ls_cashpresso');
     }
 
     /**
-     * @param $product Mage_Catalog_Model_Product
-     * @return mixed
+     * @return bool
      */
-    public function isAvailable($product)
+    public function isProductPage()
     {
-        $checkResult = new StdClass;
-        $checkResult->types = array('simple');
-        $checkResult->isAvailable = true;
-
-        Mage::dispatchEvent('cashpresso_type_handler', array(
-            'product' => $product,
-            'result' => $checkResult,
-        ));
-
-        if (is_array($checkResult->types) && !in_array($product->getTypeId(), $checkResult->types)) {
-            $checkResult->isAvailable = false;
-        }
-
-        return $checkResult->isAvailable;
+        return Mage::registry('current_product')?true:false;
     }
 
-    public function getButtonScript($forceMode = null)
+    /**
+     * @return mixed
+     */
+    public function getCheckoutUrl()
     {
-        if ($this->_helper()->checkStatus()) {
-            return '';
-        }
+        $urlObject = new stdClass();
+        $urlObject->url = $this->_getUrl('checkout/onepage', array('_secure'=>true));
 
-        if (Mage::registry('current_product')) {
-            /** @var Mage_Catalog_Model_Product $productModel */
-            $productModel = Mage::registry('current_product');
+        Mage::dispatchEvent('cashpresso_js_c2checkout_url', array('url' => $urlObject));
 
-            if (!$this->isAvailable($productModel)) {
-                return '';
-            }
-
-            $price = $productModel->getFinalPrice();
-        } else {
-            return '';
-        }
-
-        $widgetProductLevelIntegration = $this->_helper()->getWidgetType();
-
-        if ($widgetProductLevelIntegration) {
-            $htmlEntry = '<div class="c2-financing-label" data-c2-financing-amount="' . $price . '"></div>';
-        } else {
-            $partnerInfo = $this->_helper()->getPartnerInfo();
-
-            $minPayment = 0;
-
-            if (isset($partnerInfo['minPaybackAmount']) && isset($partnerInfo['paybackRate'])) {
-                $minPayment = min($price, max($partnerInfo['minPaybackAmount'], $price * 0.01 * $partnerInfo['paybackRate']));
-            }
-
-            if ($minPayment > 0) {
-                $template = strpos($this->_helper()->getTemplate(), '{{price}}') !== false ? $this->_helper()->getTemplate() : $this->_helper()->__("or from € {{price}} / month");
-                $aText = preg_replace("/{{price}}/", $minPayment, $template);
-
-                $htmlEntry = '<a href="#" onclick="C2EcomWizard.startOverlayWizard(' . $price . ')">' . $aText . '</a>';
-            }
-        }
-
-        $mode = $this->_helper()->getMode() ? 'live' : 'test';
-
-        $customerData = Mage::getModel('ls_cashpresso/customer')->getCustomerData();
-
-        $idStatic = !$widgetProductLevelIntegration ? 'Static' : '';
-        $scriptStatic = !$widgetProductLevelIntegration ? '_static' : '';
-
-        list($locale) = explode('_', strtolower(Mage::app()->getLocale()->getLocaleCode()));
-
-        $interestFreeDays = $this->_helper()->getInterestFreeDay();
-
-        /**
-         * country  = at|de
-         * mode
-         * locale
-         *
-         */
-        $cashPressoButton = <<<EOT
-{$htmlEntry}
-  <script id="c2{$idStatic}LabelScript" type="text/javascript" 
-    src="https://my.cashpresso.com/ecommerce/v2/label/c2_ecom_wizard{$scriptStatic}.all.min.js" 
-    defer
-    data-c2-partnerApiKey="{$apiKey}" 
-    data-c2-interestFreeDaysMerchant="{$interestFreeDays}"
-    data-c2-mode="{$mode}" 
-    data-c2-locale="{$locale}"
-    data-c2-email="{$customerData->getEmail()}"
-    data-c2-given="{$customerData->getFirstname()}"
-    data-c2-family="{$customerData->getLastname()}"
-    data-c2-birthdate="{$customerData->getDob()}"
-    data-c2-country="{$customerData->getCountryCode()}"
-    data-c2-city="{$customerData->getCity()}"
-    data-c2-zip="{$customerData->getPostcode()}"
-    data-c2-addressline="{$customerData->getStreet()}"
-    data-c2-phone="{$customerData->getTelephone()}"
-    data-c2-iban="{$customerData->getTaxvat()}"
-    data-c2-checkoutCallback="true">
-  </script>
-EOT;
-
-        return $cashPressoButton;
+        return $urlObject->url;
     }
 }

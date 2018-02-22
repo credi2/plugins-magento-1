@@ -41,7 +41,7 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
         return $checkResult->isAvailable;
     }
 
-    protected function _toHtml()
+    public function _toHtml()
     {
         if ($this->_helper()->checkStatus()) {
             return '';
@@ -59,6 +59,8 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
         } else {
             return '';
         }
+
+        $apiKey = $this->_helper()->getAPIKey();
 
         $widgetProductLevelIntegration = $this->_helper()->getWidgetType();
 
@@ -92,6 +94,8 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
 
         $interestFreeDays = $this->_helper()->getInterestFreeDay();
 
+        $checkoutButton = $this->_helper()->showCheckoutButton()?'true':'false';
+
         /**
          * country  = at|de
          * mode
@@ -117,7 +121,7 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
     data-c2-addressline="{$customerData->getStreet()}"
     data-c2-phone="{$customerData->getTelephone()}"
     data-c2-iban="{$customerData->getTaxvat()}"
-    data-c2-checkoutCallback="true">
+    data-c2-checkoutCallback="{$checkoutButton}">
   </script>
 EOT;
 
