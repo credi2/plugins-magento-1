@@ -41,16 +41,27 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
         return $checkResult->isAvailable;
     }
 
-    public function _toHtml()
+    /**
+     * Emulation to avoid toHtml call, which remove the instance of parent transport object in
+     * app/code/local/Limesoda/Cashpresso/Model/Observer/Block.php::addScriptToPrice
+     *
+     * @return string
+     */
+    public function emulateToHtml()
+    {
+        return $this->_toHtml();
+    }
+
+    protected function _toHtml()
     {
         if ($this->_helper()->checkStatus()) {
             return '';
         }
 
-        if (Mage::registry('current_product')) {
-            /** @var Mage_Catalog_Model_Product $productModel */
-            $productModel = Mage::registry('current_product');
+        /** @var Mage_Catalog_Model_Product $productModel */
+        $productModel = $this->getProduct() ?: Mage::registry('current_product');
 
+        if ($productModel) {
             if (!$this->isAvailable($productModel)) {
                 return '';
             }
@@ -94,7 +105,7 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
 
         $interestFreeDays = $this->_helper()->getInterestFreeDay();
 
-        $checkoutButton = $this->_helper()->showCheckoutButton()?'true':'false';
+        $checkoutButton = $this->_helper()->showCheckoutButton() && Mage::helper('ls_cashpresso/button')->isProductPage() ? 'true' : 'false';
 
         /**
          * country  = at|de

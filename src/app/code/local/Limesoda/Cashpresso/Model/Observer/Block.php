@@ -55,7 +55,12 @@ class Limesoda_Cashpresso_Model_Observer_Block
         if ($block instanceof Mage_Checkout_Block_Onepage_Success) {
             $this->addScriptSuccessPage($transport);
         } else if ($block instanceof Mage_Catalog_Block_Product_Price) {
-            $this->addScriptToPrice($transport, $block);
+            if (($this->_helper()->getPlaceToShow() == 1 && !Mage::helper('ls_cashpresso/button')->isProductPage()) ||
+                ($this->_helper()->getPlaceToShow() == 2 && Mage::helper('ls_cashpresso/button')->isProductPage()) ||
+                ($this->_helper()->getPlaceToShow() == 3)
+            ) {
+                $this->addScriptToPrice($transport, $block);
+            }
         }
     }
 
@@ -97,10 +102,23 @@ EOT;
 
     /**
      * @param $transport
-     * @param $block Mage_Catalog_Block_Product_Price
+     * @param $block
+     * @throws Mage_Core_Exception
      */
     public function addScriptToPrice($transport, $block)
     {
         $product = $block->getProduct();
+
+        if ($block->hasData('in_grouped') || Mage::registry('ls_cs_addScriptToPrice')) {
+            return;
+        }
+
+        if (Mage::helper('ls_cashpresso/button')->isProductPage()) {
+            Mage::register('ls_cs_addScriptToPrice', true);
+        }
+
+        $html = Mage::app()->getLayout()->createBlock('ls_cashpresso/button')->setProduct($product)->emulateToHtml();
+
+        $transport->setHtml($transport->getHtml() . $html);
     }
 }

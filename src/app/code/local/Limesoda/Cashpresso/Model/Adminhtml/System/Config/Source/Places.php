@@ -22,9 +22,10 @@ class Limesoda_Cashpresso_Model_Adminhtml_System_Config_Source_Places
     public function toOptionArray()
     {
         return array(
+            array('value' => 3, 'label'=>Mage::helper('adminhtml')->__('Catalog/Search and Product')),
             array('value' => 2, 'label'=>Mage::helper('adminhtml')->__('Product')),
-            array('value' => 1, 'label'=>Mage::helper('adminhtml')->__('Catalog')),
-            array('value' => 0, 'label'=>Mage::helper('adminhtml')->__('Catalog and Product')),
+            array('value' => 1, 'label'=>Mage::helper('adminhtml')->__('Catalog/Search')),
+            array('value' => 0, 'label'=>Mage::helper('adminhtml')->__('Only checkout page')),
         );
     }
 
@@ -36,9 +37,10 @@ class Limesoda_Cashpresso_Model_Adminhtml_System_Config_Source_Places
     public function toArray()
     {
         return array(
-            0 => Mage::helper('adminhtml')->__('Catalog and Product'),
-            1 => Mage::helper('adminhtml')->__('Catalog'),
+            0 => Mage::helper('adminhtml')->__('Only checkout page'),
+            1 => Mage::helper('adminhtml')->__('Catalog/Search'),
             2 => Mage::helper('adminhtml')->__('Product'),
+            3 => Mage::helper('adminhtml')->__('Catalog/Search and Product'),
         );
     }
 }
