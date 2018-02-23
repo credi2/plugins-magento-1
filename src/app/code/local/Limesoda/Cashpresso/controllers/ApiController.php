@@ -1,15 +1,15 @@
 <?php
 /**
  * 21.02.18
- * LimeSoda - dockerized-magento
+ * LimeSoda - cashpresso
  *
  * Created by Anton Sannikov.
  *
- * @category    Lime_Soda
- * @package     dockerized-magento
+ * @category    Limesoda_Cashpresso
+ * @package     cashpresso
  * @copyright   Copyright (c) 2018 LimeSoda. (http://www.limesoda.com)
  *
- * @file ${FILE_NAME}
+ * @file app/code/local/Limesoda/Cashpresso/controllers/ApiController.php
  */
 
 class Limesoda_Cashpresso_ApiController extends Mage_Core_Controller_Front_Action

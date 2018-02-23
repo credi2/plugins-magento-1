@@ -1,12 +1,12 @@
 <?php
 /**
  * 15.02.18
- * LimeSoda - dockerized-magento
+ * LimeSoda - cashpresso
  *
  * Created by Anton Sannikov.
  *
- * @category    Lime_Soda
- * @package     dockerized-magento
+ * @category    Limesoda_Cashpresso
+ * @package     cashpresso
  * @copyright   Copyright (c) 2018 LimeSoda. (http://www.limesoda.com)
  *
  * @file Cron.php

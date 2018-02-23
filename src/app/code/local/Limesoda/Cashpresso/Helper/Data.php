@@ -6,7 +6,7 @@
  *
  * Created by Anton Sannikov.
  *
- * @category    Lime_Soda
+ * @category    Limesoda_Cashpresso
  * @package     Default (Template) Project
  * @copyright   Copyright (c) 2018 LimeSoda. (http://www.limesoda.com)
  *
