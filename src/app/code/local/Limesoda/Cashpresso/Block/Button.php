@@ -105,7 +105,7 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
 
         $interestFreeDays = $this->_helper()->getInterestFreeDay();
 
-        $checkoutButton = $this->_helper()->showCheckoutButton() && Mage::helper('ls_cashpresso/button')->isProductPage() ? 'true' : 'false';
+        $checkoutButton = $this->_helper()->showCheckoutButton() && $this->_helper()->isProductPage() ? 'true' : 'false';
 
         /**
          * country  = at|de

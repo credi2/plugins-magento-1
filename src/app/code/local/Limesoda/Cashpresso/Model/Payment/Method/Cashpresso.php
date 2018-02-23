@@ -18,6 +18,13 @@
  */
 class Limesoda_Cashpresso_Model_Payment_Method_Cashpresso extends Mage_Payment_Model_Method_Abstract
 {
+    protected $_canUseInternal = false;
+    protected $_isInitializeNeeded = true;
+
+    public function canEdit()
+    {
+        return false;
+    }
 
     /**
      * Payment method code
@@ -25,6 +32,19 @@ class Limesoda_Cashpresso_Model_Payment_Method_Cashpresso extends Mage_Payment_M
      * @var string
      */
     protected $_code  = 'cashpresso';
+
+    /**
+     * Instantiate state and set it to state object
+     *
+     * @param string $paymentAction
+     * @param Varien_Object $stateObject
+     */
+    public function initialize($paymentAction, $stateObject)
+    {
+        $stateObject->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
+        $stateObject->setStatus('pending_payment');
+        $stateObject->setIsNotified(false);
+    }
 
     /**
      * Check whether method is available
@@ -44,7 +64,6 @@ class Limesoda_Cashpresso_Model_Payment_Method_Cashpresso extends Mage_Payment_M
      * @var string
      */
     protected $_formBlockType = 'ls_cashpresso/payment_form_cashpresso';
-    //protected $_infoBlockType = 'ls_cashpresso/payment_info';
 
     /**
      * Get instructions text from config
@@ -55,5 +74,4 @@ class Limesoda_Cashpresso_Model_Payment_Method_Cashpresso extends Mage_Payment_M
     {
         return trim($this->getConfigData('instructions'));
     }
-
 }

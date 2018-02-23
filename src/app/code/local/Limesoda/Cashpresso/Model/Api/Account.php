@@ -23,7 +23,7 @@ class Limesoda_Cashpresso_Model_Api_Account extends Limesoda_Cashpresso_Model_Ap
         $request->setMethod(Varien_Http_Client::POST);
         $request->setRawData(json_encode([
             'partnerApiKey' => $this->getPartnerApiKey(),
-            'verificationHash' =>  hash('sha512', Mage::helper('core')->decrypt($this->getSecretKey()) . ';' . $this->getPartnerApiKey())
+            'verificationHash' =>  hash('sha512', $this->getSecretKey() . ';' . $this->getPartnerApiKey())
         ]), 'application/json');
 
         try {

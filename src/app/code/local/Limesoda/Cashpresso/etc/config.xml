@@ -131,6 +131,7 @@
     <default>
         <payment>
             <cashpresso>
+                <payment_action>sale</payment_action>
                 <active>0</active>
                 <model>ls_cashpresso/payment_method_cashpresso</model>
                 <order_status>pending</order_status>
@@ -145,6 +146,8 @@
                 <sign_contract_text><![CDATA[<p class="a-center" style="margin-top:10px;">Um die Finanzierung deines Einkaufs abzuschließen musst du dich via Videocall identifizieren. Bitte halte dazu deinen Pass oder Personalausweis bereit.</p><p class="a-center"><img style="display:inline-block;" src="{{skin url='cashpresso/images/passport.png'}}"/><p>]]></sign_contract_text>
                 <checkout_button>1</checkout_button>
                 <place_to_show>3</place_to_show>
+                <description>Processing</description>
+                <debug_mode>1</debug_mode>
             </cashpresso>
         </payment>
     </default>

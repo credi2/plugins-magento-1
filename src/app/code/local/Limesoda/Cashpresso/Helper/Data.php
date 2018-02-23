@@ -36,6 +36,10 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 
     const XML_PARTNER_CHECKOUT_BUTTON = 'payment/cashpresso/checkout_button';
 
+    const XML_PARTNER_DESCRIPTION = 'payment/cashpresso/description';
+
+    const XML_PARTNER_DEBUG_MODE = 'payment/cashpresso/debug_mode';
+
     /**
      * @return mixed
      */
@@ -49,7 +53,7 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getSecretKey()
     {
-        return Mage::getStoreConfig(self::XML_PARTNER_SECRET_KEY);
+        return  Mage::helper('core')->decrypt(Mage::getStoreConfig(self::XML_PARTNER_SECRET_KEY));
     }
 
     /**
@@ -176,5 +180,42 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     public function checkStatus()
     {
         return !$this->isModuleEnabled() || !Mage::getModel('ls_cashpresso/payment_method_cashpresso')->getConfigData('active') || !$this->getStatus() || !$apiKey = $this->getAPIKey();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return Mage::getStoreConfig(self::XML_PARTNER_DESCRIPTION);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function isDebugEnabled()
+    {
+        return Mage::getStoreConfig(self::XML_PARTNER_DEBUG_MODE);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isProductPage()
+    {
+        return Mage::registry('current_product')?true:false;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCheckoutUrl()
+    {
+        $urlObject = new stdClass();
+        $urlObject->url = $this->_getUrl('checkout/onepage', array('_secure'=>true));
+
+        Mage::dispatchEvent('cashpresso_js_c2checkout_url', array('url' => $urlObject));
+
+        return $urlObject->url;
     }
 }

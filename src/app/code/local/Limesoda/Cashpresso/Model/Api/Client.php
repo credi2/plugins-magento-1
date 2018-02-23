@@ -69,12 +69,9 @@ class Limesoda_Cashpresso_Model_Api_Client extends Limesoda_Cashpresso_Model_Api
             'validUntil' => $this->_helper()->getTimeout(),
             'bankUsage' => $order->getIncrementId(),
             'interestFreeDaysMerchant' => $this->_helper()->getInterestFreeDay(),
-            'description' => 'TEST PAYMENT',
+            'description' => $this->_helper()->getDescription(),
             'language' => $locale,
-            'invoiceAddress' => array(),
-            'deliveryAddress' => array(),
-            'basket' => array(),
-            'callbackUrl' => Mage::getUrl('cashpresso/api/callback')
+            'callbackUrl' => Mage::getUrl('cashpresso/api/callback',  array('_secure'=>true))
         );
 
         if ($customerID = Mage::getModel('customer/session')->getCustomer()->getId()) {
@@ -146,7 +143,7 @@ class Limesoda_Cashpresso_Model_Api_Client extends Limesoda_Cashpresso_Model_Api
      */
     public function getHash($amount, $bankUsage, $targetAccountId = '')
     {
-        return Mage::helper('core')->decrypt($this->getSecretKey()) . ';' . ($amount * 100) . ';' . $this->_helper()->getInterestFreeDay() . ';' . $bankUsage . ';' . $targetAccountId;
+        return $this->getSecretKey() . ';' . ($amount * 100) . ';' . $this->_helper()->getInterestFreeDay() . ';' . $bankUsage . ';' . $targetAccountId;
     }
 
     /**
@@ -177,16 +174,14 @@ class Limesoda_Cashpresso_Model_Api_Client extends Limesoda_Cashpresso_Model_Api
 
         if ($response->isSuccessful()) {
             $respond = Mage::helper('core')->jsonDecode($response->getBody());
-            echo '<pre><br/>';
-            var_dump($response->getBody());
-            die();
+
             if (is_array($respond)) {
                 if (empty($respond['success']) || empty($respond['purchaseId'])) {
                     throw new Mage_Payment_Model_Info_Exception(Mage::helper('ls_cashpresso')->__($respond['error']['description']));
                 }
-
-                return $respond['purchaseId'];
             }
         }
+
+        return true;
     }
 }
