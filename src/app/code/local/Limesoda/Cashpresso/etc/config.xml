@@ -9,11 +9,7 @@
         <models>
             <ls_cashpresso>
                 <class>Limesoda_Cashpresso_Model</class>
-                <resourceModel>ls_cashpresso_resource</resourceModel>
             </ls_cashpresso>
-            <ls_cashpresso_resource>
-                <class>Limesoda_Cashpresso_Model_Resource</class>
-            </ls_cashpresso_resource>
         </models>
         <blocks>
             <ls_cashpresso>
@@ -25,13 +21,6 @@
                 <class>Limesoda_Cashpresso_Helper</class>
             </ls_cashpresso>
         </helpers>
-        <resources>
-            <ls_cashpresso_setup>
-                <setup>
-                    <module>Limesoda_Cashpresso</module>
-                </setup>
-            </ls_cashpresso_setup>
-        </resources>
     </global>
 
     <frontend>
