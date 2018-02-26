@@ -52,9 +52,9 @@ abstract class Limesoda_Cashpresso_Model_Api_Abstract
     {
         $client = new Varien_Http_Client(($this->_mode ? $this->getLiveUrl() : $this->getTestUrl()) . $method);
         $client->setMethod(Varien_Http_Client::POST);
-        $client->setRawData(json_encode([
-                'partnerApiKey' => $this->getPartnerApiKey()]
-        ), 'application/json');
+        $client->setRawData(Mage::helper('core')->jsonEncode(array(
+                'partnerApiKey' => $this->getPartnerApiKey()
+        )), 'application/json');
 
         return $client;
     }

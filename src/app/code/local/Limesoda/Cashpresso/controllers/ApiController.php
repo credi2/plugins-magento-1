@@ -93,7 +93,6 @@ class Limesoda_Cashpresso_ApiController extends Mage_Core_Controller_Front_Actio
                     Mage::logException($e);
                 }
             }
-            exit;
         } else {
             $this->norouteAction();
         }
@@ -102,11 +101,10 @@ class Limesoda_Cashpresso_ApiController extends Mage_Core_Controller_Front_Actio
     public function indexAction()
     {
         if (!Mage::helper('ls_cashpresso')->getMode()) {
-            print Mage::getUrl('cashpresso/api/test', array(
+            echo Mage::getUrl('cashpresso/api/test', array(
                 'type' => strtolower(Limesoda_Cashpresso_Model_Api_Client::CODE_SIMULATION_SUCCESS),
                 'purchaseID' => 'SIM-....b60a'
             ));
-            exit;
         } else {
             $this->norouteAction();
         }

@@ -5,14 +5,15 @@
  *
  * Created by Anton Sannikov.
  *
- * @category    Limesoda_Cashpresso
- * @package     cashpresso
- * @copyright   Copyright (c) 2018 LimeSoda. (http://www.limesoda.com)
+ * @category Limesoda_Cashpresso
+ * @package cashpresso
+ * @copyright Copyright (c) 2018 LimeSoda. (http://www.limesoda.com)
  *
  * @file Information.php
  */
 
-class Limesoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Information extends Mage_Adminhtml_Block_System_Config_Form_Field
+class Limesoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Information
+    extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
     /**
      * @param Varien_Data_Form_Element_Abstract $element
@@ -25,7 +26,7 @@ class Limesoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Information e
 
         $text = '';
 
-        if (is_null($partnerInfo)) {
+        if ($partnerInfo === null) {
             if (!Mage::helper('ls_cashpresso')->getAPIKey()) {
                 $text = Mage::helper('ls_cashpresso')->__('Please, enter the Partner API Key.');
             } else {
@@ -34,19 +35,18 @@ class Limesoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Information e
         }
 
         if (is_array($partnerInfo) && !empty($partnerInfo['success'])) {
-            $list = [];
+            $list = array();
 
             if (isset($partnerInfo['companyName'])) {
                 $list[] = array(
                     'title' => $this->helper('ls_cashpresso')->__('Company name'),
-                    'value' => $partnerInfo['companyName']
-                );
+                    'value' => $partnerInfo['companyName']);
             }
+
             if (isset($partnerInfo['email'])) {
                 $list[] = array(
                     'title' => $this->helper('ls_cashpresso')->__('Email'),
-                    'value' => $partnerInfo['email']
-                );
+                    'value' => $partnerInfo['email']);
             }
 
             if (isset($partnerInfo['holder'])) {
@@ -129,14 +129,16 @@ class Limesoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Information e
             if (isset($partnerInfo['interest']['nominal'])) {
                 $list[] = array(
                     'title' => $this->helper('ls_cashpresso')->__('Interest nominal'),
-                    'value' => $partnerInfo['interest']['nominal']['min'] . " - " . $partnerInfo['interest']['nominal']['max']
+                    'value' => $partnerInfo['interest']['nominal']['min']
+                        . " - " . $partnerInfo['interest']['nominal']['max']
                 );
             }
 
             if (isset($partnerInfo['interest'])) {
                 $list[] = array(
                     'title' => $this->helper('ls_cashpresso')->__('Interest effective'),
-                    'value' => $partnerInfo['interest']['effective']['min'] . " - " . $partnerInfo['interest']['effective']['max']
+                    'value' => $partnerInfo['interest']['effective']['min']
+                        . " - " . $partnerInfo['interest']['effective']['max']
                 );
             }
 
@@ -154,6 +156,7 @@ class Limesoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Information e
             }
         }
 
-        return '<div id="'.$element->getHtmlId().'">'.$text.'</div>'  . $element->getAfterElementHtml();
+        return '<div id="' . $element->getHtmlId() . '">' .
+            $text . '</div>' . $element->getAfterElementHtml();
     }
 }

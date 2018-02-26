@@ -18,7 +18,7 @@ class Limesoda_Cashpresso_Model_Customer
     {
         $customerData = new Varien_Object();
 
-        if (!$quotePriority && Mage::getModel('customer/session')->getCustomer()->getId()){
+        if (!$quotePriority && Mage::getModel('customer/session')->getCustomer()->getId()) {
             $customer = Mage::getModel('customer/session')->getCustomer();
 
             $customerData->setEmail($customer->getEmail());
@@ -37,13 +37,13 @@ class Limesoda_Cashpresso_Model_Customer
             $customer->getWebsiteId();
         } else {
             $cart = Mage::getModel('checkout/cart')->getQuote();
-            
+
             $billingAddress = $cart->getBillingAddress();
             $shippingAddress = $cart->getShippingAddress();
 
-            $customerData->setEmail($billingAddress->getEmail()?$billingAddress->getEmail():$shippingAddress->getEmail());
-            $customerData->setFirstname($billingAddress->getFirstname()?$billingAddress->getFirstname():$shippingAddress->getFirstname());
-            $customerData->setLastname($billingAddress->getLastname()?$billingAddress->getLastname():$shippingAddress->getLastname());
+            $customerData->setEmail($billingAddress->getEmail() ? $billingAddress->getEmail() : $shippingAddress->getEmail());
+            $customerData->setFirstname($billingAddress->getFirstname() ? $billingAddress->getFirstname() : $shippingAddress->getFirstname());
+            $customerData->setLastname($billingAddress->getLastname() ? $billingAddress->getLastname() : $shippingAddress->getLastname());
         }
 
         $customerData->setCity($billingAddress->getCity() ? $billingAddress->getCity() : $shippingAddress->getCity());
@@ -52,7 +52,7 @@ class Limesoda_Cashpresso_Model_Customer
         $customerData->setTelephone($billingAddress->getTelephone() ? $billingAddress->getTelephone() : $shippingAddress->getTelephone());
 
         $street = $billingAddress->getStreet() ? $billingAddress->getStreet() : $shippingAddress->getStreet();
-        $customerData->setStreet(isset($street[0])?$street[0]:'');
+        $customerData->setStreet(isset($street[0]) ? $street[0] : '');
 
         return $customerData;
     }

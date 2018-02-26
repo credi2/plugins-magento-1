@@ -31,7 +31,7 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
 
         Mage::dispatchEvent('cashpresso_type_handler', array(
             'product' => $product,
-            'result' => $checkResult,
+            'result' => $checkResult
         ));
 
         if (is_array($checkResult->types) && !in_array($product->getTypeId(), $checkResult->types)) {
@@ -83,11 +83,14 @@ class Limesoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
             $minPayment = 0;
 
             if (isset($partnerInfo['minPaybackAmount']) && isset($partnerInfo['paybackRate'])) {
-                $minPayment = min($price, max($partnerInfo['minPaybackAmount'], $price * 0.01 * $partnerInfo['paybackRate']));
+                $minPayment = min($price, max($partnerInfo['minPaybackAmount'],
+                    $price * 0.01 * $partnerInfo['paybackRate']));
             }
 
             if ($minPayment > 0) {
-                $template = strpos($this->_helper()->getTemplate(), '{{price}}') !== false ? $this->_helper()->getTemplate() : $this->_helper()->__("or from € {{price}} / month");
+                $template = strpos($this->_helper()->getTemplate(), '{{price}}') !== false ?
+                    $this->_helper()->getTemplate() :
+                    $this->_helper()->__("or from € {{price}} / month");
                 $aText = preg_replace("/{{price}}/", $minPayment, $template);
 
                 $htmlEntry = '<a href="#" onclick="C2EcomWizard.startOverlayWizard(' . $price . ')">' . $aText . '</a>';

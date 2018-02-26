@@ -71,8 +71,12 @@ class Limesoda_Cashpresso_Model_Api_Client extends Limesoda_Cashpresso_Model_Api
             'interestFreeDaysMerchant' => $this->_helper()->getInterestFreeDay(),
             'description' => $this->_helper()->getDescription(),
             'language' => $locale,
-            'callbackUrl' => Mage::getUrl('cashpresso/api/callback',  array('_secure'=>true))
+            'callbackUrl' => Mage::getUrl('cashpresso/api/callback', array('_secure' => true))
         );
+
+        if (!empty($account = $this->_helper()->getTargetAccount())) {
+            $data['targetAccountId'] = $account;
+        }
 
         if ($customerID = Mage::getModel('customer/session')->getCustomer()->getId()) {
             $data['merchantCustomerId'] = $customerID;
@@ -84,7 +88,6 @@ class Limesoda_Cashpresso_Model_Api_Client extends Limesoda_Cashpresso_Model_Api
                 "zip" => $address->getPostcode(),
                 "city" => $address->getCity(),
                 "street" => isset($address->getStreet()[0]) ? $address->getStreet()[0] : ''
-                //"housenumber" : $ad,
             );
 
             $data['invoiceAddress'] = $billingAddress;
@@ -96,7 +99,6 @@ class Limesoda_Cashpresso_Model_Api_Client extends Limesoda_Cashpresso_Model_Api
                 "zip" => $address->getPostcode(),
                 "city" => $address->getCity(),
                 "street" => isset($address->getStreet()[0]) ? $address->getStreet()[0] : ''
-                //"housenumber" : $ad,
             );
 
             $data['deliveryAddress'] = $shippingAddress;
@@ -114,13 +116,17 @@ class Limesoda_Cashpresso_Model_Api_Client extends Limesoda_Cashpresso_Model_Api
             );
         }
 
-        Mage::log(print_r($data, true), Zend_Log::DEBUG, 'debug.log');
+        if ($this->getHelper()->isDebugEnabled()) {
+            Mage::log(print_r($data, true), Zend_Log::DEBUG, 'debug.log');
+        }
 
         $request->setMethod(Varien_Http_Client::POST);
-        $request->setRawData(json_encode($data), 'application/json');
+        $request->setRawData(Mage::helper('core')->jsonEncode($data), 'application/json');
 
         $response = $request->request();
-        Mage::log($response->getBody(), Zend_Log::DEBUG, 'debug.log');
+        if ($this->getHelper()->isDebugEnabled()) {
+            Mage::log($response->getBody(), Zend_Log::DEBUG, 'debug.log');
+        }
 
         if ($response->isSuccessful()) {
             $respond = Mage::helper('core')->jsonDecode($response->getBody());
@@ -168,7 +174,7 @@ class Limesoda_Cashpresso_Model_Api_Client extends Limesoda_Cashpresso_Model_Api
         );
 
         $request->setMethod(Varien_Http_Client::POST);
-        $request->setRawData(json_encode($data), 'application/json');
+        $request->setRawData(Mage::helper('core')->jsonEncode($data), 'application/json');
 
         $response = $request->request();
 

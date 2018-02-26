@@ -44,6 +44,8 @@ class Limesoda_Cashpresso_Model_Observer_Block
      */
     public function coreBlockAbstractToHtmlAfter(Varien_Event_Observer $observer)
     {
+        $accounts = Mage::getModel('ls_cashpresso/api_account')->getTargetAccounts();
+
         if ($this->_helper()->checkStatus()) {
             return;
         }

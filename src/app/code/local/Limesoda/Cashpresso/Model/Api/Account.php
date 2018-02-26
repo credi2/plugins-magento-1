@@ -21,10 +21,10 @@ class Limesoda_Cashpresso_Model_Api_Account extends Limesoda_Cashpresso_Model_Ap
         $request = $this->getRequest(self::METHOD_TARGET_ACCOUNTS);
 
         $request->setMethod(Varien_Http_Client::POST);
-        $request->setRawData(json_encode([
+        $request->setRawData(Mage::helper('core')->jsonEncode(array(
             'partnerApiKey' => $this->getPartnerApiKey(),
             'verificationHash' =>  hash('sha512', $this->getSecretKey() . ';' . $this->getPartnerApiKey())
-        ]), 'application/json');
+        )), 'application/json');
 
         try {
             $response = $request->request();
@@ -37,45 +37,15 @@ class Limesoda_Cashpresso_Model_Api_Account extends Limesoda_Cashpresso_Model_Ap
                         throw new Exception(Mage::helper('ls_cashpresso')->__($respond['error']['description']));
                     }
 
-                    return $respond;
+                    if (empty($respond['targetAccounts'])){
+                        throw new Exception(Mage::helper('ls_cashpresso')->__('Empty target account response.'));
+                    }
+
+                    return $respond['targetAccounts'];
                 }
             }
         } catch (Exception $e) {
-            echo '<pre><br/>';
-            var_dump($e->getMessage());
-            die();
+            Mage::logException($e);
         }
-        die();
-
-        /*
-      {
-        "targetAccountId" : String (optional),
-        "verificationHash" : String,
-        "validUntil" : ISO formatted timestamp (yyyy-MM-dd'T'HH:mm:ss.SSSZ, e.g. "2000-10-31T01:30:00.000-05:00"),
-        "bankUsage" : String,
-        "interestFreeDaysMerchant" : integer,
-        "callbackUrl" : String (optional),
-        "description" : String (Max-Length: 511, optional),
-        "invoiceAddress" : Address (optional),
-        "deliveryAddress" : Address (optional),
-        "language" : String (optional, 2-letter code e.g. "de"),
-        "merchantCustomerId" : String (optional),
-        "basket" : [ BasketItem ] (optional)
-      }
-      The Address element:
-      {
-        "country" : String (2 letter iso code e.g. "DE"),
-        "zip" : String,
-        "city" : String,
-        "street" : String,
-        "housenumber" : String,
-      }
-      The BaketItem element:
-      {
-        "description" : String,
-        "amount" : number,
-        "times" : integer
-      }*/
     }
-
 }

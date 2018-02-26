@@ -40,6 +40,8 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 
     const XML_PARTNER_DEBUG_MODE = 'payment/cashpresso/debug_mode';
 
+    const XML_PARTNER_TARGET_ACCOUNT = 'payment/cashpresso/account';
+
     /**
      * @return mixed
      */
@@ -96,7 +98,8 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     public function getTimeout($storeId = null)
     {
         $hrs = Mage::getStoreConfig(self::XML_PARTNER_TIMEOUT, $storeId);
-        return date(DATE_ATOM, strtotime("+$hrs hours"));
+
+        return Mage::getSingleton('core/date')->date(DATE_ATOM, strtotime("+$hrs hours"));
     }
 
     /**
@@ -217,5 +220,13 @@ class Limesoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
         Mage::dispatchEvent('cashpresso_js_c2checkout_url', array('url' => $urlObject));
 
         return $urlObject->url;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTargetAccount()
+    {
+        return Mage::getStoreConfig(self::XML_PARTNER_TARGET_ACCOUNT);
     }
 }

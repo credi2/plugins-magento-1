@@ -37,7 +37,7 @@ class Limesoda_Cashpresso_Block_Payment_Form_Cashpresso extends Mage_Payment_Blo
      */
     public function getInstructions()
     {
-        if (is_null($this->_instructions)) {
+        if ($this->_instructions === null) {
             $this->_instructions = $this->getMethod()->getInstructions();
         }
         return $this->_instructions;
@@ -89,7 +89,7 @@ class Limesoda_Cashpresso_Block_Payment_Form_Cashpresso extends Mage_Payment_Blo
             $list['iban'] = $customerData->getTaxvat();
         }
 
-        $list = json_encode($list);
+        $list = Mage::helper('core')->jsonEncode($list);
 
         $html = <<<EOT
 C2EcomCheckout.refreshOptionalData($list);

@@ -94,7 +94,29 @@
                 </args>
             </cashpresso>
         </routers>
+
+        <translate>
+            <modules>
+                <Limesoda_Cashpresso>
+                    <files>
+                        <default>Limesoda_Cashpresso.csv</default>
+                    </files>
+                </Limesoda_Cashpresso>
+            </modules>
+        </translate>
     </frontend>
+
+    <adminhtml>
+        <translate>
+            <modules>
+                <Limesoda_Cashpresso>
+                    <files>
+                        <default>Limesoda_Cashpresso.csv</default>
+                    </files>
+                </Limesoda_Cashpresso>
+            </modules>
+        </translate>
+    </adminhtml>
 
     <phpunit>
         <suite>
