@@ -3,7 +3,7 @@
     <modules>
         <Limesoda_Cashpresso>
             <active>true</active>
-            <codePool>local</codePool>
+            <codePool>community</codePool>
         </Limesoda_Cashpresso>
     </modules>
 </config>
