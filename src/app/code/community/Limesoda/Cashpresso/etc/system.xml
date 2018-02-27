@@ -53,7 +53,7 @@
                         </inforamtion>
 
                         <account translate="label">
-                            <label>Account</label>
+                            <label>Target account</label>
                             <frontend_type>select</frontend_type>
                             <source_model>ls_cashpresso/adminhtml_system_config_source_account</source_model>
                             <sort_order>35</sort_order>
@@ -162,8 +162,9 @@
                             </depends>
                         </checkout_button>
 
-                        <place_to_show translate="label">
+                        <place_to_show translate="label comment">
                             <label>Place to show</label>
+                            <comment>It works always on checkout page for any choice.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>ls_cashpresso/adminhtml_system_config_source_places</source_model>
                             <sort_order>130</sort_order>

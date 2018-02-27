@@ -65,16 +65,6 @@
                     </ls_cashpresso_before_print>
                 </observers>
             </core_block_abstract_to_html_after>
-
-            <!-- <controller_action_predispatch>
-                <observers>
-                    <limesoda_cashpresso>
-                        <type>singleton</type>
-                        <class>ls_cashpresso/observer_block</class>
-                        <method>coreBlockAbstractToHtmlAfter</method>
-                    </limesoda_cashpresso>
-                </observers>
-            </controller_action_predispatch>-->
         </events>
 
         <layout>

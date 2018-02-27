@@ -30,7 +30,7 @@
 "API KEY","API KEY"
 "Secret Key","Secret Key"
 "Information","Information"
-"Account","Account"
+"Target account","Target account"
 "Mode","Mode"
 "Title","Title"
 "Payment from Applicable Countries","Payment from Applicable Countries"
@@ -59,3 +59,4 @@ Product level integration is recommended. Static Label Version has several disad
 "We will display this description during the signup and payment process.","We will display this description during the signup and payment process."
 "Write log","Write log"
 "Sort Order","Sort Order"
+"It works always on checkout page for any choice.","It works always on checkout page for any choice."
