@@ -116,7 +116,7 @@ class Limesoda_Cashpresso_Model_Api_Client extends Limesoda_Cashpresso_Model_Api
             );
         }
 
-        if ($this->getHelper()->isDebugEnabled()) {
+        if ($this->_helper()->isDebugEnabled()) {
             Mage::log(print_r($data, true), Zend_Log::DEBUG, 'debug.log');
         }
 
@@ -124,7 +124,7 @@ class Limesoda_Cashpresso_Model_Api_Client extends Limesoda_Cashpresso_Model_Api
         $request->setRawData(Mage::helper('core')->jsonEncode($data), 'application/json');
 
         $response = $request->request();
-        if ($this->getHelper()->isDebugEnabled()) {
+        if ($this->_helper()->isDebugEnabled()) {
             Mage::log($response->getBody(), Zend_Log::DEBUG, 'debug.log');
         }
 

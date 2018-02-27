@@ -4,6 +4,7 @@
 ### Table of Contents
 **[Installation Instructions](#installation-instructions)**<br>
 **[Configuration](#configuration)**<br>
+**[How it works](#howto)**<br>
 **[For developers](#developers)**<br>
 **[Links](#links)**<br>
 
@@ -60,6 +61,7 @@ Find section "**Direct package file upload**" and upload **gz** archive. Then pr
    Now you should get information about your settings in Cashpresso account:
    
    ![Step 1](configuration.png)
+   
    An option ```Target account``` will be accessible now if you have target accounts on the Cashpresso side. 
     
 3. Options table 
@@ -80,16 +82,26 @@ Find section "**Direct package file upload**" and upload **gz** archive. Then pr
    The timeout for the order | Time in hours to wait for the customer approvment after successful order. |
    Sign contract text | A text on success page for the following order approvment |
    Description | We will displayed on the signup and payment process. |
-   Write log | Writes api reuests to log file. Works only in test mode.|
+   Write log | Writes api requests to log file. |
    Sort Order | An order of payment method in the list | 
 
 4. Show checkout button option.
 
 If you want to use this option check magento redirect option before:
 
-    ```Magento Admin Menu / System / Checkout / Cart / Redirect to cart```
+    Magento Admin Menu / System / Checkout / Cart / Redirect to cart
  
 If its set as "yes" then the button redirects to cart page only. Otherwise to checkout page.
+
+## How it works
+
+- customer can calculate automatically his debt on a product page. 
+- customer adds one or more products to the cart 
+- customer opens checkout to complete an order.
+- on the payment step he can choose "cashpresso" payment method an recalculate his debt for the order.
+- after successful purchase customer gets successful page where the cashpresso widget is triggered and asks customer to call to cashpresso to approve his debt.
+- after the customer calling cashpresso sent to your store the status of the order. It could be sucess or cancel/timeout. If its cancel/timout then the order will be canceled automatically. Success status will assign status "in process" to order.
+  
 
 ## For developers
 ### Blocks which are used for transport html definition
@@ -158,15 +170,54 @@ Add to your checkout index handler this layout:
 
 You can manage redirection in this template:
 
-    ```app/design/frontend/base/default/template/limesoda/cashpreso/page/js/head.phtml```
+    app/design/frontend/base/default/template/limesoda/cashpreso/page/js/head.phtml
    
+You can define you redirect url using observer 
+    
+    cashpresso_js_c2checkout_url
+   
+An example:
+
+In your config.xml file:
+     
+     <cashpresso_js_c2checkout_url>
+         <observers>
+             <your_module_cashpresso_types>
+                 <type>singleton</type>
+                 <class>your_module/observer_sample</class>
+                 <method>setUrl</method>
+             </your_module_cashpresso_types>
+         </observers>
+     </cashpresso_js_c2checkout_url>
+         
+Some your observer class:
+     
+     class Your_Module_Model_Observer_Sample
+     {
+         public function setUrl(Varien_Event_Observer $observer)
+         {
+             $urlObject = $observer->getEvent()->getUrl();
+             $urlObject->url = "your url";
+         }
+     }
+
+### API testing
+
+You can activate Simulation Mode in cashpresso account to test magento API side.
+
+On magento side it works only in test-mode.
+
+1. Create an order using frontend side.
+2. Open the page: ```http://yourwebsite.com/cashpresso/api/index```
+   You will see an url. Something like this: ```http://yourwebsite.com/cashpresso/api/test/type/success/purchaseID/SIM-....b60a/```
+3. Copy previous link and replace ```SIM-....b60a``` by your purchaseID. You can find it in DB: sales_flat_order_payment: additional_data field.
+   Type parameter could have one of three statuses:  
+   
+    - success, if you want to test success cashoresso response
+    - canceled, if you want to test cancellation from cashpresso side
+    - timeout, if you want to test timeout response from cashpresso side.
+  
 ## Links
  - [CashPresso API](https://test.cashpresso.com/urlreferral/api/ecommerce/v2?1)
  - [CashPresso](https://www.cashpresso.com/)
  - [Developer contacts](https://www.limesoda.com/kontakt/)
-
-
-
-
-Show checkout button option:
-in Limesoda_Cashpresso_Helper_Button its possible to define custom checkout page url using observer cashpresso_js_c2checkout_url
