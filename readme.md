@@ -114,7 +114,7 @@ By default the price can be shown only for the simple products. But you can you 
 
     cashpresso_type_handler
     
-An example (you can find it here as well: ```app/code/community/Limesoda/Cashpresso/Model/Observer/Sample.php```):
+An example (you can find it here as well: ```app/code/community/LimeSoda/Cashpresso/Model/Observer/Sample.php```):
 
 In your config.xml file:
 
