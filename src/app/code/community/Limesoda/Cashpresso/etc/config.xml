@@ -141,7 +141,7 @@
                 <status>1</status>
                 <mode>0</mode>
                 <widget_type>1</widget_type>
-                <tempalte>or from € {{price}} / month</tempalte>
+                <template>or from € {{price}} / month</template>
                 <active>0</active>
                 <timeout>24</timeout>
                 <sign_contract_text><![CDATA[<p class="a-center" style="margin-top:10px;">Um die Finanzierung deines Einkaufs abzuschließen musst du dich via Videocall identifizieren. Bitte halte dazu deinen Pass oder Personalausweis bereit.</p><p class="a-center"><img style="display:inline-block;" src="{{skin url='cashpresso/images/passport.png'}}"/><p>]]></sign_contract_text>

@@ -20,6 +20,7 @@ class Limesoda_Cashpresso_Model_Payment_Method_Cashpresso extends Mage_Payment_M
 {
     protected $_canUseInternal = false;
     protected $_isInitializeNeeded = true;
+    protected $_canCancelInvoice = true;
 
     public function canEdit()
     {
@@ -32,6 +33,13 @@ class Limesoda_Cashpresso_Model_Payment_Method_Cashpresso extends Mage_Payment_M
      * @var string
      */
     protected $_code  = 'cashpresso';
+
+    /**
+     * Cash On Delivery payment block paths
+     *
+     * @var string
+     */
+    protected $_formBlockType = 'ls_cashpresso/payment_form_cashpresso';
 
     /**
      * Instantiate state and set it to state object
@@ -57,13 +65,6 @@ class Limesoda_Cashpresso_Model_Payment_Method_Cashpresso extends Mage_Payment_M
         //&& Mage::app()->getStore()->roundPrice($quote->getGrandTotal()) == 0;
         return parent::isAvailable($quote) && !empty($quote) && Mage::helper('ls_cashpresso')->isModuleEnabled();
     }
-
-    /**
-     * Cash On Delivery payment block paths
-     *
-     * @var string
-     */
-    protected $_formBlockType = 'ls_cashpresso/payment_form_cashpresso';
 
     /**
      * Get instructions text from config
