@@ -55,7 +55,7 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getSecretKey()
     {
-        return  Mage::helper('core')->decrypt(Mage::getStoreConfig(self::XML_PARTNER_SECRET_KEY));
+        return Mage::helper('core')->decrypt(Mage::getStoreConfig(self::XML_PARTNER_SECRET_KEY));
     }
 
     /**
@@ -79,7 +79,7 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getAPIKey()
     {
-        return Mage::getStoreConfig(self::XML_PARTNER_API_KEY);
+        return trim(Mage::getStoreConfig(self::XML_PARTNER_API_KEY));
     }
 
     /**
@@ -99,7 +99,16 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $hrs = Mage::getStoreConfig(self::XML_PARTNER_TIMEOUT, $storeId);
 
-        return Mage::getSingleton('core/date')->date(DATE_ATOM, strtotime("+$hrs hours"));
+        $dateHelper = Mage::getSingleton('core/date');
+
+        return $this->getConvertTime($dateHelper->timestamp(), $hrs);
+    }
+
+    public function getConvertTime($date, $hrs)
+    {
+        $date = new Zend_Date($date);
+        $date->addHour($hrs);
+        return date(DATE_ATOM, $date->getTimestamp());
     }
 
     /**
@@ -206,7 +215,7 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isProductPage()
     {
-        return Mage::registry('current_product')?true:false;
+        return Mage::registry('current_product') ? true : false;
     }
 
     /**
@@ -215,7 +224,7 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     public function getCheckoutUrl()
     {
         $urlObject = new stdClass();
-        $urlObject->url = $this->_getUrl('checkout/onepage', array('_secure'=>true));
+        $urlObject->url = $this->_getUrl('checkout/onepage', array('_secure' => true));
 
         Mage::dispatchEvent('cashpresso_js_c2checkout_url', array('url' => $urlObject));
 

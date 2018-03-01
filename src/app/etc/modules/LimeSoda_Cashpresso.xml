@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-        <Limesoda_Cashpresso>
+        <LimeSoda_Cashpresso>
             <active>true</active>
             <codePool>community</codePool>
-        </Limesoda_Cashpresso>
+        </LimeSoda_Cashpresso>
     </modules>
 </config>
