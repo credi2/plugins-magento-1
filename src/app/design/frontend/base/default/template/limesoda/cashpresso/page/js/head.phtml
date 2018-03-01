@@ -12,7 +12,7 @@
  * @file app/design/frontend/base/default/template/limesoda/cashpresso/page/js/head.phtml
  */
 ?>
-<?php $helper = $this->helper('ls_cashpresso'); ?>
+<?php $helper = $this->helper('ls_cashpresso/request'); ?>
 <?php $isProductPage = $helper->isProductPage(); ?>
 <?php $url = $helper->getCheckoutUrl(); ?>
 <?php $checkoutRedirect = Mage::helper('checkout/cart')->getShouldRedirectToCart() ?>

@@ -211,27 +211,6 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * @return bool
-     */
-    public function isProductPage()
-    {
-        return Mage::registry('current_product') ? true : false;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCheckoutUrl()
-    {
-        $urlObject = new stdClass();
-        $urlObject->url = $this->_getUrl('checkout/onepage', array('_secure' => true));
-
-        Mage::dispatchEvent('cashpresso_js_c2checkout_url', array('url' => $urlObject));
-
-        return $urlObject->url;
-    }
-
-    /**
      * @return mixed
      */
     public function getTargetAccount()

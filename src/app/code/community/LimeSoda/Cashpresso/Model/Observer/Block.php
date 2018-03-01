@@ -57,8 +57,8 @@ class LimeSoda_Cashpresso_Model_Observer_Block
         if ($block instanceof Mage_Checkout_Block_Onepage_Success) {
             $this->addScriptSuccessPage($transport);
         } else if ($block instanceof Mage_Catalog_Block_Product_Price) {
-            if (($this->_helper()->getPlaceToShow() == 1 && !$this->_helper()->isProductPage()) ||
-                ($this->_helper()->getPlaceToShow() == 2 && $this->_helper()->isProductPage()) ||
+            if (($this->_helper()->getPlaceToShow() == 1 && !Mage::helper('ls_cashpresso/request')->isProductPage()) ||
+                ($this->_helper()->getPlaceToShow() == 2 && Mage::helper('ls_cashpresso/request')->isProductPage()) ||
                 ($this->_helper()->getPlaceToShow() == 3)
             ) {
                 $this->addScriptToPrice($transport, $block);
@@ -115,7 +115,7 @@ EOT;
             return;
         }
 
-        if ($this->_helper()->isProductPage()) {
+        if (Mage::helper('ls_cashpresso/request')->isProductPage()) {
             Mage::register('ls_cs_addScriptToPrice', true);
         }
 

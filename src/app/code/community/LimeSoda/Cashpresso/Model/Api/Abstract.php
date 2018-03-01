@@ -38,12 +38,12 @@ abstract class LimeSoda_Cashpresso_Model_Api_Abstract
         return $this;
     }
 
-    protected function getTestUrl()
+    public function getTestUrl()
     {
         return "https://test.cashpresso.com/rest/backend/ecommerce/v2/";
     }
 
-    protected function getLiveUrl()
+    public function getLiveUrl()
     {
         return "https://backend.cashpresso.com/rest/backend/ecommerce/v2/";
     }

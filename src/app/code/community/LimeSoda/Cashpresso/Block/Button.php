@@ -75,17 +75,14 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
 
         $widgetProductLevelIntegration = $this->_helper()->getWidgetType();
 
+        $htmlEntry = '';
+
         if ($widgetProductLevelIntegration) {
             $htmlEntry = '<div class="c2-financing-label" data-c2-financing-amount="' . $price . '"></div>';
         } else {
             $partnerInfo = $this->_helper()->getPartnerInfo();
 
-            $minPayment = 0;
-
-            if (isset($partnerInfo['minPaybackAmount']) && isset($partnerInfo['paybackRate'])) {
-                $minPayment = min($price, max($partnerInfo['minPaybackAmount'],
-                    $price * 0.01 * $partnerInfo['paybackRate']));
-            }
+            $minPayment = Mage::helper('ls_cashpresso/request')->getDebt($partnerInfo, $price);
 
             if ($minPayment > 0) {
                 $template = strpos($this->_helper()->getTemplate(), '{{price}}') !== false ?
@@ -108,7 +105,7 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
 
         $interestFreeDays = $this->_helper()->getInterestFreeDay();
 
-        $checkoutButton = $this->_helper()->showCheckoutButton() && $this->_helper()->isProductPage() ? 'true' : 'false';
+        $checkoutButton = $this->_helper()->showCheckoutButton() && Mage::helper('ls_cashpresso/request')->isProductPage() ? 'true' : 'false';
 
         /**
          * country  = at|de
