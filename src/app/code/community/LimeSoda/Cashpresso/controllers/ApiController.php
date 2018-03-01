@@ -28,7 +28,7 @@ class LimeSoda_Cashpresso_ApiController extends Mage_Core_Controller_Front_Actio
                 Mage::log(print_r($response, true), Zend_Log::DEBUG, 'cashpresso.log');
             }
 
-            if (Mage::helper('ls_cashpresso/request')->hashCheck($response, $this->getHelper()->getSecretKey())) {
+            if (!Mage::helper('ls_cashpresso/request')->hashCheck($response, $this->getHelper()->getSecretKey())) {
                 throw new Exception($this->getHelper()->__("Verification hash is wrong."));
             }
 

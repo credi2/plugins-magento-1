@@ -19,15 +19,8 @@ class LimeSoda_Cashpresso_Test_Helper_DataTest extends EcomDev_PHPUnit_Test_Case
         return Mage::helper('ls_cashpresso/request');
     }
 
-    /**
-     * @test
-     * @loadFixture config
-     */
     public function getTimeout()
     {
-        //$this->assertConfigNodeValue('payment/cashpresso/timeout', '2');
-
-
         $time = DateTime::createFromFormat('Y-m-d H:i:s', '2017-08-31 00:00:00');
 
         $timout = Mage::helper('ls_cashpresso')->getConvertTime($time->getTimestamp(), 2);
