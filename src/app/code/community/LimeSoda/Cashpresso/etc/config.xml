@@ -60,7 +60,7 @@
                 <observers>
                     <ls_cashpresso_before_print>
                         <type>singleton</type>
-        2                <class>ls_cashpresso/observer_block</class>
+                        <class>ls_cashpresso/observer_block</class>
                         <method>coreBlockAbstractToHtmlAfter</method>
                     </ls_cashpresso_before_print>
                 </observers>

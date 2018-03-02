@@ -6,6 +6,7 @@
 **[Configuration](#configuration)**<br>
 **[How it works](#howto)**<br>
 **[For developers](#developers)**<br>
+**[Integration into other checkout modules](#checkout)**<br>
 **[Links](#links)**<br>
 
 ## Installation Instructions
@@ -216,7 +217,21 @@ On magento side it works only in test-mode.
     - success, if you want to test success cashoresso response
     - canceled, if you want to test cancellation from cashpresso side
     - timeout, if you want to test timeout response from cashpresso side.
-  
+
+## Integration into other checkout modules
+
+If you use third party extension for the checkout process you have to change the layout handle name to name which your extension uses.
+
+Place this code to local.xml file in your theme.
+```
+<your_handle_name_of_checkout_index>
+    <reference name="before_body_end">
+        <block type="ls_cashpresso/checkout" ifconfig="payment/cashpresso/active" name="footer.cashpresso.script"
+               translate="label"/>
+    </reference>
+</your_handle_name_of_checkout_index>
+``` 
+
 ## Links
  - [CashPresso API](https://test.cashpresso.com/urlreferral/api/ecommerce/v2?1)
  - [CashPresso](https://www.cashpresso.com/)
