@@ -46,7 +46,7 @@ class LimeSoda_Cashpresso_Model_Observer_Block
     {
         $accounts = Mage::getModel('ls_cashpresso/api_account')->getTargetAccounts();
 
-        if ($this->_helper()->checkStatus()) {
+        if (!$this->_helper()->checkStatus()) {
             return;
         }
 

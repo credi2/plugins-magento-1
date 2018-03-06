@@ -21,12 +21,12 @@ class LimeSoda_Cashpresso_Block_Checkout extends Mage_Core_Block_Template
 
     protected function _toHtml()
     {
-        if (!$this->_helper()->isModuleEnabled() ||
-            !Mage::getModel('ls_cashpresso/payment_method_cashpresso')->getConfigData('active') ||
-            !$apiKey = $this->_helper()->getAPIKey()) {
+        if (!$this->_helper()->checkStatus(false)) {
             return '';
         }
-        
+
+        $apiKey = $this->_helper()->getAPIKey();
+
         $mode = $this->_helper()->getMode() ? 'live' : 'test';
 
         $customerData = Mage::getModel('ls_cashpresso/customer')->getCustomerData();

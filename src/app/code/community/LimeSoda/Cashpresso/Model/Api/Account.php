@@ -18,6 +18,7 @@ class LimeSoda_Cashpresso_Model_Api_Account extends LimeSoda_Cashpresso_Model_Ap
 
     public function getTargetAccounts()
     {
+
         if ($this->_helper()->checkStatus()) {
             $request = $this->getRequest(self::METHOD_TARGET_ACCOUNTS);
 

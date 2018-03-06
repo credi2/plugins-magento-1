@@ -35,8 +35,10 @@ class LimeSoda_Cashpresso_Helper_Request extends Mage_Core_Helper_Abstract
      */
     public function getCheckoutUrl()
     {
+        $configUrl = Mage::getStoreConfig(LimeSoda_Cashpresso_Helper_Data::XML_PARTNER_CHECKOUT_URL);
+
         $urlObject = new stdClass();
-        $urlObject->url = $this->_getUrl('checkout/onepage', array('_secure' => true));
+        $urlObject->url = $this->_getUrl($configUrl?:'checkout/onepage', array('_secure' => true));
 
         Mage::dispatchEvent('cashpresso_js_c2checkout_url', array('url' => $urlObject));
 

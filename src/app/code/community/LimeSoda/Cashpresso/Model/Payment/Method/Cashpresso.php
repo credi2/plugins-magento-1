@@ -62,7 +62,6 @@ class LimeSoda_Cashpresso_Model_Payment_Method_Cashpresso extends Mage_Payment_M
      */
     public function isAvailable($quote = null)
     {
-        //&& Mage::app()->getStore()->roundPrice($quote->getGrandTotal()) == 0;
         return parent::isAvailable($quote) && !empty($quote) && Mage::helper('ls_cashpresso')->isModuleEnabled();
     }
 

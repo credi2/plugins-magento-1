@@ -42,6 +42,8 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 
     const XML_PARTNER_TARGET_ACCOUNT = 'payment/cashpresso/account';
 
+    const XML_PARTNER_CHECKOUT_URL = 'payment/cashpresso/checkout_url';
+
     /**
      * @return mixed
      */
@@ -187,11 +189,22 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getCheckoutUrl($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PARTNER_CHECKOUT_URL, $storeId);
+    }
+
+    /**
+     * @param bool $useStatus
      * @return bool
      */
-    public function checkStatus()
+    public function checkStatus($useStatus = true)
     {
-        return !$this->isModuleEnabled() || !Mage::getModel('ls_cashpresso/payment_method_cashpresso')->getConfigData('active') || !$this->getStatus() || !$apiKey = $this->getAPIKey();
+        return $this->isModuleEnabled() && Mage::getModel('ls_cashpresso/payment_method_cashpresso')->getConfigData('active') && ($useStatus?$this->getStatus():true) && ($apiKey = $this->getAPIKey());
     }
 
     /**

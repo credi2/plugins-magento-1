@@ -162,6 +162,18 @@
                             </depends>
                         </checkout_button>
 
+                        <checkout_url translate="label">
+                            <label>Checkout url</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>125</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <checkout_button>1</checkout_button>
+                            </depends>
+                        </checkout_url>
+
                         <place_to_show translate="label comment">
                             <label>Place to show</label>
                             <comment>It works always on checkout page for any choice.</comment>

@@ -61,11 +61,12 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
 
         list($locale) = explode('_', strtolower(Mage::app()->getLocale()->getLocaleCode()));
 
+        $price = round($order->getGrandTotal(), 2);
+
         $data = array(
             'partnerApiKey' => $this->getPartnerApiKey(),
             'c2EcomId' => $order->getPayment()->getAdditionalData(),
-            'amount' => $order->getGrandTotal(),
-            'verificationHash' => hash('sha512', $this->getHash($order->getGrandTotal(), $order->getIncrementId())),
+            'amount' => $price,
             'validUntil' => $this->_helper()->getTimeout(),
             'bankUsage' => $order->getIncrementId(),
             'interestFreeDaysMerchant' => $this->_helper()->getInterestFreeDay(),
@@ -77,6 +78,8 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
         if (!empty($account = $this->_helper()->getTargetAccount())) {
             $data['targetAccountId'] = $account;
         }
+
+        $data['verificationHash'] = hash('sha512', $this->getHash($price, $order->getIncrementId(), $account));
 
         if ($customerID = Mage::getModel('customer/session')->getCustomer()->getId()) {
             $data['merchantCustomerId'] = $customerID;
@@ -127,6 +130,7 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
         if ($this->_helper()->isDebugEnabled()) {
             Mage::log($response->getBody(), Zend_Log::DEBUG, 'debug.log');
         }
+
 
         if ($response->isSuccessful()) {
             $respond = Mage::helper('core')->jsonDecode($response->getBody());

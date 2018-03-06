@@ -21,9 +21,12 @@
 
     var LS_CP_COOKIE_NAME = 'ls_cs_add_product_redirection';
 
-    CPCookie = Class.create();
-    CPCookie.prototype = {
-        set: function (name, value, days) {
+    function CPCookie() {
+        if (!(this instanceof CPCookie)) {
+            return new CPCookie();
+        }
+
+        this.set = function (name, value, days) {
             var expires = "";
             if (days) {
                 var date = new Date();
@@ -31,8 +34,9 @@
                 expires = "; expires=" + date.toUTCString();
             }
             document.cookie = name + "=" + (value || "") + expires + "; path=/";
-        },
-        get: function (name) {
+        }
+
+        this.get = function (name) {
             var nameEQ = name + "=";
             var ca = document.cookie.split(';');
             for (var i = 0; i < ca.length; i++) {
@@ -41,8 +45,9 @@
                 if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
             }
             return null;
-        },
-        delete: function (name) {
+        }
+
+        this.delete = function (name) {
             document.cookie = name + '=; Max-Age=-99999999;';
         }
     }

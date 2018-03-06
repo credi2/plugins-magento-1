@@ -54,7 +54,7 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
 
     protected function _toHtml()
     {
-        if ($this->_helper()->checkStatus()) {
+        if (!$this->_helper()->checkStatus()) {
             return '';
         }
 
