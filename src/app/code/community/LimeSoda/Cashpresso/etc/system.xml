@@ -28,6 +28,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
+                            <!--<validate>required-entry</validate>-->
                             <comment></comment>
                         </api_key>
 
@@ -157,7 +158,6 @@
                             <show_in_store>0</show_in_store>
                             <comment><![CDATA[Adds product and redirects to checkout page from the CS popup on product page. Works only if "system/configuration/sales/checkout/shopping cart/After Adding a Product Redirect to Shopping Cart" is NO]]></comment>
                             <depends>
-                                <widget_type>1</widget_type>
                                 <status>1</status>
                             </depends>
                         </checkout_button>
@@ -222,16 +222,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </sign_contract_text>
-
-                        <description translate="label comment">
-                            <label>Description</label>
-                            <comment>We will display this description during the signup and payment process.</comment>
-                            <frontend_type>textarea</frontend_type>
-                            <sort_order>180</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </description>
 
                         <debug_mode translate="label">
                             <label>Write log</label>

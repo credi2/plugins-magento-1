@@ -94,6 +94,13 @@
                 </LimeSoda_Cashpresso>
             </modules>
         </translate>
+
+        <cashpresso>
+            <product_types>
+                <simple/>
+                <configurable/>
+            </product_types>
+        </cashpresso>
     </frontend>
 
     <adminhtml>
@@ -106,6 +113,18 @@
                 </LimeSoda_Cashpresso>
             </modules>
         </translate>
+
+        <events>
+            <admin_system_config_changed_section_payment>
+                <observers>
+                    <cashpress_save_config>
+                        <type>singleton</type>
+                        <class>ls_cashpresso/observer_config</class>
+                        <method>adminSystemConfigChangedSection</method>
+                    </cashpress_save_config>
+                </observers>
+            </admin_system_config_changed_section_payment>
+        </events>
     </adminhtml>
 
     <phpunit>
@@ -133,6 +152,7 @@
         <payment>
             <cashpresso>
                 <payment_action>sale</payment_action>
+                <title>Ratenkauf mit Cashpresso</title>
                 <active>0</active>
                 <model>ls_cashpresso/payment_method_cashpresso</model>
                 <order_status>pending</order_status>
@@ -148,7 +168,6 @@
                 <checkout_button>1</checkout_button>
                 <checkout_url>checkout/onepage</checkout_url>
                 <place_to_show>3</place_to_show>
-                <description>Processing</description>
                 <debug_mode>1</debug_mode>
             </cashpresso>
         </payment>

@@ -60,3 +60,6 @@ Product level integration is recommended. Static Label Version has several disad
 "Write log","Write log"
 "Sort Order","Sort Order"
 "It works always on checkout page for any choice.","It works always on checkout page for any choice."
+"Last Update","Last Update"
+"API key is empty","API key is empty"
+"Secret key is empty","Secret key is empty"

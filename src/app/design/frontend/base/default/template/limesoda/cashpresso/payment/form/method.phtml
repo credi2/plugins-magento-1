@@ -35,14 +35,15 @@
                 <?php echo nl2br($this->getInstructions()) ?>
             </div>
         </li>
+        <li>
+            <input type="hidden" id="cashpressoToken" name="cashpressoToken">
+
+            <div id="cashpresso-checkout"></div>
+
+            <div id = "cashpresso-availability-banner"></div>
+        </li>
     </ul>
 <?php endif; ?>
-
-<input type="hidden" id="cashpressoToken" name="cashpressoToken">
-
-<div id="cashpresso-checkout"></div>
-
-<div id = "cashpresso-availability-banner"></div>
 
 <script type="text/javascript">
     //<![CDATA[

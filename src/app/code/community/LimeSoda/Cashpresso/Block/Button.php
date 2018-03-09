@@ -29,6 +29,9 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
         $checkResult->types = array('simple');
         $checkResult->isAvailable = true;
 
+        echo '<pre><br/>';
+        var_dump($this->_helper()->getProductTypes());
+        die();
         Mage::dispatchEvent('cashpresso_type_handler', array(
             'product' => $product,
             'result' => $checkResult

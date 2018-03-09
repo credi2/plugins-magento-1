@@ -22,16 +22,12 @@ class LimeSoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Information
      */
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
-        $partnerInfo = Mage::helper('ls_cashpresso')->getPartnerInfo();
-
         $text = '';
 
-        if ($partnerInfo === null) {
-            if (!Mage::helper('ls_cashpresso')->getAPIKey()) {
-                $text = Mage::helper('ls_cashpresso')->__('Please, enter the Partner API Key.');
-            } else {
-                $partnerInfo = Mage::helper('ls_cashpresso')->generatePartnerInfo();
-            }
+        if (!Mage::helper('ls_cashpresso')->getAPIKey()) {
+            $text = Mage::helper('ls_cashpresso')->__('Please, enter the Partner API Key.');
+        } else {
+            $partnerInfo = Mage::helper('ls_cashpresso')->generatePartnerInfo();
         }
 
         if (is_array($partnerInfo) && !empty($partnerInfo['success'])) {
@@ -146,6 +142,13 @@ class LimeSoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Information
                 $list[] = array(
                     'title' => $this->helper('ls_cashpresso')->__('Interest Free Cashpresso'),
                     'value' => (int)$partnerInfo['interestFreeCashpresso']
+                );
+            }
+
+            if (isset($partnerInfo['last_update'])) {
+                $list[] = array(
+                    'title' => $this->helper('ls_cashpresso')->__('Last Update'),
+                    'value' => $partnerInfo['last_update']
                 );
             }
 

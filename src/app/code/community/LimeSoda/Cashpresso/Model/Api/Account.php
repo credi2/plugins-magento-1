@@ -18,8 +18,7 @@ class LimeSoda_Cashpresso_Model_Api_Account extends LimeSoda_Cashpresso_Model_Ap
 
     public function getTargetAccounts()
     {
-
-        if ($this->_helper()->checkStatus()) {
+        if ($this->_helper()->isModuleEnabled() && (Mage::app()->getStore()->isAdmin() ? $this->_helper()->getAPIKey() : $this->_helper()->checkStatus(false))) {
             $request = $this->getRequest(self::METHOD_TARGET_ACCOUNTS);
 
             $request->setMethod(Varien_Http_Client::POST);

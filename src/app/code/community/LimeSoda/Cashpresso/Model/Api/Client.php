@@ -70,7 +70,6 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
             'validUntil' => $this->_helper()->getTimeout(),
             'bankUsage' => $order->getIncrementId(),
             'interestFreeDaysMerchant' => $this->_helper()->getInterestFreeDay(),
-            'description' => $this->_helper()->getDescription(),
             'language' => $locale,
             'callbackUrl' => Mage::getUrl('cashpresso/api/callback', array('_secure' => true))
         );
@@ -90,7 +89,7 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
                 "country" => $address->getCountryId(),
                 "zip" => $address->getPostcode(),
                 "city" => $address->getCity(),
-                "street" => isset($address->getStreet()[0]) ? $address->getStreet()[0] : ''
+                "street" => $address->getStreetFull()
             );
 
             $data['invoiceAddress'] = $billingAddress;
@@ -101,7 +100,7 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
                 "country" => $address->getCountryId(),
                 "zip" => $address->getPostcode(),
                 "city" => $address->getCity(),
-                "street" => isset($address->getStreet()[0]) ? $address->getStreet()[0] : ''
+                "street" => $address->getStreetFull()
             );
 
             $data['deliveryAddress'] = $shippingAddress;

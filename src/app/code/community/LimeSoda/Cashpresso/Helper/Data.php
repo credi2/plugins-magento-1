@@ -36,13 +36,13 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 
     const XML_PARTNER_CHECKOUT_BUTTON = 'payment/cashpresso/checkout_button';
 
-    const XML_PARTNER_DESCRIPTION = 'payment/cashpresso/description';
-
     const XML_PARTNER_DEBUG_MODE = 'payment/cashpresso/debug_mode';
 
     const XML_PARTNER_TARGET_ACCOUNT = 'payment/cashpresso/account';
 
     const XML_PARTNER_CHECKOUT_URL = 'payment/cashpresso/checkout_url';
+
+    const XML_CASHPRESSO_PRODUCT_TYPES = 'frontend/cashpresso/product_types';
 
     /**
      * @return mixed
@@ -71,6 +71,9 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         $partnerInfo = Mage::getModel('ls_cashpresso/api_client')->setMode($this->getMode())->getPartnerInfo();
+
+        $partnerInfo['last_update'] = Mage::getSingleton('core/date')->date();
+
         Mage::app()->getConfig()->saveConfig(self::XML_PARTNER_INFO, Mage::helper('core')->jsonEncode($partnerInfo));
 
         return $partnerInfo;
@@ -210,14 +213,6 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * @return mixed
      */
-    public function getDescription()
-    {
-        return Mage::getStoreConfig(self::XML_PARTNER_DESCRIPTION);
-    }
-
-    /**
-     * @return mixed
-     */
     public function isDebugEnabled()
     {
         return Mage::getStoreConfig(self::XML_PARTNER_DEBUG_MODE);
@@ -229,5 +224,14 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     public function getTargetAccount()
     {
         return Mage::getStoreConfig(self::XML_PARTNER_TARGET_ACCOUNT);
+    }
+
+    /**
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getProductTypes($storeId = null)
+    {
+        return Mage::app()->getConfig()->getNode(self::XML_CASHPRESSO_PRODUCT_TYPES)->asArray();
     }
 }
