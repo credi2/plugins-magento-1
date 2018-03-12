@@ -21,4 +21,10 @@
                    translate="label"/>
         </reference>
     </checkout_onepage_index>
+
+    <checkout_onepage_success>
+        <reference name="checkout.success">
+            <action method="setTemplate" ifconfig="payment/cashpresso/active"><template>limesoda/cashpresso/checkout/success.phtml</template></action>
+        </reference>
+    </checkout_onepage_success>
 </layout>

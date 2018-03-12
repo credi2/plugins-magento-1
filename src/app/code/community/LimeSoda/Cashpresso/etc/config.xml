@@ -97,8 +97,10 @@
 
         <cashpresso>
             <product_types>
-                <simple/>
-                <configurable/>
+                <simple>simple</simple>
+                <configurable>configurable</configurable>
+                <bundle>bundle</bundle>
+                <virtual>virtual</virtual>
             </product_types>
         </cashpresso>
     </frontend>
@@ -152,9 +154,9 @@
         <payment>
             <cashpresso>
                 <payment_action>sale</payment_action>
-                <title>Ratenkauf mit Cashpresso</title>
                 <active>0</active>
                 <model>ls_cashpresso/payment_method_cashpresso</model>
+                <title>Ratenkauf mit Cashpresso</title>
                 <order_status>pending</order_status>
                 <allowspecific>0</allowspecific>
                 <group>offline</group>

@@ -26,12 +26,9 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
     public function isAvailable($product)
     {
         $checkResult = new StdClass;
-        $checkResult->types = array('simple');
+        $checkResult->types = $this->_helper()->getProductTypes();
         $checkResult->isAvailable = true;
 
-        echo '<pre><br/>';
-        var_dump($this->_helper()->getProductTypes());
-        die();
         Mage::dispatchEvent('cashpresso_type_handler', array(
             'product' => $product,
             'result' => $checkResult
@@ -55,6 +52,29 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
         return $this->_toHtml();
     }
 
+    protected function getPrice($productModel)
+    {
+        switch ($productModel->getTypeId()) {
+            case 'bundle':
+                /** @var Mage_Bundle_Model_Product_Price $_priceModel */
+                $_priceModel = $productModel->getPriceModel();
+
+                list($price) = $_priceModel->getTotalPrices($productModel, null, true, false);
+
+                break;
+            case 'grouped':
+                /** @var Mage_Catalog_Model_Product_Type_Grouped_Price $_priceModel */
+                $_priceModel = $productModel->getPriceModel();
+                $price = $productModel->getMinimalPrice();
+
+                break;
+            default:
+                $price = $productModel->getFinalPrice();
+        }
+
+        return $price;
+    }
+
     protected function _toHtml()
     {
         if (!$this->_helper()->checkStatus()) {
@@ -64,13 +84,11 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
         /** @var Mage_Catalog_Model_Product $productModel */
         $productModel = $this->getProduct() ?: Mage::registry('current_product');
 
-        if ($productModel) {
-            if (!$this->isAvailable($productModel)) {
-                return '';
-            }
-
-            $price = $productModel->getFinalPrice();
-        } else {
+        if (!($productModel && $this->isAvailable($productModel))) {
+            return '';
+        }
+        
+        if (!$price = $this->getPrice($productModel)) {
             return '';
         }
 

@@ -49,7 +49,9 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getPartnerInfo()
     {
-        return Mage::helper('core')->jsonDecode(Mage::getStoreConfig(self::XML_PARTNER_INFO));
+        $partnerInfo = Mage::getStoreConfig(self::XML_PARTNER_INFO);
+
+        return $partnerInfo ? Mage::helper('core')->jsonDecode($partnerInfo) : array();
     }
 
     /**
@@ -57,7 +59,9 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getSecretKey()
     {
-        return Mage::helper('core')->decrypt(Mage::getStoreConfig(self::XML_PARTNER_SECRET_KEY));
+        $key = Mage::getStoreConfig(self::XML_PARTNER_SECRET_KEY);
+
+        return $key ? Mage::helper('core')->decrypt(Mage::getStoreConfig(self::XML_PARTNER_SECRET_KEY)) : null;
     }
 
     /**

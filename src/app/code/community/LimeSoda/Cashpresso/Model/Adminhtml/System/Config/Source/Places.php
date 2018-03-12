@@ -25,7 +25,7 @@ class LimeSoda_Cashpresso_Model_Adminhtml_System_Config_Source_Places
             array('value' => 3, 'label'=>Mage::helper('adminhtml')->__('Catalog/Search and Product')),
             array('value' => 2, 'label'=>Mage::helper('adminhtml')->__('Product')),
             array('value' => 1, 'label'=>Mage::helper('adminhtml')->__('Catalog/Search')),
-            array('value' => 0, 'label'=>Mage::helper('adminhtml')->__('Only checkout page')),
+            array('value' => 0, 'label'=>Mage::helper('adminhtml')->__('Do not use widget')),
         );
     }
 
@@ -37,7 +37,7 @@ class LimeSoda_Cashpresso_Model_Adminhtml_System_Config_Source_Places
     public function toArray()
     {
         return array(
-            0 => Mage::helper('adminhtml')->__('Only checkout page'),
+            0 => Mage::helper('adminhtml')->__('Do not use widget'),
             1 => Mage::helper('adminhtml')->__('Catalog/Search'),
             2 => Mage::helper('adminhtml')->__('Product'),
             3 => Mage::helper('adminhtml')->__('Catalog/Search and Product'),

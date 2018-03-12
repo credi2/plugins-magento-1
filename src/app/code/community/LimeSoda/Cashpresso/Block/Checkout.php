@@ -25,13 +25,15 @@ class LimeSoda_Cashpresso_Block_Checkout extends Mage_Core_Block_Template
             return '';
         }
 
+        if (!$price = Mage::app()->getStore()->roundPrice(Mage::getModel('checkout/cart')->getQuote()->getGrandTotal())) {
+            return '';
+        }
+
         $apiKey = $this->_helper()->getAPIKey();
 
         $mode = $this->_helper()->getMode() ? 'live' : 'test';
 
         $customerData = Mage::getModel('ls_cashpresso/customer')->getCustomerData();
-
-        $price = Mage::app()->getStore()->roundPrice(Mage::getModel('checkout/cart')->getQuote()->getGrandTotal());
 
         list($locale) = explode('_', strtolower(Mage::app()->getLocale()->getLocaleCode()));
 

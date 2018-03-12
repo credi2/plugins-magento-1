@@ -24,13 +24,13 @@ class LimeSoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Information
     {
         $text = '';
 
-        if (!Mage::helper('ls_cashpresso')->getAPIKey()) {
-            $text = Mage::helper('ls_cashpresso')->__('Please, enter the Partner API Key.');
-        } else {
+        if (Mage::helper('ls_cashpresso')->getAPIKey()) {
             $partnerInfo = Mage::helper('ls_cashpresso')->generatePartnerInfo();
+        } else {
+            $text = Mage::helper('ls_cashpresso')->__('Please, enter the Partner API Key.');
         }
 
-        if (is_array($partnerInfo) && !empty($partnerInfo['success'])) {
+        if (!empty($partnerInfo) && is_array($partnerInfo) && !empty($partnerInfo['success'])) {
             $list = array();
 
             if (isset($partnerInfo['companyName'])) {
