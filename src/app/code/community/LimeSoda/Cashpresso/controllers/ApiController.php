@@ -22,6 +22,8 @@ class LimeSoda_Cashpresso_ApiController extends Mage_Core_Controller_Front_Actio
     public function callbackAction()
     {
         try {
+            Mage::log('request trigger');
+
             $response = Mage::helper('core')->jsonDecode($this->getRequest()->getRawBody());
 
             if ($this->getHelper()->isDebugEnabled()){

@@ -59,8 +59,8 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
                 /** @var Mage_Bundle_Model_Product_Price $_priceModel */
                 $_priceModel = $productModel->getPriceModel();
 
-                list($price) = $_priceModel->getTotalPrices($productModel, null, true, false);
-
+                //list($price) = $_priceModel->getTotalPrices($productModel, null, true, false);
+                $price = $_priceModel->getTotalPrices($productModel, 'min', null, null);
                 break;
             case 'grouped':
                 /** @var Mage_Catalog_Model_Product_Type_Grouped_Price $_priceModel */
@@ -72,7 +72,9 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
                 $price = $productModel->getFinalPrice();
         }
 
-        return $price;
+        /** @var Mage_Core_Helper_Data $_coreHelper */
+        $_coreHelper = $this->helper('core');
+        return $_coreHelper->currency($price, false, false);
     }
 
     protected function _toHtml()
@@ -128,6 +130,10 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
 
         $checkoutButton = $this->_helper()->showCheckoutButton() && Mage::helper('ls_cashpresso/request')->isProductPage() ? 'true' : 'false';
 
+        $jsSrc = $this->_helper()->getMode()
+            ? 'https://my.cashpresso.com/ecommerce/v2/label/c2_ecom_wizard' . $scriptStatic . '.all.min.js' :
+            'https://test.cashpresso.com/frontend/ecommerce/v2/label/c2_ecom_wizard' . $scriptStatic . '.all.min.js';
+
         /**
          * country  = at|de
          * mode
@@ -137,7 +143,7 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
         $cashPressoButton = <<<EOT
 {$htmlEntry}
   <script id="c2{$idStatic}LabelScript" type="text/javascript" 
-    src="https://my.cashpresso.com/ecommerce/v2/label/c2_ecom_wizard{$scriptStatic}.all.min.js" 
+    src="{$jsSrc}" 
     defer
     data-c2-partnerApiKey="{$apiKey}" 
     data-c2-interestFreeDaysMerchant="{$interestFreeDays}"
