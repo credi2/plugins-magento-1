@@ -52,24 +52,27 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
         return $this->_toHtml();
     }
 
-    protected function getPrice($productModel)
+    protected function getPrice($_product)
     {
-        switch ($productModel->getTypeId()) {
+        switch ($_product->getTypeId()) {
             case 'bundle':
                 /** @var Mage_Bundle_Model_Product_Price $_priceModel */
-                $_priceModel = $productModel->getPriceModel();
+                $_priceModel = $_product->getPriceModel();
 
-                //list($price) = $_priceModel->getTotalPrices($productModel, null, true, false);
-                $price = $_priceModel->getTotalPrices($productModel, 'min', null, null);
+                $price = $_priceModel->getTotalPrices($_product, 'min', null, null);
+
+                /*if (!in_array('PRODUCT_TYPE_bundle', Mage::app()->getLayout()->getUpdate()->getHandles())) {
+                    $price = 0;
+                }*/
                 break;
             case 'grouped':
                 /** @var Mage_Catalog_Model_Product_Type_Grouped_Price $_priceModel */
-                $_priceModel = $productModel->getPriceModel();
-                $price = $productModel->getMinimalPrice();
+                $_priceModel = $_product->getPriceModel();
+                $price = $_product->getMinimalPrice();
 
                 break;
             default:
-                $price = $productModel->getFinalPrice();
+                $price = $_product->getFinalPrice();
         }
 
         /** @var Mage_Core_Helper_Data $_coreHelper */
@@ -89,8 +92,8 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
         if (!($productModel && $this->isAvailable($productModel))) {
             return '';
         }
-        
-        if (!$price = $this->getPrice($productModel)) {
+
+        if ($productModel->getMsrp() || (!$price = $this->getPrice($productModel))) {
             return '';
         }
 

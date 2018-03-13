@@ -83,10 +83,13 @@ Find section "**Direct package file upload**" and upload **gz** archive. Then pr
    Template | The template for the cashpresso rates if you selected ```Static Label Integration``` for the Widget integration | Widget status, Widget integration
    The timeout for the order | Time in hours to wait for the approvement of the payment from Cashpresso, after placing the order. |
    Sign contract text | The text on the success page for the following order approvement |
-   Description | This Text will be displayed, while loading in the signup and payment process. |
    Write log | Choose YES, if the api requests should be written to the log files. |
    Sort Order | Sets the order of the payment methods in the list on the checkout page| 
 
+3. Options table
+
+    When you save the configuration, do not forget to clean the cache.
+    
 ### 2.1 Option to show the checkout button
 
 If you want to use this option, check magentos redirect option before:

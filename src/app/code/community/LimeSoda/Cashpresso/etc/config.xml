@@ -166,7 +166,7 @@
                 <template>or from € {{price}} / month</template>
                 <active>0</active>
                 <timeout>24</timeout>
-                <sign_contract_text><![CDATA[<p class="a-center" style="margin-top:10px;">Um die Finanzierung deines Einkaufs abzuschließen musst du dich via Videocall identifizieren. Bitte halte dazu deinen Pass oder Personalausweis bereit.</p><p class="a-center"><img style="display:inline-block;" src="{{skin url='cashpresso/images/passport.png'}}"/><p>]]></sign_contract_text>
+                <sign_contract_text><![CDATA[<p class="a-center" style="margin-top:10px;">Bitte drücken Sie "Jetzt bezahlen" um zur Cashpresso Ratenzahlung zu gelangen und Ihren Einkauf abzuschließen.</p>]]></sign_contract_text>
                 <checkout_button>1</checkout_button>
                 <checkout_url>checkout/onepage</checkout_url>
                 <place_to_show>3</place_to_show>

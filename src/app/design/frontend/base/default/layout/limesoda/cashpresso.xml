@@ -32,4 +32,34 @@
             <action method="addItem"><type>skin_js</type><name>cashpresso/js/bundle.js</name></action>
         </reference>
     </PRODUCT_TYPE_bundle>
+
+    <catalog_product_compare_index>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>cashpresso/js/product_options.js</name></action>
+        </reference>
+    </catalog_product_compare_index>
+
+    <catalog_product_view>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>cashpresso/js/product_options.js</name></action>
+        </reference>
+    </catalog_product_view>
+
+    <catalog_product_send>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>cashpresso/js/product_options.js</name></action>
+        </reference>
+    </catalog_product_send>
+
+    <review_product_list>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>cashpresso/js/product_options.js</name></action>
+        </reference>
+    </review_product_list>
+
+    <sendfriend_product_send>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>cashpresso/js/product_options.js</name></action>
+        </reference>
+    </sendfriend_product_send>
 </layout>
