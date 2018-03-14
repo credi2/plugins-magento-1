@@ -156,7 +156,7 @@
                 <payment_action>sale</payment_action>
                 <active>0</active>
                 <model>ls_cashpresso/payment_method_cashpresso</model>
-                <title>Ratenkauf mit Cashpresso</title>
+                <title>Financing wich Cashpresso</title>
                 <order_status>pending</order_status>
                 <allowspecific>0</allowspecific>
                 <group>offline</group>
@@ -166,12 +166,37 @@
                 <template>or from € {{price}} / month</template>
                 <active>0</active>
                 <timeout>24</timeout>
-                <sign_contract_text><![CDATA[<p class="a-center" style="margin-top:10px;">Bitte drücken Sie "Jetzt bezahlen" um zur Cashpresso Ratenzahlung zu gelangen und Ihren Einkauf abzuschließen.</p>]]></sign_contract_text>
+                <sign_contract_text><![CDATA[<p class="a-center" style="margin-top:10px;">Pay for the order to complete the purchase. Complete your order by paying for your purchase with cashpresso. By clicking on "Pay Now" a window opens and you can complete your purchase with cashpresso.</p>]]></sign_contract_text>
                 <checkout_button>1</checkout_button>
                 <checkout_url>checkout/onepage</checkout_url>
                 <place_to_show>3</place_to_show>
                 <debug_mode>1</debug_mode>
+                <instructions><![CDATA[<b>Financing with cashpresso</b>
+
+cashpresso allows you to pay for purchases in installments. You can choose your installment amount when buying and change it anytime after.
+
+The best thing: cashpresso always offers you a 0% option. This means you can buy right away but pay later without any extra cost.
+
+To register for cashpresso is fast and works all online with a simple video call. After registering once, you have a personal overdraft at cashpresso, with which you can pay as often as you want]]></instructions>
             </cashpresso>
         </payment>
     </default>
+
+    <stores>
+        <german>
+            <payment>
+                <cashpresso>
+                    <title>Ratenkauf mit Cashpresso</title>
+                    <sign_contract_text><![CDATA[<p class="a-center" style="margin-top:10px;">Bitte drücken Sie "Jetzt bezahlen" um zur Cashpresso Ratenzahlung zu gelangen und Ihren Einkauf abzuschließen.</p>]]></sign_contract_text>
+                    <instructions><![CDATA[<b>Ratenkauf mit cashpresso<b>
+
+cashpresso ermöglicht dir Einkäufe in Raten zu bezahlen. Deine Ratenhöhe kannst du dir beim Kauf aussuchen und später jederzeit ändern.
+
+Das Beste: cashpresso bietet dir immer eine 0% - Option. Das bedeutet du kannst gleich kaufen, aber erst später zahlen ohne dass Kosten entstehen.
+
+Zu cashpresso kannst du dich ganz schnell online mit einem Videocall anmelden. Danach hast du einen persönlichen Einkaufsrahmen bei cashpresso, mit dem du sooft bezahlen kannst wie du willst.]]></instructions>
+                </cashpresso>
+            </payment>
+        </german>
+    </stores>
 </config>
