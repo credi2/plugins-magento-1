@@ -30,6 +30,11 @@ class LimeSoda_Cashpresso_Block_Payment_Form_Cashpresso extends Mage_Payment_Blo
         $this->setTemplate('limesoda/cashpresso/payment/form/method.phtml');
     }
 
+    public function getMethodLabelAfterHtml()
+    {
+        return '<div id="cashpresso-availability-banner"></div>';
+    }
+
     /**
      * Get instructions text from config
      *
