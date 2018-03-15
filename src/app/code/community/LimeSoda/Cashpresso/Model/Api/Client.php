@@ -38,15 +38,11 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
             $respond = Mage::helper('core')->jsonDecode($response->getBody());
 
             if (is_array($respond)) {
-                if (empty($respond['success'])) {
-                    throw new Mage_Core_Exception(Mage::helper('ls_cashpresso')->__($respond['error']['description']));
-                }
-
-                return $respond;
+                return $this->handleRespond($respond);
             }
         }
 
-        throw new Mage_Core_Exception(Mage::helper('ls_cashpresso')->__($response->getMessage()));
+        $this->getSession()->addError("Cashpresso getPartnerInfo error: " . $response->getMessage());
     }
 
     /**
@@ -135,13 +131,22 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
             $respond = Mage::helper('core')->jsonDecode($response->getBody());
 
             if (is_array($respond)) {
-                if (empty($respond['success']) || empty($respond['purchaseId'])) {
-                    throw new Mage_Payment_Model_Info_Exception(Mage::helper('ls_cashpresso')->__($respond['error']['description']));
+
+                $respond = $this->handleRespond($respond);
+
+                if (empty($respond['purchaseId'])) {
+                    $this->getSession()->addError($this->_helper()->__("Cashpresso: purchaseId is empty"));
+
+                    $purchaseId = null;
+                } else {
+                    $purchaseId = $respond['purchaseId'];
                 }
 
-                return $respond['purchaseId'];
+                return $purchaseId;
             }
         }
+
+        $this->getSession()->addError("Cashpresso order request error: " . $response->getMessage());
     }
 
     /**
@@ -157,10 +162,9 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
 
     /**
      * @param $code
-     * @return mixed
+     * @param $purchaseID
+     * @return bool
      * @throws Exception
-     * @throws Mage_Payment_Model_Info_Exception
-     * @throws Zend_Http_Client_Exception
      */
     public function sendSimulationCallbackRequest($code, $purchaseID)
     {
@@ -185,12 +189,23 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
             $respond = Mage::helper('core')->jsonDecode($response->getBody());
 
             if (is_array($respond)) {
-                if (empty($respond['success']) || empty($respond['purchaseId'])) {
-                    throw new Mage_Payment_Model_Info_Exception(Mage::helper('ls_cashpresso')->__($respond['error']['description']));
+
+                $respond = $this->handleRespond($respond);
+
+                if (empty($respond['purchaseId'])) {
+                    $this->getSession()->addError($this->_helper()->__("Cashpresso: purchaseId is empty"));
+
+                    $respond = null;
+                }
+
+                if ($respond !== false) {
+                    return;
                 }
             }
         }
 
-        return true;
+        $errors = implode("\n", $this->getSession()->getMessages(true));
+
+        throw new Exception($errors);
     }
 }

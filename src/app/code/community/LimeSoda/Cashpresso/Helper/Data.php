@@ -250,6 +250,16 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * @return null
+     */
+    public function getContractCurrency()
+    {
+        $partnerInfo = $this->getPartnerInfo();
+
+        return empty($partnerInfo['currency']) ? null : $partnerInfo['currency'];
+    }
+
+    /**
      * @return string
      */
     public function getJsScript()
@@ -281,5 +291,27 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return $minPayment;
+    }
+
+    /**
+     * @return int|mixed
+     */
+    public function getCurrentStore()
+    {
+        $website_id = null;
+
+        if (strlen($code = Mage::getSingleton('adminhtml/config_data')->getStore())) // store level
+        {
+            $store_id = Mage::getModel('core/store')->load($code)->getId();
+        } elseif (strlen($code = Mage::getSingleton('adminhtml/config_data')->getWebsite())) // website level
+        {
+            $website_id = Mage::getModel('core/website')->load($code)->getId();
+            $store_id = Mage::app()->getWebsite($website_id)->getDefaultStore()->getId();
+        } else // default level
+        {
+            $store_id = 0;
+        }
+
+        return array($website_id, $store_id);
     }
 }

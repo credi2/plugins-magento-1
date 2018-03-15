@@ -34,15 +34,13 @@ class LimeSoda_Cashpresso_Model_Api_Account extends LimeSoda_Cashpresso_Model_Ap
                     $respond = Mage::helper('core')->jsonDecode($response->getBody());
 
                     if (is_array($respond)) {
-                        if (empty($respond['success'])) {
-                            throw new Exception(Mage::helper('ls_cashpresso')->__($respond['error']['description']));
-                        }
+                        $respond = $this->handleRespond($respond);
 
-                        if (empty($respond['targetAccounts'])) {
-                            throw new Exception(Mage::helper('ls_cashpresso')->__('Empty target account response.'));
+                        if (!empty($respond['targetAccounts'])) {
+                            return $respond['targetAccounts'];
+                        } else {
+                            $this->getSession()->addWarning($this->_helper()->__("Cashpresso: targetAccounts is empty"));
                         }
-
-                        return $respond['targetAccounts'];
                     }
                 }
             } catch (Exception $e) {

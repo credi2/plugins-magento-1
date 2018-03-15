@@ -21,6 +21,16 @@
                             <show_in_store>1</show_in_store>
                         </active>
 
+                        <currency_status translate="label">
+                            <label>Currency mismatch</label>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>0⁄</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_model>ls_cashpresso/adminhtml_system_config_form_field_currency</frontend_model>
+                        </currency_status>
+
                         <api_key translate="label comment">
                             <label>API KEY</label>
                             <frontend_type>text</frontend_type>
@@ -38,8 +48,8 @@
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
                             <sort_order>25</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
                         </secret_key>
 
                         <inforamtion translate="label comment">
@@ -82,16 +92,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </title>
-
-                        <!--<order_status translate="label">
-                            <label>New Order Status</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_order_status_new</source_model>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </order_status>-->
 
                         <allowspecific translate="label">
                             <label>Payment from Applicable Countries</label>
@@ -148,14 +148,29 @@
                             </depends>
                         </widget_type>
 
+                        <template translate="label">
+                            <label>Template</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <comment>An example: or from € {{price}} / month</comment>
+                            <depends>
+                                <status>1</status>
+                                <widget_type>0</widget_type>
+                            </depends>
+                        </template>
+
                         <checkout_button translate="label comment">
                             <label>Show checkout button</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>120</sort_order>
+                            <sort_order>130</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_store>1</show_in_store>
                             <comment><![CDATA[Adds product and redirects to checkout page from the CS popup on product page. Works only if "system/configuration/sales/checkout/shopping cart/After Adding a Product Redirect to Shopping Cart" is NO]]></comment>
                             <depends>
                                 <status>1</status>
@@ -165,7 +180,7 @@
                         <checkout_url translate="label">
                             <label>Checkout url</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>125</sort_order>
+                            <sort_order>140</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -179,7 +194,7 @@
                             <comment>It works always on checkout page for any choice.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>ls_cashpresso/adminhtml_system_config_source_places</source_model>
-                            <sort_order>130</sort_order>
+                            <sort_order>150</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -188,21 +203,6 @@
                             </depends>
                         </place_to_show>
 
-                        <template translate="label">
-                            <label>Template</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>150</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <validate>required-entry</validate>
-                            <comment>An example: or from € {{price}} / month</comment>
-                            <depends>
-                                <status>1</status>
-                                <widget_type>0</widget_type>
-                            </depends>
-                        </template>
-
                         <timeout translate="label comment">
                             <label>The timeout for the order</label>
                             <comment>In hours</comment>
@@ -210,7 +210,7 @@
                             <sort_order>160</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_store>1</show_in_store>
                         </timeout>
 
                         <sign_contract_text translate="label">
