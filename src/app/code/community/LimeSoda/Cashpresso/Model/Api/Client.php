@@ -85,7 +85,7 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
                 "country" => $address->getCountryId(),
                 "zip" => $address->getPostcode(),
                 "city" => $address->getCity(),
-                "street" => $address->getStreetFull()
+                "street" => str_replace("\n", ", ", $address->getStreetFull())
             );
 
             $data['invoiceAddress'] = $billingAddress;
@@ -96,7 +96,7 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
                 "country" => $address->getCountryId(),
                 "zip" => $address->getPostcode(),
                 "city" => $address->getCity(),
-                "street" => $address->getStreetFull()
+                "street" => str_replace("\n", ", ", $address->getStreetFull())
             );
 
             $data['deliveryAddress'] = $shippingAddress;

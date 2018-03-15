@@ -18,31 +18,44 @@ class LimeSoda_Cashpresso_Model_Customer
     {
         $customerData = new Varien_Object();
 
+        $billingAddress = $shippingAddress = new Varien_Object();
+
         if (!$quotePriority && Mage::getModel('customer/session')->getCustomer()->getId()) {
             $customer = Mage::getModel('customer/session')->getCustomer();
+
+            $dob = $customer->getDob() ? Mage::getSingleton('core/date')->date('Y-m-d', $customer->getDob()) : null;
 
             $customerData->setEmail($customer->getEmail());
             $customerData->setFirstname($customer->getFirstname());
             $customerData->setLastname($customer->getLastname());
-            $customerData->setDob($customer->getDob());
+            $customerData->setDob($dob);
             $customerData->setTaxvat($customer->getTaxvat());
 
             $billingAddressId = $customer->getDefaultBilling();
             $shippingAddressId = $customer->getDefaultShipping();
 
+            /** @var Mage_Sales_Model_Quote_Address $billingAddress */
             $billingAddress = Mage::getModel('customer/address')->load($billingAddressId);
+            /** @var Mage_Sales_Model_Quote_Address $shippingAddress */
             $shippingAddress = Mage::getModel('customer/address')->load($shippingAddressId);
+        }
 
-            $customer->getStoreId();
-            $customer->getWebsiteId();
-        } else {
-            $cart = Mage::getModel('checkout/cart')->getQuote();
+        $cart = Mage::getModel('checkout/cart')->getQuote();
 
+        if (!$billingAddress->getId() && !$shippingAddress->getId()) {
             $billingAddress = $cart->getBillingAddress();
             $shippingAddress = $cart->getShippingAddress();
+        }
 
+        if (!$customerData->getEmail()){
             $customerData->setEmail($billingAddress->getEmail() ? $billingAddress->getEmail() : $shippingAddress->getEmail());
+        }
+
+        if (!$customerData->getFirstname()){
             $customerData->setFirstname($billingAddress->getFirstname() ? $billingAddress->getFirstname() : $shippingAddress->getFirstname());
+        }
+
+        if (!$customerData->getLastname()){
             $customerData->setLastname($billingAddress->getLastname() ? $billingAddress->getLastname() : $shippingAddress->getLastname());
         }
 
@@ -52,7 +65,7 @@ class LimeSoda_Cashpresso_Model_Customer
         $customerData->setTelephone($billingAddress->getTelephone() ? $billingAddress->getTelephone() : $shippingAddress->getTelephone());
 
         $street = $billingAddress->getStreetFull() ? $billingAddress->getStreetFull() : $shippingAddress->getStreetFull();
-        $customerData->setStreet(isset($street[0]) ? $street[0] : '');
+        $customerData->setStreet(str_replace("\n", ", ", $street));
 
         return $customerData;
     }

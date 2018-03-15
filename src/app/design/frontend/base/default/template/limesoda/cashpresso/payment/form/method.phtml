@@ -29,6 +29,12 @@
  */
 ?>
 
+<?php 
+$helper = $this->helper('ls_cashpresso');
+$mode = $helper->getMode() ? 'live' : 'test';
+$debugMode = $helper->isDebugEnabled();
+?>
+
 <ul class="form-list checkout-agreements" id="payment_form_<?php echo $this->getMethodCode() ?>" style="display:none;">
     <?php if ($this->getInstructions()): ?>
     <li>
@@ -50,7 +56,9 @@
     //<![CDATA[
     if (window.C2EcomCheckout) {
         window.C2EcomCheckout.refresh();
-
+        <?php if ($debugMode && ($mode=='test')): ?>
+        console.log('<?php echo $this->refreshOptionalData() ?>');
+        <?php endif; ?>
         <?php echo $this->refreshOptionalData() ?>
     }
     //]]>
