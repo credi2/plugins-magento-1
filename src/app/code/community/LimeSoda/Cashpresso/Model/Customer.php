@@ -51,7 +51,7 @@ class LimeSoda_Cashpresso_Model_Customer
         $customerData->setPostcode($billingAddress->getPostcode() ? $billingAddress->getPostcode() : $shippingAddress->getPostcode());
         $customerData->setTelephone($billingAddress->getTelephone() ? $billingAddress->getTelephone() : $shippingAddress->getTelephone());
 
-        $street = $billingAddress->getStreet() ? $billingAddress->getStreet() : $shippingAddress->getStreet();
+        $street = $billingAddress->getStreetFull() ? $billingAddress->getStreetFull() : $shippingAddress->getStreetFull();
         $customerData->setStreet(isset($street[0]) ? $street[0] : '');
 
         return $customerData;

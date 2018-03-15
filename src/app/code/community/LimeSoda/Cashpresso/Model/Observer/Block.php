@@ -24,7 +24,6 @@ class LimeSoda_Cashpresso_Model_Observer_Block
 
     /**
      * @param Varien_Event_Observer $observer
-     * @throws Mage_Core_Exception
      */
     public function setOrder(Varien_Event_Observer $observer)
     {
@@ -44,8 +43,6 @@ class LimeSoda_Cashpresso_Model_Observer_Block
      */
     public function coreBlockAbstractToHtmlAfter(Varien_Event_Observer $observer)
     {
-        $accounts = Mage::getModel('ls_cashpresso/api_account')->getTargetAccounts();
-
         if (!$this->_helper()->checkStatus()) {
             return;
         }
@@ -104,19 +101,20 @@ EOT;
 
     /**
      * @param $transport
-     * @param $block
-     * @throws Mage_Core_Exception
+     * @param $block Mage_Catalog_Block_Product_Price
      */
     public function addScriptToPrice($transport, $block)
     {
         $product = $block->getProduct();
 
-        if ($block->hasData('in_grouped') || Mage::registry('ls_cs_addScriptToPrice')) {
+        $hash = md5('ls_cs_addScriptToPrice_' . $product->getId());
+
+        if ($block->hasData('in_grouped') || Mage::registry($hash)) {
             return;
         }
 
         if (Mage::helper('ls_cashpresso/request')->isProductPage()) {
-            Mage::register('ls_cs_addScriptToPrice', true);
+            Mage::register($hash, true);
         }
 
         $html = Mage::app()->getLayout()->createBlock('ls_cashpresso/button')->setProduct($product)->emulateToHtml();

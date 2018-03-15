@@ -1,5 +1,5 @@
 if (Product && Product.OptionsPrice) {
-    Product.OptionsPrice.prototype.reload = function() {
+    Product.OptionsPrice.prototype.reload = function () {
         var price;
         var formattedPrice;
         var optionPrices = this.getOptionPrices();
@@ -8,7 +8,7 @@ if (Product && Product.OptionsPrice) {
         var priceInclTax = optionPrices[3];
         optionPrices = optionPrices[0];
 
-        $H(this.containers).each(function(pair) {
+        $H(this.containers).each(function (pair) {
             var _productPrice;
             var _plusDisposition;
             var _minusDisposition;
@@ -17,7 +17,7 @@ if (Product && Product.OptionsPrice) {
             var incl;
             var tax;
             if ($(pair.value)) {
-                if (pair.value == 'old-price-'+this.productId && this.productOldPrice != this.productPrice) {
+                if (pair.value == 'old-price-' + this.productId && this.productOldPrice != this.productPrice) {
                     _productPrice = this.productOldPrice;
                     _plusDisposition = this.oldPlusDisposition;
                     _minusDisposition = this.oldMinusDisposition;
@@ -28,13 +28,13 @@ if (Product && Product.OptionsPrice) {
                 }
                 _priceInclTax = priceInclTax;
 
-                if (pair.value == 'old-price-'+this.productId && optionOldPrice !== undefined) {
-                    price = optionOldPrice+parseFloat(_productPrice);
+                if (pair.value == 'old-price-' + this.productId && optionOldPrice !== undefined) {
+                    price = optionOldPrice + parseFloat(_productPrice);
                 } else if (this.specialTaxPrice == 'true' && this.priceInclTax !== undefined && this.priceExclTax !== undefined) {
-                    price = optionPrices+parseFloat(this.priceExclTax);
+                    price = optionPrices + parseFloat(this.priceExclTax);
                     _priceInclTax += this.priceInclTax;
                 } else {
-                    price = optionPrices+parseFloat(_productPrice);
+                    price = optionPrices + parseFloat(_productPrice);
                     _priceInclTax += parseFloat(_productPrice) * (100 + this.currentTax) / 100;
                 }
 
@@ -45,7 +45,7 @@ if (Product && Product.OptionsPrice) {
                     // tax = tax included into product price by admin
                     tax = price / (100 + this.defaultTax) * this.defaultTax;
                     excl = price - tax;
-                    incl = excl*(1+(this.currentTax/100));
+                    incl = excl * (1 + (this.currentTax / 100));
                 } else {
                     tax = price * (this.currentTax / 100);
                     excl = price;
@@ -54,7 +54,7 @@ if (Product && Product.OptionsPrice) {
 
                 var subPrice = 0;
                 var subPriceincludeTax = 0;
-                Object.values(this.customPrices).each(function(el){
+                Object.values(this.customPrices).each(function (el) {
                     if (el.excludeTax && el.includeTax) {
                         subPrice += parseFloat(el.excludeTax);
                         subPriceincludeTax += parseFloat(el.includeTax);
@@ -78,11 +78,11 @@ if (Product && Product.OptionsPrice) {
                 excl += parseFloat(nonTaxable);
                 incl += parseFloat(nonTaxable);
 
-                if (pair.value == 'price-including-tax-'+this.productId) {
+                if (pair.value == 'price-including-tax-' + this.productId) {
                     price = incl;
-                } else if (pair.value == 'price-excluding-tax-'+this.productId) {
+                } else if (pair.value == 'price-excluding-tax-' + this.productId) {
                     price = excl;
-                } else if (pair.value == 'old-price-'+this.productId) {
+                } else if (pair.value == 'old-price-' + this.productId) {
                     if (this.showIncludeTax || this.showBothPrices) {
                         price = incl;
                     } else {
@@ -99,8 +99,19 @@ if (Product && Product.OptionsPrice) {
                 if (price < 0) price = 0;
 
                 // \/ cashpresso
-                if (C2EcomWizard && document.getElementById("c2-financing-label-0")) {
-                    C2EcomWizard.refreshAmount('c2-financing-label-0', price);
+                if (typeof C2EcomWizard !== 'undefined') {
+                    if (document.getElementById("c2-financing-label-0")) {
+                        C2EcomWizard.refreshAmount('c2-financing-label-0', price);
+                    } else if (document.getElementById('cashpresso_product_id_' + this.productId)) {
+                        var C2link = document.getElementById('cashpresso_product_id_' + this.productId);
+                        C2link.onclick = function () {
+                            C2EcomWizard.startOverlayWizard(price)
+                        }
+
+                        if (typeof C2EcomWizard.ls_template !== 'undefined') {
+                            C2link.innerHTML = C2EcomWizard.ls_template(C2link, price);
+                        }
+                    }
                 }
                 // /\ cashpresso
 
@@ -112,22 +123,23 @@ if (Product && Product.OptionsPrice) {
 
                 if ($(pair.value).select('.price')[0]) {
                     $(pair.value).select('.price')[0].innerHTML = formattedPrice;
-                    if ($(pair.value+this.duplicateIdSuffix) && $(pair.value+this.duplicateIdSuffix).select('.price')[0]) {
-                        $(pair.value+this.duplicateIdSuffix).select('.price')[0].innerHTML = formattedPrice;
+                    if ($(pair.value + this.duplicateIdSuffix) && $(pair.value + this.duplicateIdSuffix).select('.price')[0]) {
+                        $(pair.value + this.duplicateIdSuffix).select('.price')[0].innerHTML = formattedPrice;
                     }
                 } else {
                     $(pair.value).innerHTML = formattedPrice;
-                    if ($(pair.value+this.duplicateIdSuffix)) {
-                        $(pair.value+this.duplicateIdSuffix).innerHTML = formattedPrice;
+                    if ($(pair.value + this.duplicateIdSuffix)) {
+                        $(pair.value + this.duplicateIdSuffix).innerHTML = formattedPrice;
                     }
                 }
-            };
+            }
+            ;
         }.bind(this));
 
         if (typeof(skipTierPricePercentUpdate) === "undefined" && typeof(this.tierPrices) !== "undefined") {
             for (var i = 0; i < this.tierPrices.length; i++) {
-                $$('.benefit').each(function(el) {
-                    var parsePrice = function(html) {
+                $$('.benefit').each(function (el) {
+                    var parsePrice = function (html) {
                         var format = this.priceFormat;
                         var decimalSymbol = format.decimalSymbol === undefined ? "," : format.decimalSymbol;
                         var regexStr = '[^0-9-' + decimalSymbol + ']';
@@ -137,7 +149,7 @@ if (Product && Product.OptionsPrice) {
                         return parseFloat(html);
                     }.bind(this);
 
-                    var updateTierPriceInfo = function(priceEl, tierPriceDiff, tierPriceEl, benefitEl) {
+                    var updateTierPriceInfo = function (priceEl, tierPriceDiff, tierPriceEl, benefitEl) {
                         if (typeof(tierPriceEl) === "undefined") {
                             //tierPrice is not shown, e.g., MAP, no need to update the tier price info
                             return;
@@ -148,7 +160,7 @@ if (Product && Product.OptionsPrice) {
                         tierPriceEl.innerHTML = this.formatPrice(tierPrice);
 
                         var $percent = Selector.findChildElements(benefitEl, ['.percent.tier-' + i]);
-                        $percent.each(function(el) {
+                        $percent.each(function (el) {
                             el.innerHTML = Math.ceil(100 - ((100 / price) * tierPrice));
                         });
                     }.bind(this);
@@ -177,6 +189,5 @@ if (Product && Product.OptionsPrice) {
                 }, this);
             }
         }
-
     }
 }

@@ -40,20 +40,14 @@ class LimeSoda_Cashpresso_Model_Observer_Config
             }
         }
 
-        /*        $currency = Mage::app()->getStore($currentStoreId)->getCurrentCurrencyCode();
-        
-                if ($currency != "EUR") {
-                    $session->addError(Mage::helper('ls_cashpresso')->__("Current currency %s could not be used for Cashpresso payment. Only EUR can be used. Please change the currency settings of you store.", $currency));
-        
-                    Mage::getConfig()->saveConfig('payment/cashpresso/active', 0, 'stores', $currentStoreId);
-                }*/
+        //$currency = Mage::app()->getStore($currentStoreId)->getCurrentCurrencyCode();
 
         if (!Mage::helper('ls_cashpresso')->getAPIKey()) {
-            $session->addError(Mage::helper('ls_cashpresso')->__("API key is empty"));
+            $session->addError(Mage::helper('ls_cashpresso')->__("Cashpresso: API key is empty"));
         }
 
         if (!Mage::helper('ls_cashpresso')->getSecretKey()) {
-            $session->addError(Mage::helper('ls_cashpresso')->__("Secret key is empty"));
+            $session->addError(Mage::helper('ls_cashpresso')->__("Cashpresso: Secret key is empty"));
         }
     }
 

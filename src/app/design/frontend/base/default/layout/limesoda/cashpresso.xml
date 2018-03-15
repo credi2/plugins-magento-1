@@ -9,10 +9,24 @@
 
         <reference name="head">
             <block type="core/template" ifconfig="payment/cashpresso/active"
-                   name="footer.cashpresso.head.script"
-                   translate="label" template="limesoda/cashpresso/page/js/head.phtml"/>
+                   name="footer.cashpresso.head.checkout.script"
+                   translate="label" template="limesoda/cashpresso/page/js/checkout/head.phtml"/>
+        </reference>
+
+        <reference name="before_body_end">
+            <block type="core/template" ifconfig="payment/cashpresso/active"
+                   name="footer.cashpresso.head.catalog.script"
+                   translate="label" template="limesoda/cashpresso/page/js/catalog/footer.phtml"/>
         </reference>
     </catalog_product_view>
+
+    <product_list>
+        <reference name="before_body_end">
+            <block type="core/template" ifconfig="payment/cashpresso/active"
+                   name="footer.cashpresso.head.catalog.script"
+                   translate="label" template="limesoda/cashpresso/page/js/catalog/footer.phtml"/>
+        </reference>
+    </product_list>
 
     <checkout_onepage_index>
         <reference name="before_body_end">
@@ -23,43 +37,63 @@
 
     <checkout_onepage_success>
         <reference name="checkout.success">
-            <action method="setTemplate" ifconfig="payment/cashpresso/active"><template>limesoda/cashpresso/checkout/success.phtml</template></action>
+            <action method="setTemplate" ifconfig="payment/cashpresso/active">
+                <template>limesoda/cashpresso/checkout/success.phtml</template>
+            </action>
         </reference>
     </checkout_onepage_success>
 
     <PRODUCT_TYPE_bundle>
         <reference name="head">
-            <action method="addItem"><type>skin_js</type><name>cashpresso/js/bundle.js</name></action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>cashpresso/js/bundle.js</name>
+            </action>
         </reference>
     </PRODUCT_TYPE_bundle>
 
     <catalog_product_compare_index>
         <reference name="head">
-            <action method="addItem"><type>skin_js</type><name>cashpresso/js/product_options.js</name></action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>cashpresso/js/product_options.js</name>
+            </action>
         </reference>
     </catalog_product_compare_index>
 
     <catalog_product_view>
         <reference name="head">
-            <action method="addItem"><type>skin_js</type><name>cashpresso/js/product_options.js</name></action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>cashpresso/js/product_options.js</name>
+            </action>
         </reference>
     </catalog_product_view>
 
     <catalog_product_send>
         <reference name="head">
-            <action method="addItem"><type>skin_js</type><name>cashpresso/js/product_options.js</name></action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>cashpresso/js/product_options.js</name>
+            </action>
         </reference>
     </catalog_product_send>
 
     <review_product_list>
         <reference name="head">
-            <action method="addItem"><type>skin_js</type><name>cashpresso/js/product_options.js</name></action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>cashpresso/js/product_options.js</name>
+            </action>
         </reference>
     </review_product_list>
 
     <sendfriend_product_send>
         <reference name="head">
-            <action method="addItem"><type>skin_js</type><name>cashpresso/js/product_options.js</name></action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>cashpresso/js/product_options.js</name>
+            </action>
         </reference>
     </sendfriend_product_send>
 </layout>

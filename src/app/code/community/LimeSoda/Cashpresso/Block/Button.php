@@ -67,7 +67,7 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
                 break;
             case 'grouped':
                 /** @var Mage_Catalog_Model_Product_Type_Grouped_Price $_priceModel */
-                $_priceModel = $_product->getPriceModel();
+                //$_priceModel = $_product->getPriceModel();
                 $price = $_product->getMinimalPrice();
 
                 break;
@@ -97,7 +97,9 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
             return '';
         }
 
-        $apiKey = $this->_helper()->getAPIKey();
+        if ($price >= $this->_helper()->getTotalLimit()) {
+            return '';
+        }
 
         $widgetProductLevelIntegration = $this->_helper()->getWidgetType();
 
@@ -106,9 +108,7 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
         if ($widgetProductLevelIntegration) {
             $htmlEntry = '<div class="c2-financing-label" data-c2-financing-amount="' . $price . '"></div>';
         } else {
-            $partnerInfo = $this->_helper()->getPartnerInfo();
-
-            $minPayment = Mage::helper('ls_cashpresso/request')->getDebt($partnerInfo, $price);
+            $minPayment = $this->_helper()->getDebt($price);
 
             if ($minPayment > 0) {
                 $template = strpos($this->_helper()->getTemplate(), '{{price}}') !== false ?
@@ -116,56 +116,10 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
                     $this->_helper()->__("or from € {{price}} / month");
                 $aText = preg_replace("/{{price}}/", $minPayment, $template);
 
-                $htmlEntry = '<a href="#" onclick="C2EcomWizard.startOverlayWizard(' . $price . ')">' . $aText . '</a>';
+                $htmlEntry = '<a id="cashpresso_product_id_' . $productModel->getId() . '" href="#" onclick="C2EcomWizard.startOverlayWizard(' . $price . ')">' . $aText . '</a>';
             }
         }
 
-        $mode = $this->_helper()->getMode() ? 'live' : 'test';
-
-        $customerData = Mage::getModel('ls_cashpresso/customer')->getCustomerData();
-
-        $idStatic = !$widgetProductLevelIntegration ? 'Static' : '';
-        $scriptStatic = !$widgetProductLevelIntegration ? '_static' : '';
-
-        list($locale) = explode('_', strtolower(Mage::app()->getLocale()->getLocaleCode()));
-
-        $interestFreeDays = $this->_helper()->getInterestFreeDay();
-
-        $checkoutButton = $this->_helper()->showCheckoutButton() && Mage::helper('ls_cashpresso/request')->isProductPage() ? 'true' : 'false';
-
-        $jsSrc = $this->_helper()->getMode()
-            ? 'https://my.cashpresso.com/ecommerce/v2/label/c2_ecom_wizard' . $scriptStatic . '.all.min.js' :
-            'https://test.cashpresso.com/frontend/ecommerce/v2/label/c2_ecom_wizard' . $scriptStatic . '.all.min.js';
-
-        /**
-         * country  = at|de
-         * mode
-         * locale
-         *
-         */
-        $cashPressoButton = <<<EOT
-{$htmlEntry}
-  <script id="c2{$idStatic}LabelScript" type="text/javascript" 
-    src="{$jsSrc}" 
-    defer
-    data-c2-partnerApiKey="{$apiKey}" 
-    data-c2-interestFreeDaysMerchant="{$interestFreeDays}"
-    data-c2-mode="{$mode}" 
-    data-c2-locale="{$locale}"
-    data-c2-email="{$customerData->getEmail()}"
-    data-c2-given="{$customerData->getFirstname()}"
-    data-c2-family="{$customerData->getLastname()}"
-    data-c2-birthdate="{$customerData->getDob()}"
-    data-c2-country="{$customerData->getCountryCode()}"
-    data-c2-city="{$customerData->getCity()}"
-    data-c2-zip="{$customerData->getPostcode()}"
-    data-c2-addressline="{$customerData->getStreet()}"
-    data-c2-phone="{$customerData->getTelephone()}"
-    data-c2-iban="{$customerData->getTaxvat()}"
-    data-c2-checkoutCallback="{$checkoutButton}">
-  </script>
-EOT;
-
-        return $cashPressoButton;
+        return $htmlEntry;
     }
 }

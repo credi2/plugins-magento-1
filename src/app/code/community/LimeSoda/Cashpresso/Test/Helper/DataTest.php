@@ -16,7 +16,7 @@ class LimeSoda_Cashpresso_Test_Helper_DataTest extends EcomDev_PHPUnit_Test_Case
 {
     protected function getHelper()
     {
-        return Mage::helper('ls_cashpresso/request');
+        return Mage::helper('ls_cashpresso');
     }
 
     public function getTimeout()
@@ -59,10 +59,12 @@ class LimeSoda_Cashpresso_Test_Helper_DataTest extends EcomDev_PHPUnit_Test_Case
             'verificationHash' => 'fa9f5ec800d771fa491d61e643b9bb3bd44a3eedb8b76e14f01afefd4f5d8dd83d4e570703c73b98dfe4b378defd76367970155e908b88f20dc03d3acd28dfb2'
         );
 
-        $this->assertTrue($this->getHelper()->hashCheck($response, $helperMock->getSecretKey()));
+        $helper = Mage::helper('ls_cashpresso/request');
+
+        $this->assertTrue($helper->hashCheck($response, $helperMock->getSecretKey()));
 
         unset($response['verificationHash']);
 
-        $this->assertFalse($this->getHelper()->hashCheck($response, $helperMock->getSecretKey()));
+        $this->assertFalse($helper->hashCheck($response, $helperMock->getSecretKey()));
     }
 }

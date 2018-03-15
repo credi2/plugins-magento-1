@@ -1,0 +1,102 @@
+<?php
+/**
+ * 22.02.18
+ * LimeSoda - cashpresso
+ *
+ * Created by Anton Sannikov.
+ *
+ * @category    LimeSoda_Cashpresso
+ * @package     cashpresso
+ * @copyright   Copyright (c) 2018 LimeSoda. (http://www.limesoda.com)
+ *
+ * @file app/design/frontend/base/default/template/limesoda/cashpresso/page/js/head.phtml
+ */
+?>
+<?php $helper = $this->helper('ls_cashpresso'); ?>
+<?php $isProductPage = Mage::helper('ls_cashpresso/request')->isProductPage(); ?>
+
+<?php
+$jsScript = $helper->getJsScript();
+$apiKey = $helper->getAPIKey();
+$interestFreeDays = $helper->getInterestFreeDay();
+$mode = $helper->getMode() ? 'live' : 'test';
+$checkoutButton = $helper->showCheckoutButton() && $isProductPage ? 'true' : 'false';
+list($locale) = explode('_', strtolower(Mage::app()->getLocale()->getLocaleCode()));
+
+$customerData = Mage::getModel('ls_cashpresso/customer')->getCustomerData();
+$idStatic = $helper->getWidgetType() ? '' : 'Static';
+$template = $helper->getTemplate();
+$partnerInfo = $helper->getPartnerInfo();
+$minPaybackAmount = isset($partnerInfo['minPaybackAmount']) ? $partnerInfo['minPaybackAmount'] : null;
+$paybackRate = isset($partnerInfo['paybackRate']) ? $partnerInfo['paybackRate'] : null;
+$debugMode = $helper->isDebugEnabled();
+$totalLimit = $helper->getTotalLimit();
+?>
+
+    <script id="c2<?php echo $idStatic ?>LabelScript" type="text/javascript"
+            src="<?php echo $jsScript ?>"
+            defer
+            data-c2-partnerApiKey="<?php echo $apiKey ?>"
+            data-c2-interestFreeDaysMerchant="<?php echo $interestFreeDays ?>"
+            data-c2-mode="<?php echo $mode ?>"
+            data-c2-locale="<?php echo $locale ?>"
+            data-c2-email="<?php echo $customerData->getEmail() ?>"
+            data-c2-given="<?php echo $customerData->getFirstname() ?>"
+            data-c2-family="<?php echo $customerData->getLastname() ?>"
+            data-c2-birthdate="<?php echo $customerData->getDob() ?>"
+            data-c2-country="<?php echo $customerData->getCountryCode() ?>"
+            data-c2-city="<?php echo $customerData->getCity() ?>"
+            data-c2-zip="<?php echo $customerData->getPostcode() ?>"
+            data-c2-addressline="<?php echo $customerData->getStreet() ?>"
+            data-c2-phone="<?php echo $customerData->getTelephone() ?>"
+            data-c2-iban="<?php echo $customerData->getTaxvat() ?>"
+            data-c2-checkoutCallback="<?php echo $checkoutButton ?>">
+    </script>
+
+<?php if ($idStatic): ?>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function (event) {
+            "use strict";
+            if (typeof C2EcomWizard !== 'undefined') {
+                C2EcomWizard.ls_template = function (C2link, price) {
+                    var options = {
+                        template: '<?php echo $template ?>',
+                        debug: '<?php echo $debugMode && ($mode == 'test') ?>',
+                        price: typeof price !== 'undefined' ? price : 0,
+                        limit: <?php echo $totalLimit ?>
+                    }
+
+                    var minPaybackAmount = '<?php echo $minPaybackAmount ?>';
+                    var paybackRate = '<?php echo $paybackRate ?>';
+
+                    function getDebt(price) {
+                        if (minPaybackAmount && paybackRate) {
+                            return Math.round(Math.min(price, Math.max(minPaybackAmount, price * 0.01 * paybackRate)));
+                        }
+                        return 0;
+                    }
+
+                    function getHtml(C2link) {
+                        if (!options.price || (options.price >= options.limit)) {
+                            C2link.style.display = "none";
+                        } else {
+                            C2link.style.display = "block";
+                        }
+
+                        var debtPrice = getDebt(options.price);
+
+                        if (options.debug) {
+                            console.log('-----');
+                            console.log('New product price: ' + price);
+                            console.log('New cashpresso price: ' + debtPrice);
+                        }
+
+                        return options.template.replace("{{price}}", debtPrice);
+                    }
+
+                    return getHtml(C2link);
+                }
+            }
+        });
+    </script>
+<?php endif; ?>

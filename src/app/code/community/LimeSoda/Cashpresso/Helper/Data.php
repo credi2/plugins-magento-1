@@ -238,4 +238,48 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return Mage::app()->getConfig()->getNode(self::XML_CASHPRESSO_PRODUCT_TYPES)->asArray();
     }
+
+    /**
+     * @return null
+     */
+    public function getTotalLimit()
+    {
+        $partnerInfo = $this->getPartnerInfo();
+
+        return empty($partnerInfo['limit']['total']) ? null : $partnerInfo['limit']['total'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getJsScript()
+    {
+        $isStatic = $this->getWidgetType();
+
+        $scriptStatic = !$isStatic ? '_static' : '';
+
+        $jsSrc = $this->getMode()
+            ? 'https://my.cashpresso.com/ecommerce/v2/label/c2_ecom_wizard' . $scriptStatic . '.all.min.js' :
+            'https://test.cashpresso.com/frontend/ecommerce/v2/label/c2_ecom_wizard' . $scriptStatic . '.all.min.js';
+
+        return $jsSrc;
+    }
+
+    /**
+     * @param $price
+     * @return int|mixed
+     */
+    public function getDebt($price)
+    {
+        $partnerInfo = $this->getPartnerInfo();
+
+        $minPayment = 0;
+
+        if (isset($partnerInfo['minPaybackAmount']) && isset($partnerInfo['paybackRate'])) {
+            $minPayment = min($price, max($partnerInfo['minPaybackAmount'],
+                $price * 0.01 * $partnerInfo['paybackRate']));
+        }
+
+        return $minPayment;
+    }
 }

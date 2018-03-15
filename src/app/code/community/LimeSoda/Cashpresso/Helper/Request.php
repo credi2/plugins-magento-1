@@ -15,22 +15,6 @@
 class LimeSoda_Cashpresso_Helper_Request extends Mage_Core_Helper_Abstract
 {
     /**
-     * @param $partnerInfo
-     * @return int|mixed
-     */
-    public function getDebt($partnerInfo, $price)
-    {
-        $minPayment = 0;
-
-        if (isset($partnerInfo['minPaybackAmount']) && isset($partnerInfo['paybackRate'])) {
-            $minPayment = min($price, max($partnerInfo['minPaybackAmount'],
-                $price * 0.01 * $partnerInfo['paybackRate']));
-        }
-
-        return $minPayment;
-    }
-
-    /**
      * @return mixed
      */
     public function getCheckoutUrl()
