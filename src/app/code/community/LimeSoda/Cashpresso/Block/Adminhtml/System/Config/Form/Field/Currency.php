@@ -91,7 +91,7 @@ class LimeSoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Currency
     {
         $id = $element->getHtmlId();
 
-        $html = '<td class="label" colspan="2"><div style="color:red; font-weight: bold; padding-bottom: 40px;" for="'.$id.'">'.$this->_getElementHtml($element).'</div></td>';
+        $html = '<td class="label" colspan="3"><div style="color:red; font-weight: bold; padding-bottom: 40px;" for="'.$id.'">'.$this->_getElementHtml($element).'</div></td>';
 
         //$isDefault = !$this->getRequest()->getParam('website') && !$this->getRequest()->getParam('store');
         $isMultiple = $element->getExtType()==='multiple';

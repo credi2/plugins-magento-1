@@ -14,8 +14,14 @@
 
 class LimeSoda_Cashpresso_Model_Observer_Payment
 {
+    protected function _helper()
+    {
+        return Mage::helper('ls_cashpresso');
+    }
+
     /**
      * @param Varien_Event_Observer $observer
+     * @throws Exception
      */
     public function addPostHashOrder(Varien_Event_Observer $observer)
     {
@@ -24,6 +30,12 @@ class LimeSoda_Cashpresso_Model_Observer_Payment
 
         /** @var Mage_Sales_Model_Quote_Payment $paymentMethod */
         $paymentMethod = $observer->getEvent()->getPayment();
+
+        if ($data->getMethod() == Mage::getModel('ls_cashpresso/payment_method_cashpresso')->getCode()) {
+            if ($paymentMethod->getQuote()->getSubtotal() >= $this->_helper()->getTotalLimit()) {
+                throw new Exception($this->_helper()->__('Unable to set Payment Method.'));
+            }
+        }
 
         if ($token = Mage::app()->getRequest()->getPost('cashpressoToken')) {
             $paymentMethod->setAdditionalData($token);
