@@ -81,3 +81,4 @@ Product level integration is recommended. Static Label Version has several disad
 "Cashpresso: Unexpected error - please contact your account manager","Cashpresso: Unexpected error - please contact your account manager"
 "Currency mismatch","Currency mismatch"
 "Cashpresso account currency (%s) does not match to store currency (%s).","Cashpresso account currency (%s) does not match to store currency (%s)."
+"Please login or register to continue with cashpresso.","Please login or register to continue with cashpresso."
