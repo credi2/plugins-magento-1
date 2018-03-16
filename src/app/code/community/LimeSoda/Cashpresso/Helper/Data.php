@@ -32,6 +32,8 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 
     const XML_PARTNER_CONTRACT_TEXT = 'payment/cashpresso/sign_contract_text';
 
+    const XML_PARTNER_SUCCESS_TEXT = 'payment/cashpresso/success_text';
+
     const XML_PARTNER_PLACE_TO_SHOW = 'payment/cashpresso/place_to_show';
 
     const XML_PARTNER_CHECKOUT_BUTTON = 'payment/cashpresso/checkout_button';
@@ -173,6 +175,16 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     public function getContractText($storeId = null)
     {
         return Mage::getStoreConfig(self::XML_PARTNER_CONTRACT_TEXT, $storeId);
+    }
+
+    /**
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getSuccessText($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PARTNER_SUCCESS_TEXT, $storeId);
     }
 
     /**

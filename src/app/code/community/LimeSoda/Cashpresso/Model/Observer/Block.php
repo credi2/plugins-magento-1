@@ -81,7 +81,16 @@ class LimeSoda_Cashpresso_Model_Observer_Block
 
             $purchaseId = $order->getPayment()->getAdditionalData();
 
+            $successMessage = $this->_helper()->getSuccessText();
+
+            $successTitle = Mage::helper('checkout')->__('Your order has been received.');
+
             $script = <<<EOT
+<script type="text/javascript">
+//<![CDATA[
+document.addEventListener("DOMContentLoaded", function (event) {"use strict";function c2SuccessCallback() {var successTitle = document.getElementById('ls_cashpresso_success_title');if (typeof(successTitle) != "undefined"){successTitle.innerHTML = "{$successTitle}";}var contractSpan = document.getElementById('ls_cashpresso_contract_text');if (typeof(contractSpan) != "undefined"){contractSpan.innerHTML = "{$successMessage}";}}});
+//]]>
+</script> 
 <script id="c2PostCheckoutScript" type="text/javascript"
     src="https://my.cashpresso.com/ecommerce/v2/checkout/c2_ecom_post_checkout.all.min.js"
     defer
@@ -96,7 +105,7 @@ EOT;
             $processor = $helper->getPageTemplateProcessor();
             $message = $processor->filter($this->_helper()->getContractText());
 
-            $transport->setHtml($html . $script . $message);
+            $transport->setHtml($html . $script . "<p class=\"a-center\" style=\"margin-top:10px;\" id=\"ls_cashpresso_contract_text\">{$message}</p>");
         }
     }
 
