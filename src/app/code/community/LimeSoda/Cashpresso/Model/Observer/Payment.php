@@ -32,7 +32,7 @@ class LimeSoda_Cashpresso_Model_Observer_Payment
         $paymentMethod = $observer->getEvent()->getPayment();
 
         if ($data->getMethod() == Mage::getModel('ls_cashpresso/payment_method_cashpresso')->getCode()) {
-            if ($paymentMethod->getQuote()->getSubtotal() >= $this->_helper()->getTotalLimit()) {
+            if ($paymentMethod->getQuote()->getGrandTotal() >= $this->_helper()->getTotalLimit()) {
                 throw new Exception($this->_helper()->__('Unable to set Payment Method.'));
             }
         }

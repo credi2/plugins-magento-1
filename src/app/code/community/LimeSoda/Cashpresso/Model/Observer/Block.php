@@ -89,6 +89,7 @@ class LimeSoda_Cashpresso_Model_Observer_Block
     data-c2-purchaseId="{$purchaseId}"
     data-c2-mode="{$mode}"
     data-c2-locale="{$locale}">
+    data-c2-successCallback="true"
 </script>
 EOT;
             $helper = Mage::helper('cms');
