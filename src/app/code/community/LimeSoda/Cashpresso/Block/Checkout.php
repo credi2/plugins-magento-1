@@ -39,6 +39,8 @@ class LimeSoda_Cashpresso_Block_Checkout extends Mage_Core_Block_Template
 
         $interestFreeDays = $this->_helper()->getInterestFreeDay();
 
+        $jsScr = $this->_helper()->getJsCheckoutScript();
+
         /**
          * country  = at|de
          * mode
@@ -47,7 +49,7 @@ class LimeSoda_Cashpresso_Block_Checkout extends Mage_Core_Block_Template
          */
         $cashPressoButton = <<<EOT
 <script id="c2CheckoutScript" type="text/javascript" 
-    src="https://my.cashpresso.com/ecommerce/v2/checkout/c2_ecom_checkout.all.min.js" 
+    src="{$jsScr}" 
     defer
     data-c2-partnerApiKey="{$apiKey}" 
     data-c2-interestFreeDaysMerchant="{$interestFreeDays}"

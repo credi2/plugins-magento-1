@@ -173,6 +173,8 @@
                 <place_to_show>3</place_to_show>
                 <debug_mode>1</debug_mode>
                 <instructions><![CDATA[Cashpresso allows you to pay for purchases in installments. You can choose your installment amount when buying and change it anytime after.]]></instructions>
+                <success_button_title>Purchase paid</success_button_title>
+                <success_title>Your order has been received.</success_title>
             </cashpresso>
         </payment>
     </default>
@@ -186,6 +188,7 @@
                     <sign_contract_text><![CDATA[Bestellung bezahlen und Einkauf abschließen. Schließe deine Bestellung ab indem du deinen Einkauf mit cashpresso bezahlst. Durch Klick auf „Jetzt bezahlen“ öffnet sich ein Fenster und du kannst den Ratenkauf mit cashpresso abschließen. ]]></sign_contract_text>
                     <success_text><![CDATA[Vielen Dank für deinen Einkauf! Du hast die Bestellung erfolgreich abgeschlossen und deinen Einkauf mit cashpresso bezahlt.]]></success_text>
                     <instructions><![CDATA[Cashpresso ermöglicht dir Einkäufe in Raten zu bezahlen. Deine Ratenhöhe kannst du dir beim Kauf aussuchen und später jederzeit ändern.]]></instructions>
+                    <success_button_title>Einkauf bezahlt</success_button_title>
                 </cashpresso>
             </payment>
         </german>

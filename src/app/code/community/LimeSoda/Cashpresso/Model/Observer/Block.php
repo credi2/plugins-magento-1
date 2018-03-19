@@ -83,23 +83,34 @@ class LimeSoda_Cashpresso_Model_Observer_Block
 
             $successMessage = $this->_helper()->getSuccessText();
 
-            $successTitle = Mage::helper('checkout')->__('Your order has been received.');
+            $successButtonTitle = $this->_helper()->getSuccessButtonTitle();
+
+            $successTitle = $this->_helper()->getSuccessTitle();
+
+            $jsScr = $this->_helper()->getJsPostCheckoutScript();
 
             $script = <<<EOT
 <script type="text/javascript">
 //<![CDATA[
-document.addEventListener("DOMContentLoaded", function (event) {"use strict";function c2SuccessCallback() {var successTitle = document.getElementById('ls_cashpresso_success_title');if (typeof(successTitle) != "undefined"){successTitle.innerHTML = "{$successTitle}";}var contractSpan = document.getElementById('ls_cashpresso_contract_text');if (typeof(contractSpan) != "undefined"){contractSpan.innerHTML = "{$successMessage}";}}});
+if (!window.c2SuccessCallback) { window.c2SuccessCallback = function() {var successTitle = document.getElementById('ls_cashpresso_success_title');
+var successTitle = document.getElementById('ls_cashpresso_success_title');
+if (typeof(successTitle) != "undefined"){successTitle.innerHTML = "{$successTitle}";}
+var contractSpan = document.getElementById('ls_cashpresso_contract_text');
+if (typeof(contractSpan) != "undefined"){contractSpan.innerHTML = "{$successMessage}";}
+var btnPrimary = document.getElementsByClassName("c2-btn-primary");
+if (btnPrimary.length){if (typeof btnPrimary[0] != "undefined") {btnPrimary[0].innerHTML = "$successButtonTitle";}}
+}}
 //]]>
 </script> 
 <script id="c2PostCheckoutScript" type="text/javascript"
-    src="https://my.cashpresso.com/ecommerce/v2/checkout/c2_ecom_post_checkout.all.min.js"
+    src="{$jsScr}"
     defer
     data-c2-partnerApiKey="{$apiKey}"
     data-c2-purchaseId="{$purchaseId}"
     data-c2-mode="{$mode}"
-    data-c2-locale="{$locale}">
+    data-c2-locale="{$locale}"
     data-c2-successCallback="true"
-</script>
+></script>
 EOT;
             $helper = Mage::helper('cms');
             $processor = $helper->getPageTemplateProcessor();

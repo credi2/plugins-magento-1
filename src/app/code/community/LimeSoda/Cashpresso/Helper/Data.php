@@ -34,6 +34,10 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 
     const XML_PARTNER_SUCCESS_TEXT = 'payment/cashpresso/success_text';
 
+    const XML_PARTNER_SUCCESS_BUTTON_TITLE = 'payment/cashpresso/success_button_title';
+
+    const XML_PARTNER_SUCCESS_TITLE = 'payment/cashpresso/success_title';
+
     const XML_PARTNER_PLACE_TO_SHOW = 'payment/cashpresso/place_to_show';
 
     const XML_PARTNER_CHECKOUT_BUTTON = 'payment/cashpresso/checkout_button';
@@ -192,6 +196,26 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
      * @param null $storeId
      * @return mixed
      */
+    public function getSuccessButtonTitle($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PARTNER_SUCCESS_BUTTON_TITLE, $storeId);
+    }
+
+    /**
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getSuccessTitle($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PARTNER_SUCCESS_TITLE, $storeId);
+    }
+
+    /**
+     *
+     * @param null $storeId
+     * @return mixed
+     */
     public function getPlaceToShow($storeId = null)
     {
         return Mage::getStoreConfig(self::XML_PARTNER_PLACE_TO_SHOW, $storeId);
@@ -271,18 +295,39 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
         return empty($partnerInfo['currency']) ? null : $partnerInfo['currency'];
     }
 
+
+    protected function _getDomain()
+    {
+        return 'https://' . ($this->getMode() ? 'my.cashpresso.com' : 'test.cashpresso.com/frontend') . '/';
+    }
     /**
      * @return string
      */
-    public function getJsScript()
+    public function getJsLabelScript()
     {
-        $isStatic = $this->getWidgetType();
+        $scriptStatic = !$this->getWidgetType() ? '_static' : '';
 
-        $scriptStatic = !$isStatic ? '_static' : '';
+        $jsSrc = $this->_getDomain() . 'ecommerce/v2/label/c2_ecom_wizard' . $scriptStatic . '.all.min.js';
 
-        $jsSrc = $this->getMode()
-            ? 'https://my.cashpresso.com/ecommerce/v2/label/c2_ecom_wizard' . $scriptStatic . '.all.min.js' :
-            'https://test.cashpresso.com/frontend/ecommerce/v2/label/c2_ecom_wizard' . $scriptStatic . '.all.min.js';
+        return $jsSrc;
+    }
+
+    /**
+     * @return string
+     */
+    public function getJsCheckoutScript()
+    {
+        $jsSrc = $this->_getDomain() . 'ecommerce/v2/checkout/c2_ecom_checkout.all.min.js';
+
+        return $jsSrc;
+    }
+
+    /**
+     * @return string
+     */
+    public function getJsPostCheckoutScript()
+    {
+        $jsSrc = $this->_getDomain() . 'ecommerce/v2/checkout/c2_ecom_post_checkout.all.min.js';
 
         return $jsSrc;
     }
@@ -298,8 +343,8 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
         $minPayment = 0;
 
         if (isset($partnerInfo['minPaybackAmount']) && isset($partnerInfo['paybackRate'])) {
-            $minPayment = min($price, max($partnerInfo['minPaybackAmount'],
-                $price * 0.01 * $partnerInfo['paybackRate']));
+            $minPayment = round(min($price, max($partnerInfo['minPaybackAmount'],
+                $price * 0.01 * $partnerInfo['paybackRate'])),2);
         }
 
         return $minPayment;

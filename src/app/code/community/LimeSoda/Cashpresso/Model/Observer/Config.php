@@ -36,10 +36,10 @@ class LimeSoda_Cashpresso_Model_Observer_Config
 
                         if ($currency != $this->_helper()->getContractCurrency()) {
                             if (Mage::getStoreConfig('payment/cashpresso/active', $store->getId())) {
-                                $session->addError($this->_helper()->__('Currency %s for the store "%s" could not be used for Cashpresso payment. Use only EUR. Please change the currency settings of you store.', $currency, $store->getName()));
+                                $session->addError($this->_helper()->__('Currency %s for the store "%s" could not be used for Cashpresso payment. Use only EUR. Please change the currency settings for your store.', $currency, $store->getName()));
                                 Mage::getConfig()->saveConfig('payment/cashpresso/active', 0, 'stores', $store->getId());
                             } else {
-                                $session->addNotice($this->_helper()->__('Currency %s for the store "%s" could not be used for Cashpresso payment. Use only EUR. Please change the currency settings of you store.', $currency, $store->getName()));
+                                $session->addNotice($this->_helper()->__('Currency %s for the store "%s" could not be used for Cashpresso payment. Use only EUR. Please change the currency settings for your store.', $currency, $store->getName()));
                             }
                         }
                     }
@@ -48,11 +48,11 @@ class LimeSoda_Cashpresso_Model_Observer_Config
         }
 
         if (!$this->_helper()->getAPIKey()) {
-            $session->addError($this->_helper()->__("Cashpresso: API key is empty"));
+            $session->addError($this->_helper()->__("Cashpresso: API key is missing"));
         }
 
         if (!$this->_helper()->getSecretKey()) {
-            $session->addError($this->_helper()->__("Cashpresso: Secret key is empty"));
+            $session->addError($this->_helper()->__("Cashpresso: Secret key is missing"));
         }
     }
 }

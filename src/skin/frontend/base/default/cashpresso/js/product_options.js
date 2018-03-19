@@ -101,7 +101,15 @@ if (Product && Product.OptionsPrice) {
                 // \/ cashpresso
                 if (typeof C2EcomWizard !== 'undefined') {
                     if (document.getElementById("c2-financing-label-0")) {
-                        C2EcomWizard.refreshAmount('c2-financing-label-0', price);
+                        if (price > 0) {
+                            C2EcomWizard.refreshAmount('c2-financing-label-0', price);
+                        }
+
+                        var C2link = document.getElementById("c2-financing-label-0");
+
+                        if (typeof C2EcomWizard.ls_status !== 'undefined') {
+                            C2EcomWizard.ls_status(C2link, price);
+                        }
                     } else if (document.getElementById('cashpresso_product_id_' + this.productId)) {
                         var C2link = document.getElementById('cashpresso_product_id_' + this.productId);
                         C2link.onclick = function () {
