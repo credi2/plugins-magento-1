@@ -134,7 +134,7 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
             return false;
         }
 
-        $partnerInfo = $this->generatePartnerInfo();
+        $partnerInfo = $this->getPartnerInfo();
 
         return isset($partnerInfo['interestFreeCashpresso']) ? $partnerInfo['interestFreeCashpresso'] : false;
     }
