@@ -39,7 +39,7 @@ class LimeSoda_Cashpresso_Model_Api_Account extends LimeSoda_Cashpresso_Model_Ap
                         if (!empty($respond['targetAccounts'])) {
                             return $respond['targetAccounts'];
                         } else {
-                            $this->getSession()->addWarning($this->_helper()->__("Cashpresso: targetAccounts is empty"));
+                            $this->getSession()->addWarning($this->_helper()->__("cashpresso: targetAccounts is empty"));
                         }
                     }
                 }

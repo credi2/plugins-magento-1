@@ -71,43 +71,43 @@ abstract class LimeSoda_Cashpresso_Model_Api_Abstract
 
         switch ($code) {
             case self::CP_ERROR_MULTIPLE_ERRORS:
-                $message = $this->_helper()->__('Cashpresso: Multiple validation errors - check errors element for details');
+                $message = $this->_helper()->__('cashpresso: Multiple validation errors - check errors element for details');
                 break;
             case self::CP_ERROR_INVALID_INPUT:
-                $message = $this->_helper()->__('Cashpresso: Input is invalid or malformed');
+                $message = $this->_helper()->__('cashpresso: Input is invalid or malformed');
                 break;
             case self::CP_ERROR_LIMIT_EXCEEDED:
-                $message = $this->_helper()->__('Cashpresso: The amount or necessary prepayment is too high');
+                $message = $this->_helper()->__('cashpresso: The amount or necessary prepayment is too high');
                 break;
             case self::CP_ERROR_INVALID_ZIP:
-                $message = $this->_helper()->__('Cashpresso: Zip address validation failed');
+                $message = $this->_helper()->__('cashpresso: Zip address validation failed');
                 break;
             case self::CP_ERROR_UNPARSABLE:
-                $message = $this->_helper()->__('Cashpresso: Input cannot be parsed - format error');
+                $message = $this->_helper()->__('cashpresso: Input cannot be parsed - format error');
                 break;
             case self::CP_ERROR_VERIFICATION_FAILED:
-                $message = $this->_helper()->__('Cashpresso: Verification failed (e.g. of TAN code)');
+                $message = $this->_helper()->__('cashpresso: Verification failed (e.g. of TAN code)');
                 break;
             case self::CP_ERROR_VERIFICATION_TIMEOUT:
-                $message = $this->_helper()->__('Cashpresso: Verification failed due to timeout (e.g. TAN timeout)');
+                $message = $this->_helper()->__('cashpresso: Verification failed due to timeout (e.g. TAN timeout)');
                 break;
             case self::CP_ERROR_INVALID_STATE:
-                $message = $this->_helper()->__('Cashpresso: Operation is not allowed in current state');
+                $message = $this->_helper()->__('cashpresso: Operation is not allowed in current state');
                 break;
             case self::CP_ERROR_DUPLICATE_PHONE:
-                $message = $this->_helper()->__('Cashpresso: Customer with phone number already exists');
+                $message = $this->_helper()->__('cashpresso: Customer with phone number already exists');
                 break;
             case self::CP_ERROR_DUPLICATE_IBAN:
-                $message = $this->_helper()->__('Cashpresso: Customer with iban already exists');
+                $message = $this->_helper()->__('cashpresso: Customer with iban already exists');
                 break;
             case self::CP_ERROR_DUPLICATE_EMAIL:
-                $message = $this->_helper()->__('Cashpresso: Customer with email already exists');
+                $message = $this->_helper()->__('cashpresso: Customer with email already exists');
                 break;
             case self::CP_ERROR_INTERNAL_SERVER_ERROR:
-                $message = $this->_helper()->__('Cashpresso: Customer with this identity (name, birthdate, etc..) already exists');
+                $message = $this->_helper()->__('cashpresso: Customer with this identity (name, birthdate, etc..) already exists');
                 break;
             case self::CP_ERROR_DUPLICATE_CUSTOMER:
-                $message = $this->_helper()->__('Cashpresso: Unexpected error - please contact your account manager');
+                $message = $this->_helper()->__('cashpresso: Unexpected error - please contact your account manager');
                 break;
         }
 

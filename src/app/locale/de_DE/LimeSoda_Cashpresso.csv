@@ -36,8 +36,8 @@
 "Payment from Applicable Countries","Payment from Applicable Countries"
 "Payment from Specific Countries","Payment from Specific Countries"
 "Instructions","Instructions"
-"Widget status","Widget status"
-"Widget integration","Widget integration"
+"Product label status","Product label status"
+"Product label integration","Product label integration"
 "<![CDATA[
 Product level integration is recommended. Static Label Version has several disadvantages:
     - No returning cashpresso customer detection

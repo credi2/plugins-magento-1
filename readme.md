@@ -48,40 +48,40 @@ Find section "**Direct package file upload**" and upload **gz** archive. Then pr
 
 1. Copy all files from ```src/app``` to ```app``` folder in your project.
 2. ```src/skin/frontend/base/default/cashpresso/images``` to ```skin/frontend/base/default/cashpresso/images folder in your project```
-3. Run your magento cron file. The module includes a cronjob, which runs every half hour. It updates the information about your Cashpresso account to ```cashpresso/partnerinfo``` config which is accessible in the database only.
+3. Run your magento cron file. The module includes a cronjob, which runs every half hour. It updates the information about your cashpresso account to ```cashpresso/partnerinfo``` config which is accessible in the database only.
 
 ## 2.Configuration
 
 1. Logout your current admin session and then login again.
 2. All settings are here: 
     
-    ```Magento Admin Menu / System / Configuration / Payment Methods / Cashpresso```
+    ```Magento Admin Menu / System / Configuration / Payment Methods / cashpresso```
     
-   By default the Cashpresso Payment Module is not activated. You need to get an API key and Secret Key, which you can find in your Cashpresso account.
+   By default the cashpresso Payment Module is not activated. You need to get an API key and Secret Key, which you can find in your cashpresso account.
    Fill the fields API KEY and Secret Key in the magento settings and save your settings. (You can fill other settings also, but don't activate the payment method "Cahspresso" until you have not saved your API Key and Secret Key).
-   Now you should receive the informations of the settings in your Cashpresso account:
+   Now you should receive the informations of the settings in your cashpresso account:
    
    ![Step 1](configuration.png)
    
-   The option ```Target account``` will be available only, if target accounts exists in your Cashpresso account. 
+   The option ```Target account``` will be available only, if target accounts exists in your cashpresso account. 
     
 3. Options table 
   
    Option | Description | Dependency
    ------ | ----------- | ---
    Account | Only needed, if you want to receive payments to different bank accounts on a per purchase basis. If not specified the purchase is paid to the main bank account. Please contact your account manager for more information on using multiple target bank accounts. Notice: You cannot create, edit or remove accounts in this module. |
-   Mode | You can test the payment method "Cashpresso" using the test mode. Its recommended to use the test mode at the beginning. |
+   Mode | You can test the payment method "cashpresso" using the test mode. Its recommended to use the test mode at the beginning. |
    Title | This is the title of the payment method on the checkout page |
-   Payment from Applicable Countries | You can set the filter to restrict the availability of the payment method "Cashpresso" for specific countries. |
-   Payment from Specific Countries | If restricted availability is selected in the step before, select here the countries, where the payment method "Cashpresso" is available | 
+   Payment from Applicable Countries | You can set the filter to restrict the availability of the payment method "cashpresso" for specific countries. |
+   Payment from Specific Countries | If restricted availability is selected in the step before, select here the countries, where the payment method "cashpresso" is available | 
    Instructions | This is the description of the payment method, that appears on the checkout page |
-   Widget status | Switch it to YES if you want to show information about cashpresso rates on the product page or on category pages |
-   Widget integration | You can choose between "Product level integration" (recommended) and "Static Label Integration". This means you use the Cashpresso Javascript or your custom text for the displayed rates. The Static Label Version has several disadvantages: <br> - No detection of returning cashpresso customers <br> - No indication for a successful risk check <br> - Server side calculation of rates is necessary. | Widget integration
-   Show checkout button | Show the checkout button on the cashpresso popup, if you selected ```Show checkout button``` for the Widget integration. | Show checkout button, Widget status
+   Product label status | Switch it to YES if you want to show information about cashpresso rates on the product page or on category pages |
+   Product label integration | You can choose between "Product level integration" (recommended) and "Static Label Integration". This means you use the cashpresso Javascript or your custom text for the displayed rates. The Static Label Version has several disadvantages: <br> - No detection of returning cashpresso customers <br> - No indication for a successful risk check <br> - Server side calculation of rates is necessary. | Product label integration
+   Show checkout button | Show the checkout button on the cashpresso popup, if you selected ```Show checkout button``` for the Product label integration. | Show checkout button, Product label status
    Checkout url | The URL of your checkout page |
-   Place to show | The place, where to show the cashpresso rates information | Place to show, Widget status  
-   Template | The template for the cashpresso rates if you selected ```Static Label Integration``` for the Widget integration | Widget status, Widget integration
-   The timeout for the order | Time in hours to wait for the approvement of the payment from Cashpresso, after placing the order. |
+   Place to show | The place, where to show the cashpresso rates information | Place to show, Product label status  
+   Template | The template for the cashpresso rates if you selected ```Static Label Integration``` for the Product label integration | Product label status, Product label integration
+   The timeout for the order | Time in hours to wait for the approvement of the payment from cashpresso, after placing the order. |
    Sign contract text | The text on the success page for the following order approvement |
    Write log | Choose YES, if the api requests should be written to the log files. |
    Sort Order | Sets the order of the payment methods in the list on the checkout page| 
@@ -102,9 +102,9 @@ If it's set to "yes", the button redirects to the cart page only. Otherwise it r
 
 - customers can calculate automatically their cashpresso rates on a product page. 
 - customers can add one or more products to their cart 
-- on the checkout, in the payment step, customers can choose "Cashpresso" as their payment method and recalculate their rates for the order.
-- after a successful purchase, customers receive a success page, where the Cashpresso widget is triggered and if they are first time customers, they are asked to start a videocall with Cashpresso to approve their account. If they are already registered, Cashpresso approves the rate.
-- after the approvement Cashpresso sends the status of the transaction to your store (success, canceled/timeout). If the status is "canceled/timeout", the order will be canceled automatically. The status "success" will assign the status "in process" to the related order.
+- on the checkout, in the payment step, customers can choose "cashpresso" as their payment method and recalculate their rates for the order.
+- after a successful purchase, customers receive a success page, where the cashpresso widget is triggered and if they are first time customers, they are asked to start a videocall with cashpresso to approve their account. If they are already registered, cashpresso approves the rate.
+- after the approvement cashpresso sends the status of the transaction to your store (success, canceled/timeout). If the status is "canceled/timeout", the order will be canceled automatically. The status "success" will assign the status "in process" to the related order.
   
 
 ## 4. For developers
@@ -113,7 +113,7 @@ If it's set to "yes", the button redirects to the cart page only. Otherwise it r
  - Mage_Checkout_Block_Onepage_Success
  - Mage_Catalog_Block_Product_Price
 
-### 4.2 Adding the Cashpresso price information on catalog and product pages
+### 4.2 Adding the cashpresso price information on catalog and product pages
 By default, the price can only be shown for the product type of "simple products". But you can use an observer if you want to add the same functionality for configurable products or for other product types.
 
     cashpresso_type_handler
@@ -147,7 +147,7 @@ Some of your observer classes:
         }
     }
 
-### 4.3 Change the place of the Cashpresso price on your product page
+### 4.3 Change the place of the cashpresso price on your product page
 By default it's placed right after the standard price. 
 If you want to change the place, you need to change the parameter "Place to show" to "In catalog/search".
 

@@ -5,7 +5,7 @@
  *
  * Created by Anton Sannikov.
  *
- * @category    Lime_Soda
+ * @category    LimeSoda_Cashpresso
  * @package     as
  * @copyright   Copyright (c) 2018 LimeSoda. (http://www.limesoda.com)
  *
@@ -29,7 +29,7 @@ class LimeSoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Currency
      */
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
-        $text = $this->_helper()->__("Cashpresso account currency (%s) does not match to store currency (%s).", $this->_helper()->getContractCurrency(), $this->getStoreCurrency());
+        $text = $this->_helper()->__("cashpresso account currency (%s) does not match to store currency (%s).", $this->_helper()->getContractCurrency(), $this->getStoreCurrency());
 
         if ($this->checkCurrency() === false) {
             return '<div id="' . $element->getHtmlId() . '">' .

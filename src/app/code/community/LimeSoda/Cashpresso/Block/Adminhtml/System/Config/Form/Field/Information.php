@@ -140,7 +140,7 @@ class LimeSoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Information
 
             if (isset($partnerInfo['interestFreeCashpresso'])) {
                 $list[] = array(
-                    'title' => $this->helper('ls_cashpresso')->__('Interest Free Cashpresso'),
+                    'title' => $this->helper('ls_cashpresso')->__('Interest Free cashpresso'),
                     'value' => (int)$partnerInfo['interestFreeCashpresso']
                 );
             }
