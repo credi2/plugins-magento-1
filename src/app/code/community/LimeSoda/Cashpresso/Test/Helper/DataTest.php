@@ -34,17 +34,17 @@ class LimeSoda_Cashpresso_Test_Helper_DataTest extends EcomDev_PHPUnit_Test_Case
         $params = array('minPaybackAmount' => 10, 'paybackRate' => 2);
         $price = 1000;
 
-        $this->assertEquals(20, $this->getHelper()->getDebt($params, $price));
+        $this->assertEquals(20, $this->getHelper()->getDebt($price, $params));
 
         $params = array('minPaybackAmount' => 2, 'paybackRate' => 10);
 
-        $this->assertEquals(100, $this->getHelper()->getDebt($params, $price));
+        $this->assertEquals(100, $this->getHelper()->getDebt($price, $params));
 
-        $this->assertEquals(1, $this->getHelper()->getDebt($params, 1));
+        $this->assertEquals(1, $this->getHelper()->getDebt(1, $params));
 
         $params = array('paybackRate' => 2);
 
-        $this->assertEquals(0, $this->getHelper()->getDebt($params, $price));
+        $this->assertEquals(0, $this->getHelper()->getDebt($price, $params));
     }
 
     public function testHashCheck()

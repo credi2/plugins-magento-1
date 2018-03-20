@@ -334,11 +334,12 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * @param $price
-     * @return int|mixed
+     * @param null $params
+     * @return float|int
      */
-    public function getDebt($price)
+    public function getDebt($price, $params = null)
     {
-        $partnerInfo = $this->getPartnerInfo();
+        $partnerInfo = $params ? $params : $this->getPartnerInfo();
 
         $minPayment = 0;
 
