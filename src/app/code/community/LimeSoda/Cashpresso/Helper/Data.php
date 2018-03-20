@@ -44,8 +44,6 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 
     const XML_PARTNER_DEBUG_MODE = 'payment/cashpresso/debug_mode';
 
-    const XML_PARTNER_TARGET_ACCOUNT = 'payment/cashpresso/account';
-
     const XML_PARTNER_CHECKOUT_URL = 'payment/cashpresso/checkout_url';
 
     const XML_CASHPRESSO_PRODUCT_TYPES = 'frontend/cashpresso/product_types';
@@ -256,14 +254,6 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     public function isDebugEnabled()
     {
         return Mage::getStoreConfig(self::XML_PARTNER_DEBUG_MODE);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTargetAccount()
-    {
-        return Mage::getStoreConfig(self::XML_PARTNER_TARGET_ACCOUNT);
     }
 
     /**

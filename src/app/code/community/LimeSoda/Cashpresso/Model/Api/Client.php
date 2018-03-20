@@ -70,10 +70,6 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
             'callbackUrl' => Mage::getUrl('cashpresso/api/callback', array('_secure' => true))
         );
 
-        if (!empty($account = $this->_helper()->getTargetAccount())) {
-            $data['targetAccountId'] = $account;
-        }
-
         $data['verificationHash'] = hash('sha512', $this->getHash($price, $order->getIncrementId(), $account));
 
         if ($customerID = Mage::getModel('customer/session')->getCustomer()->getId()) {
