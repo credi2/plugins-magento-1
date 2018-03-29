@@ -159,7 +159,6 @@
                 <title>Financing</title>
                 <order_status>pending</order_status>
                 <allowspecific>0</allowspecific>
-                <group>offline</group>
                 <status>1</status>
                 <mode>0</mode>
                 <widget_type>1</widget_type>
