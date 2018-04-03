@@ -27,6 +27,8 @@ class LimeSoda_Cashpresso_Model_Api_Account extends LimeSoda_Cashpresso_Model_Ap
                 'verificationHash' => hash('sha512', $this->getSecretKey() . ';' . $this->getPartnerApiKey())
             )), 'application/json');
 
+            Mage::log(mageDebugBacktrace(true), Zend_Log::DEBUG, 'target_account.log');
+            
             try {
                 $response = $request->request();
 

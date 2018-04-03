@@ -34,7 +34,11 @@ class LimeSoda_Cashpresso_Model_Observer_Block
         }
 
         $orderId = current($orderIds);
-        Mage::register('ls_success_order', Mage::getModel('sales/order')->load($orderId));
+
+        /** @var Mage_Sales_Model_Order $order */
+        $order = Mage::getModel('sales/order')->load($orderId);
+
+        Mage::register('ls_success_order', $order);
     }
 
     /**
@@ -141,5 +145,28 @@ EOT;
         $html = Mage::app()->getLayout()->createBlock('ls_cashpresso/button')->setProduct($product)->emulateToHtml();
 
         $transport->setHtml($transport->getHtml() . $html);
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     */
+    public function defineTemplate(Varien_Event_Observer $observer)
+    {
+        $block = $observer->getEvent()->getBlock();
+
+        if ($block instanceof Mage_Checkout_Block_Onepage_Success) {
+
+            if (!$this->_helper()->getAPIKey()) {
+                return;
+            }
+
+            if ($order = Mage::registry('ls_success_order')) {
+                if ($order->getPayment()->getAdditionalData()) {
+                    $block->setTemplate('limesoda/cashpresso/checkout/success.phtml');
+                } else {
+                    Mage::unregister('ls_success_order');
+                }
+            }
+        }
     }
 }

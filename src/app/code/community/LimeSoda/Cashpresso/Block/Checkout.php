@@ -44,8 +44,8 @@ class LimeSoda_Cashpresso_Block_Checkout extends Mage_Core_Block_Template
         /**
          * country  = at|de
          * mode
-         * locale
-         *
+         * locale⁄
+         *!
          */
         $cashPressoButton = <<<EOT
 <script id="c2CheckoutScript" type="text/javascript" 
