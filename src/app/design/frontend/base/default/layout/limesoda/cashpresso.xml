@@ -4,6 +4,8 @@
 
     <ls_cashpresso_price>
         <reference name="before_body_end">
+            <action method="unsetChild"><name>footer.cashpresso.head.catalog.script</name></action>
+
             <block type="core/template" ifconfig="payment/cashpresso/active"
                    name="footer.cashpresso.head.catalog.script"
                    translate="label" template="limesoda/cashpresso/page/js/catalog/footer.phtml"/>
@@ -24,6 +26,14 @@
 
         <update handle="ls_cashpresso_price"/>
     </catalog_product_view>
+
+    <catalog_category_view>
+        <update handle="ls_cashpresso_price"/>
+    </catalog_category_view>
+
+    <catalog_category_layered>
+        <update handle="ls_cashpresso_price"/>
+    </catalog_category_layered>
 
     <wishlist_index_index>
         <update handle="ls_cashpresso_price"/>
