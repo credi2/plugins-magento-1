@@ -96,7 +96,7 @@ class LimeSoda_Cashpresso_Model_Observer_Block
             $script = <<<EOT
 <script type="text/javascript">
 //<![CDATA[
-if (!window.c2SuccessCallback) { window.c2SuccessCallback = function() {var successTitle = document.getElementById('ls_cashpresso_success_title');
+if (!window.c2SuccessCallback) { window.c2SuccessCallback = function() {
 var successTitle = document.getElementById('ls_cashpresso_success_title');
 if (typeof(successTitle) != "undefined"){successTitle.innerHTML = "{$successTitle}";}
 var contractSpan = document.getElementById('ls_cashpresso_contract_text');
@@ -120,7 +120,7 @@ EOT;
             $processor = $helper->getPageTemplateProcessor();
             $message = $processor->filter($this->_helper()->getContractText());
 
-            $transport->setHtml($html . $script . "<p class=\"a-center\" style=\"margin-top:10px;\" id=\"ls_cashpresso_contract_text\">{$message}</p>");
+            $transport->setHtml(str_replace("{{cashpresso}}", $script . "<p class=\"a-center\" style=\"margin-top:10px;\" id=\"ls_cashpresso_contract_text\">{$message}</p>", $html));
         }
     }
 
