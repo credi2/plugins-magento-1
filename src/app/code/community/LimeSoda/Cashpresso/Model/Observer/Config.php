@@ -26,6 +26,11 @@ class LimeSoda_Cashpresso_Model_Observer_Config
 
         list($websiteId, $currentStoreId) = $this->_helper()->getCurrentStore();
 
+        if (!$this->_helper()->getContractCurrency()) {
+            $this->_helper()->generatePartnerInfo();
+            Mage::getConfig()->reinit();
+        }
+
         foreach (Mage::app()->getWebsites() as $website) {
             foreach ($website->getGroups() as $group) {
                 $stores = $group->getStores();
