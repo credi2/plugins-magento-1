@@ -27,6 +27,14 @@
         <update handle="ls_cashpresso_price"/>
     </catalog_product_view>
 
+    <catalogsearch_result_index>
+        <update handle="ls_cashpresso_price"/>
+    </catalogsearch_result_index>
+
+    <catalogsearch_advanced_result>
+        <update handle="ls_cashpresso_price"/>
+    </catalogsearch_advanced_result>
+
     <catalog_category_view>
         <update handle="ls_cashpresso_price"/>
     </catalog_category_view>
