@@ -1,17 +1,6 @@
 <?php
 
-/**
- * 13.02.18
- * LimeSoda - Default (Template) Project
- *
- * Created by Anton Sannikov.
- *
- * @category    LimeSoda_Cashpresso
- * @package     Default (Template) Project
- * @copyright   Copyright (c) 2018 LimeSoda. (http://www.limesoda.com)
- *
- * @file app/code/local/LimeSoda/Cashpresso/Helper/Data.php
- */
+
 class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 {
     const XML_PARTNER_INFO = 'cashpresso/partnerinfo';

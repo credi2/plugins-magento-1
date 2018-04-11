@@ -1,16 +1,5 @@
 <?php
-/**
- * 15.03.18
- * LimeSoda - as
- *
- * Created by Anton Sannikov.
- *
- * @category    LimeSoda_Cashpresso
- * @package     as
- * @copyright   Copyright (c) 2018 LimeSoda. (http://www.limesoda.com)
- *
- * @file Currency.php
- */
+
 
 class LimeSoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Currency
     extends Mage_Adminhtml_Block_System_Config_Form_Field

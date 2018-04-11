@@ -1,16 +1,5 @@
 <?php
-/**
- * 15.02.18
- * LimeSoda - cashpresso
- *
- * Created by Anton Sannikov.
- *
- * @category LimeSoda_Cashpresso
- * @package cashpresso
- * @copyright Copyright (c) 2018 LimeSoda. (http://www.limesoda.com)
- *
- * @file Information.php
- */
+
 
 class LimeSoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Information
     extends Mage_Adminhtml_Block_System_Config_Form_Field
