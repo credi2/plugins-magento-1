@@ -17,11 +17,6 @@ abstract class LimeSoda_Cashpresso_Model_Api_Abstract
     const CP_ERROR_INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR';
     const CP_ERROR_DUPLICATE_CUSTOMER = 'DUPLICATE_CUSTOMER';
 
-    /**
-     * @var bool
-     */
-    protected $_mode = false;
-
     protected function _helper()
     {
         return Mage::helper('ls_cashpresso');
@@ -120,17 +115,6 @@ abstract class LimeSoda_Cashpresso_Model_Api_Abstract
     }
 
     /**
-     * @param bool $test
-     * @return $this
-     */
-    public function setMode($test = false)
-    {
-        $this->_mode = $test;
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getTestUrl()
@@ -152,7 +136,7 @@ abstract class LimeSoda_Cashpresso_Model_Api_Abstract
      */
     protected function getRequest($method)
     {
-        $client = new Varien_Http_Client(($this->_mode ? $this->getLiveUrl() : $this->getTestUrl()) . $method);
+        $client = new Varien_Http_Client(($this->_helper()->getMode() ? $this->getLiveUrl() : $this->getTestUrl()) . $method);
         $client->setMethod(Varien_Http_Client::POST);
         $client->setRawData(Mage::helper('core')->jsonEncode(array(
             'partnerApiKey' => $this->getPartnerApiKey()

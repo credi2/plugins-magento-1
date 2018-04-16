@@ -28,7 +28,7 @@ class LimeSoda_Cashpresso_Model_Observer_Config
                     if ($currentStoreId == $store->getId() || !$currentStoreId || $websiteId) {
                         $currency = Mage::app()->getStore($store->getId())->getCurrentCurrencyCode();
 
-                        if ($currency != $this->_helper()->getContractCurrency()) {
+                        if ($this->_helper()->getContractCurrency() && ($currency != $this->_helper()->getContractCurrency())) {
                             if (Mage::getStoreConfig('payment/cashpresso/active', $store->getId())) {
                                 $session->addError($this->_helper()->__('Currency %s for the store "%s" could not be used for Cashpresso payment. Use only EUR. Please change the currency settings for your store.', $currency, $store->getName()));
                                 Mage::getConfig()->saveConfig('payment/cashpresso/active', 0, 'stores', $store->getId());

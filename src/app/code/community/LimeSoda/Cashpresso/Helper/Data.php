@@ -69,7 +69,7 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
             return false;
         }
 
-        $partnerInfo = Mage::getModel('ls_cashpresso/api_client')->setMode($this->getMode())->getPartnerInfo();
+        $partnerInfo = Mage::getModel('ls_cashpresso/api_client')->getPartnerInfo();
 
         $partnerInfo['last_update'] = Mage::getSingleton('core/date')->date();
 
