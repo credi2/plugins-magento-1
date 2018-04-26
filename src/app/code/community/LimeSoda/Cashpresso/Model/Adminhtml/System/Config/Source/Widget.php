@@ -11,8 +11,8 @@ class LimeSoda_Cashpresso_Model_Adminhtml_System_Config_Source_Widget
     public function toOptionArray()
     {
         return array(
-            array('value' => 1, 'label'=>Mage::helper('adminhtml')->__('Product level integration')),
-            array('value' => 0, 'label'=>Mage::helper('adminhtml')->__('Static Label integration')),
+            array('value' => 1, 'label'=>Mage::helper('adminhtml')->__('Dynamic product label')),
+            array('value' => 0, 'label'=>Mage::helper('adminhtml')->__('Static product label')),
         );
     }
 
@@ -24,8 +24,8 @@ class LimeSoda_Cashpresso_Model_Adminhtml_System_Config_Source_Widget
     public function toArray()
     {
         return array(
-            0 => Mage::helper('adminhtml')->__('Static Label integration'),
-            1 => Mage::helper('adminhtml')->__('Product level integration'),
+            0 => Mage::helper('adminhtml')->__('Static product label'),
+            1 => Mage::helper('adminhtml')->__('Dynamic product label'),
         );
     }
 }
