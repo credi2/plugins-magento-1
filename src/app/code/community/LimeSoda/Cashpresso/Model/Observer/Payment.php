@@ -25,6 +25,10 @@ class LimeSoda_Cashpresso_Model_Observer_Payment
                 throw new Mage_Payment_Exception($this->_helper()->__('Unable to set Payment Method.'));
             }
 
+            if ($paymentMethod->getQuote()->getGrandTotal() <= $this->_helper()->getMinLimit()) {
+                throw new Mage_Payment_Exception($this->_helper()->__('Unable to set Payment Method.'));
+            }
+
             if (!$token = Mage::app()->getRequest()->getPost('cashpressoToken')) {
                 throw new Mage_Payment_Exception($this->_helper()->__('Please login or register to continue with cashpresso.'));
             }

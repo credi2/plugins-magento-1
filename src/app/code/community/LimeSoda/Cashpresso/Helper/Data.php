@@ -277,6 +277,16 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * @return null
      */
+    public function getMinLimit()
+    {
+        $partnerInfo = $this->getPartnerInfo();
+
+        return empty($partnerInfo['minPaybackAmount']) ? 0 : $partnerInfo['minPaybackAmount'];
+    }
+
+    /**
+     * @return null
+     */
     public function getContractCurrency()
     {
         $partnerInfo = $this->getPartnerInfo();

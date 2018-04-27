@@ -90,6 +90,10 @@ class LimeSoda_Cashpresso_Block_Button extends Mage_Core_Block_Template
             return '';
         }
 
+        if ($price <= $this->_helper()->getMinLimit()) {
+            return '';
+        }
+
         $widgetProductLevelIntegration = $this->_helper()->getWidgetType();
 
         $htmlEntry = '';
