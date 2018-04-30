@@ -4,3 +4,4 @@ src/app/design/frontend/base/default/layout/limesoda/cashpresso.xml app/design/f
 src/app/design/frontend/base/default/template/limesoda/cashpresso app/design/frontend/base/default/template/limesoda/cashpresso
 src/skin/frontend/base/default/cashpresso skin/frontend/base/default/cashpresso
 src/app/locale/de_DE/LimeSoda_Cashpresso.csv app/locale/de_DE/LimeSoda_Cashpresso.csv
+src/app/locale/de_AT/LimeSoda_Cashpresso.csv app/locale/de_AT/LimeSoda_Cashpresso.csv
