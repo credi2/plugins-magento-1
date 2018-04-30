@@ -39,6 +39,8 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 
     const XML_CASHPRESSO_PRODUCT_TYPES = 'frontend/cashpresso/product_types';
 
+    const XML_CASHPRESSO_INTEREST_FREE_DAYS_MERCHANT = 'payment/cashpresso/interestFreeDaysMerchant';
+
     /**
      * @return mixed
      */
@@ -127,7 +129,11 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 
         $partnerInfo = $this->getPartnerInfo();
 
-        return isset($partnerInfo['interestFreeCashpresso']) ? $partnerInfo['interestFreeCashpresso'] : false;
+        $customValue = Mage::getStoreConfig(self::XML_CASHPRESSO_INTEREST_FREE_DAYS_MERCHANT);
+
+        $cashpressoValue = empty($partnerInfo['interestFreeMaxDuration']) ? 0 : $partnerInfo['interestFreeMaxDuration'];
+
+        return $cashpressoValue && ($customValue > $cashpressoValue) ? $cashpressoValue : $customValue;
     }
 
     /**
