@@ -7,10 +7,14 @@
             <action method="unsetChild"><name>footer.cashpresso.head.catalog.script</name></action>
 
             <block type="core/template" ifconfig="payment/cashpresso/active"
-                   name="footer.cashpresso.head.catalog.script"
+                   name="footer.cashpresso.footer.catalog.script"
                    translate="label" template="limesoda/cashpresso/page/js/catalog/footer.phtml"/>
         </reference>
     </ls_cashpresso_price>
+
+    <cms_index_index>
+        <update handle="ls_cashpresso_price"/>
+    </cms_index_index>
 
     <catalog_product_view>
         <reference name="product.info.extrahint">

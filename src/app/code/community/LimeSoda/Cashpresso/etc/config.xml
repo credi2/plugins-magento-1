@@ -180,6 +180,7 @@
                 <checkout_button>1</checkout_button>
                 <checkout_url>checkout/onepage</checkout_url>
                 <place_to_show>3</place_to_show>
+                <interestFreeDaysMerchant>0</interestFreeDaysMerchant>
                 <debug_mode>1</debug_mode>
                 <instructions><![CDATA[cashpresso ermöglicht dir Einkäufe in Raten zu bezahlen. Deine Ratenhöhe kannst du dir beim Kauf aussuchen und später jederzeit ändern.]]></instructions>
                 <success_button_title>Einkauf bezahlt</success_button_title>
