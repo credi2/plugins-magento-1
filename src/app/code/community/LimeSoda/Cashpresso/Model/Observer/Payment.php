@@ -51,4 +51,55 @@ class LimeSoda_Cashpresso_Model_Observer_Payment
             $payment->getOrder()->getPayment()->setAdditionalData($purchaseId);
         }
     }
+
+    /**
+     * @event controller_front_send_response_before
+     *
+     * @param Varien_Event_Observer $observer
+     * @throws Mage_Core_Model_Store_Exception
+     */
+    public function updatePrice(Varien_Event_Observer $observer)
+    {
+        /** @var Mage_Core_Controller_Varien_Front $front */
+        $front = $observer->getEvent()->getFront();
+
+        $actions = new Varien_Object();
+        $actions->setData('list', array('saveShippingMethod'));
+
+        Mage::dispatchEvent('cs_payment_block_result_before', array(
+            'actions' => $actions
+        ));
+
+        if (in_array($front->getRequest()->getActionName(), $actions->getData('list'))) {
+            $quote = Mage::getModel("checkout/session")->getQuote();
+            $amount = Mage::app()->getStore()->roundPrice($quote->getGrandTotal());
+
+            $response = $front->getResponse()->getBody();
+
+            $result = Mage::helper('core')->jsonDecode($response);
+
+            if (!empty($result['update_section']['html'])) {
+                $html = $result['update_section']['html'];
+
+                $html .= <<<EOT
+<script type="text/javascript">
+    //<![CDATA[
+    if (window.C2EcomCheckout) {
+        window.C2EcomCheckout.refresh();
+        $('c2CheckoutScript').writeAttribute('data-c2-amount', "{$amount}");
+        window.C2EcomCheckout.init();
+    }
+    //]]>
+</script>
+EOT;
+                $result['update_section']['html'] = $html;
+
+                Mage::dispatchEvent('cs_payment_block_result_after', array(
+                    'actions' => $actions
+                ));
+
+                $front->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
+            }
+        }
+    }
 }

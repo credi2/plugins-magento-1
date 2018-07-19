@@ -75,6 +75,16 @@
                     </ls_cashpresso_before_print>
                 </observers>
             </core_block_abstract_to_html_after>
+
+            <controller_front_send_response_before>
+                <observers>
+                    <ls_cashpresso_before_print>
+                        <type>singleton</type>
+                        <class>ls_cashpresso/observer_payment</class>
+                        <method>updatePrice</method>
+                    </ls_cashpresso_before_print>
+                </observers>
+            </controller_front_send_response_before>
         </events>
 
         <layout>

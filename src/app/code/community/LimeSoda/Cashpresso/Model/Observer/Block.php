@@ -54,6 +54,10 @@ class LimeSoda_Cashpresso_Model_Observer_Block
                 $this->addScriptToPrice($transport, $block);
             }
         }
+        else if ($block instanceof Mage_Checkout_Block_Onepage_Shipping_Method_Available)
+        {
+
+        }
     }
 
     /**
