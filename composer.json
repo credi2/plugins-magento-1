@@ -1,0 +1,9 @@
+{
+   "name": "limesoda/cashpresso",
+   "type": "magento-module",
+   "description": "Cashpresso module",
+   "homepage": "https://gitlab.limesoda.com/limesoda/magento-1-extensions/LimeSoda_CashPresso",
+   "require": {
+      "magento-hackathon/magento-composer-installer": "*"
+   }
+}

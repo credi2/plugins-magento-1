@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <payment>
+            <groups>
+                <cashpresso translate="label">
+                    <label>Cashpresso</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>6</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1⁄</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+
+                        <currency_status translate="label">
+                            <label>Currency mismatch</label>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>0⁄</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_model>ls_cashpresso/adminhtml_system_config_form_field_currency</frontend_model>
+                        </currency_status>
+
+                        <api_key translate="label comment">
+                            <label>API KEY</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <!--<validate>required-entry</validate>-->
+                            <comment></comment>
+                        </api_key>
+
+                        <secret_key translate="label comment">
+                            <label>Secret Key</label>
+                            <frontend_type>obscure</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </secret_key>
+
+                        <inforamtion translate="label comment">
+                            <label>Information</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <frontend_model>ls_cashpresso/adminhtml_system_config_form_field_information</frontend_model>
+                            <comment></comment>
+                        </inforamtion>
+
+                        <account translate="label">
+                            <label>Target account</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>ls_cashpresso/adminhtml_system_config_source_account</source_model>
+                            <sort_order>35</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </account>
+
+                        <mode translate="label">
+                            <label>Mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>ls_cashpresso/adminhtml_system_config_source_mode</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment></comment>
+                        </mode>
+
+                        <title translate="label">
+                            <label>Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+
+                        <allowspecific translate="label">
+                            <label>Payment from Applicable Countries</label>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>70</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </allowspecific>
+                        <specificcountry translate="label">
+                            <label>Payment from Specific Countries</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>71</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                        </specificcountry>
+                        <instructions translate="label">
+                            <label>Instructions</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </instructions>
+                        <status translate="label">js
+                            <label>Product label</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </status>
+
+                        <widget_type translate="label comment">
+                            <label>Product label integration</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>ls_cashpresso/adminhtml_system_config_source_widget</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[
+                            Product level integration is recommended. Static Label Version has several disadvantages:
+                                - No returning cashpresso customer detection
+                                - No indication for successful risk check
+                                - Server side calculation of instalment pricing necessary]]]></comment>
+                            <depends>
+                                <status>1</status>
+                            </depends>
+                        </widget_type>
+
+                        <template translate="label">
+                            <label>Template</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>required-entry</validate>
+                            <comment>An example: or from € {{price}} / month</comment>
+                            <depends>
+                                <status>1</status>
+                                <widget_type>0</widget_type>
+                            </depends>
+                        </template>
+
+                        <checkout_button translate="label comment">
+                            <label>Show checkout button</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Adds product and redirects to checkout page from the CS popup on product page. Works only if "system/configuration/sales/checkout/shopping cart/After Adding a Product Redirect to Shopping Cart" is NO]]></comment>
+                            <depends>
+                                <status>1</status>
+                            </depends>
+                        </checkout_button>
+
+                        <checkout_url translate="label">
+                            <label>Checkout url</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <checkout_button>1</checkout_button>
+                            </depends>
+                        </checkout_url>
+
+                        <place_to_show translate="label comment">
+                            <label>Place to show</label>
+                            <comment>It works always on checkout page for any choice.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>ls_cashpresso/adminhtml_system_config_source_places</source_model>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <status>1</status>
+                            </depends>
+                        </place_to_show>
+
+                        <timeout translate="label comment">
+                            <label>The timeout for the order (hours)</label>
+                            <comment>In hours</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>160</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </timeout>
+
+                        <interestFreeDaysMerchant translate="label comment">
+                            <label>Interest Free Days Merchant</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>165</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </interestFreeDaysMerchant>
+
+                        <debug_mode translate="label">
+                            <label>Write log</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>190</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </debug_mode>
+
+                        <sort_order translate="label">
+                            <label>Sort Order</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>400</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </sort_order>
+                    </fields>
+                </cashpresso>
+            </groups>
+        </payment>
+    </sections>
+</config>
