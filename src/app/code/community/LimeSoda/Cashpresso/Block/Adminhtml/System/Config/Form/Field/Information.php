@@ -25,26 +25,26 @@ class LimeSoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Information
             if (isset($partnerInfo['companyName'])) {
                 $list[] = array(
                     'title' => $this->helper('ls_cashpresso')->__('Company name'),
-                    'value' => $partnerInfo['companyName']);
+                    'value' => $this->escapeHtml($partnerInfo['companyName']));
             }
 
             if (isset($partnerInfo['email'])) {
                 $list[] = array(
                     'title' => $this->helper('ls_cashpresso')->__('Email'),
-                    'value' => $partnerInfo['email']);
+                    'value' => $this->escapeHtml($partnerInfo['email']));
             }
 
             if (isset($partnerInfo['holder'])) {
                 $list[] = array(
                     'title' => $this->helper('ls_cashpresso')->__('Holder'),
-                    'value' => $partnerInfo['holder']
+                    'value' => $this->escapeHtml($partnerInfo['holder'])
                 );
             }
 
             if (isset($partnerInfo['iban'])) {
                 $list[] = array(
                     'title' => $this->helper('ls_cashpresso')->__('Iban'),
-                    'value' => $partnerInfo['iban']
+                    'value' => $this->escapeHtml($partnerInfo['iban'])
                 );
             }
 
@@ -65,28 +65,28 @@ class LimeSoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Information
             if (isset($partnerInfo['status'])) {
                 $list[] = array(
                     'title' => $this->helper('ls_cashpresso')->__('Status'),
-                    'value' => $partnerInfo['status']
+                    'value' => $this->escapeHtml($partnerInfo['status'])
                 );
             }
 
             if (isset($partnerInfo['currency'])) {
                 $list[] = array(
                     'title' => $this->helper('ls_cashpresso')->__('Currency'),
-                    'value' => $partnerInfo['currency']
+                    'value' => $this->escapeHtml($partnerInfo['currency'])
                 );
             }
 
             if (isset($partnerInfo['minPaybackAmount'])) {
                 $list[] = array(
                     'title' => $this->helper('ls_cashpresso')->__('Minimal payback amount'),
-                    'value' => $partnerInfo['minPaybackAmount']
+                    'value' => $this->escapeHtml($partnerInfo['minPaybackAmount'])
                 );
             }
 
             if (isset($partnerInfo['paybackRate'])) {
                 $list[] = array(
                     'title' => $this->helper('ls_cashpresso')->__('Payback rate'),
-                    'value' => $partnerInfo['paybackRate']
+                    'value' => $this->escapeHtml($partnerInfo['paybackRate'])
                 );
             }
 
@@ -114,16 +114,16 @@ class LimeSoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Information
             if (isset($partnerInfo['interest']['nominal'])) {
                 $list[] = array(
                     'title' => $this->helper('ls_cashpresso')->__('Interest nominal'),
-                    'value' => $partnerInfo['interest']['nominal']['min']
-                        . " - " . $partnerInfo['interest']['nominal']['max']
+                    'value' => $this->escapeHtml($partnerInfo['interest']['nominal']['min'])
+                        . " - " . $this->escapeHtml($partnerInfo['interest']['nominal']['max'])
                 );
             }
 
             if (isset($partnerInfo['interest'])) {
                 $list[] = array(
                     'title' => $this->helper('ls_cashpresso')->__('Interest effective'),
-                    'value' => $partnerInfo['interest']['effective']['min']
-                        . " - " . $partnerInfo['interest']['effective']['max']
+                    'value' => $this->escapeHtml($partnerInfo['interest']['effective']['min'])
+                        . " - " . $this->escapeHtml($partnerInfo['interest']['effective']['max'])
                 );
             }
 
@@ -137,7 +137,7 @@ class LimeSoda_Cashpresso_Block_Adminhtml_System_Config_Form_Field_Information
             if (isset($partnerInfo['last_update'])) {
                 $list[] = array(
                     'title' => $this->helper('ls_cashpresso')->__('Last Update'),
-                    'value' => $partnerInfo['last_update']
+                    'value' => $this->escapeHtml($partnerInfo['last_update'])
                 );
             }
 
