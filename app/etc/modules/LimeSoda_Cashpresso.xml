@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<config>
-    <modules>
-        <LimeSoda_Cashpresso>
-            <active>true</active>
-            <codePool>community</codePool>
-        </LimeSoda_Cashpresso>
-    </modules>
-</config>
