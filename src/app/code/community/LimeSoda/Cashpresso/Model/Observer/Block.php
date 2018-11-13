@@ -36,27 +36,19 @@ class LimeSoda_Cashpresso_Model_Observer_Block
      */
     public function coreBlockAbstractToHtmlAfter(Varien_Event_Observer $observer)
     {
-        if (!$this->_helper()->checkStatus()) {
-            return;
-        }
-
         $block = $observer->getEvent()->getBlock();
 
         $transport = $observer->getEvent()->getTransport();
 
-        if ($block instanceof Mage_Checkout_Block_Onepage_Success) {
+        if ($block instanceof Mage_Checkout_Block_Onepage_Success && $this->_helper()->checkStatus(false)) {
             $this->addScriptSuccessPage($transport);
-        } else if ($block instanceof Mage_Catalog_Block_Product_Price) {
+        } else if ($block instanceof Mage_Catalog_Block_Product_Price && $this->_helper()->checkStatus()) {
             if (($this->_helper()->getPlaceToShow() == 1 && !Mage::helper('ls_cashpresso/request')->isProductPage()) ||
                 ($this->_helper()->getPlaceToShow() == 2 && Mage::helper('ls_cashpresso/request')->isProductPage()) ||
                 ($this->_helper()->getPlaceToShow() == 3)
             ) {
                 $this->addScriptToPrice($transport, $block);
             }
-        }
-        else if ($block instanceof Mage_Checkout_Block_Onepage_Shipping_Method_Available)
-        {
-
         }
     }
 
