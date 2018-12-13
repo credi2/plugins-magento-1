@@ -14,10 +14,11 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
     protected $_post = array();
 
     /**
-     * @return mixed
-     * @throws Exception
+     * @param bool $showError
+     * @return bool
+     * @throws Zend_Http_Client_Exception
      */
-    public function getPartnerInfo()
+    public function getPartnerInfo($showError = true)
     {
         $request = $this->getRequest(self::METHOD_PARTNER_INFO);
 
@@ -27,11 +28,17 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
             $respond = Mage::helper('core')->jsonDecode($response->getBody());
 
             if (is_array($respond)) {
-                return $this->handleRespond($respond);
+                return $this->handleRespond($respond, $showError);
             }
         }
 
-        $this->getSession()->addError("Cashpresso getPartnerInfo error: " . $response->getMessage());
+        $message = 'Cashpresso getPartnerInfo error: ' . $response->getMessage();
+
+        if ($showError){
+            $this->getSession()->addError($message);
+        } else {
+            Mage::log($message, Zend_Log::ERR);
+        }
     }
 
     /**

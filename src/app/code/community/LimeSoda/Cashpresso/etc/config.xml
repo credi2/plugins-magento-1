@@ -2,7 +2,7 @@
 <config>
     <modules>
         <LimeSoda_Cashpresso>
-            <version>0.1.0</version>
+            <version>1.0.1</version>
         </LimeSoda_Cashpresso>
     </modules>
     <global>
