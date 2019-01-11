@@ -41,60 +41,132 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 
     const XML_CASHPRESSO_INTEREST_FREE_DAYS_MERCHANT = 'payment/cashpresso/interestFreeDaysMerchant';
 
-    /**
-     * @return mixed
-     */
-    public function getPartnerInfo()
-    {
-        $partnerInfo = Mage::getStoreConfig(self::XML_PARTNER_INFO);
+    protected $_partnerInfo;
 
-        return $partnerInfo ? Mage::helper('core')->jsonDecode($partnerInfo) : array();
+    /**
+     * @param bool $loadDefaultValue
+     * @return null|string
+     * @throws Mage_Core_Exception
+     * @throws Mage_Core_Model_Store_Exception
+     */
+    public function getSecretKey($loadDefaultValue = true)
+    {
+        list($scopeID) = $this->getCurrentStore();
+
+        if (Mage::app()->getStore()->isAdmin()) {
+            $collection = Mage::getResourceModel('core/config_data_collection');
+
+            $collection->getSelect()
+                ->where('path = ?', self::XML_PARTNER_SECRET_KEY)
+                ->where('scope_id = ?', (int)$scopeID);
+
+            $config = $collection->load()->getFirstItem();
+
+            if (!$config->getId() && $loadDefaultValue) {
+                $collection->getSelect()->reset(Varien_Db_Select::WHERE)
+                    ->where('path = ?', self::XML_PARTNER_SECRET_KEY)
+                    ->where('scope = ?', 'default')
+                    ->where('scope_id = ?', 0);
+
+                $config = $collection->clear()->load()->getFirstItem();
+            }
+
+            $key = $config->getId() ? $config->getValue() : null;
+        } else {
+            $key = Mage::getStoreConfig(self::XML_PARTNER_SECRET_KEY);
+        }
+
+        return $key ? Mage::helper('core')->decrypt($key) : null;
     }
 
     /**
-     * @return mixed
+     * @return array
+     * @throws Mage_Core_Exception
      */
-    public function getSecretKey()
+    public function getCurrentStore()
     {
-        $key = Mage::getStoreConfig(self::XML_PARTNER_SECRET_KEY);
+        $website_id = 0;
+        $store_id = 0;
 
-        return $key ? Mage::helper('core')->decrypt(Mage::getStoreConfig(self::XML_PARTNER_SECRET_KEY)) : null;
+        if (Mage::app()->getStore()->isAdmin()) {
+            if (($code = Mage::getSingleton('adminhtml/config_data')->getStore()) !== "") {// store level
+                $store_id = Mage::getModel('core/store')->load($code)->getId();
+            } elseif (($code = Mage::getSingleton('adminhtml/config_data')->getWebsite()) !== "") { // website level
+                $website_id = Mage::getModel('core/website')->load($code)->getId();
+                $store_id = Mage::app()->getWebsite($website_id)->getDefaultStore()->getId();
+            }
+        } else {
+            $website_id = Mage::app()->getWebsite()->getId();
+            $store_id = Mage::app()->getStore()->getId();
+        }
+
+        return array($website_id, $store_id);
     }
 
     /**
-     * @return mixed
-     * @throws Exception
+     * @param bool $showError
+     * @return bool
      */
-    public function generatePartnerInfo()
+    public function generatePartnerInfo($showError = false)
     {
         if (!$this->getAPIKey()) {
             return false;
         }
 
-        $partnerInfo = Mage::getModel('ls_cashpresso/api_client')->getPartnerInfo();
+        if ($this->_partnerInfo === null) {
+            $partnerInfo = Mage::getModel('ls_cashpresso/api_client')->getPartnerInfo($showError);
 
-        $partnerInfo['last_update'] = Mage::getSingleton('core/date')->date();
+            $partnerInfo['last_update'] = Mage::getSingleton('core/date')->date();
 
-        Mage::app()->getConfig()->saveConfig(self::XML_PARTNER_INFO, Mage::helper('core')->jsonEncode($partnerInfo));
+            $scope = 'default';
 
-        return $partnerInfo;
+            if (list($scopeID) = $this->getCurrentStore()) {
+                if ($scopeID != 0) {
+                    $scope = 'websites';
+                }
+            }
+
+            if ($currentStoreKey = $this->getAPIKey($loadDefaultValue = false)) {
+                Mage::app()->getConfig()->saveConfig(self::XML_PARTNER_INFO, Mage::helper('core')->jsonEncode($partnerInfo), $scope, (int)$scopeID);
+            }
+
+            $this->_partnerInfo = $partnerInfo;
+        }
+
+        return $this->_partnerInfo;
     }
 
     /**
-     * @return mixed
+     * @param bool $loadDefaultValue
+     * @return null|string
+     * @throws Mage_Core_Exception
+     * @throws Mage_Core_Model_Store_Exception
      */
-    public function getAPIKey()
+    public function getAPIKey($loadDefaultValue = true)
     {
+        if (Mage::app()->getStore()->isAdmin()) {
+            list($scopeID) = $this->getCurrentStore();
+            $collection = Mage::getResourceModel('core/config_data_collection');
+
+            $collection->getSelect()
+                ->where('path = ?', self::XML_PARTNER_API_KEY)
+                ->where('scope_id = ?', (int)$scopeID);
+
+            $config = $collection->load()->getFirstItem();
+
+            if (!$config->getId() && $loadDefaultValue) {
+                $collection->getSelect()->reset(Varien_Db_Select::WHERE)
+                    ->where('path = ?', self::XML_PARTNER_API_KEY)
+                    ->where('scope = ?', 'default')
+                    ->where('scope_id = ?', 0);
+
+                $config = $collection->clear()->load()->getFirstItem();
+            }
+
+            return $config->getId() ? $config->getValue() : null;
+        }
+
         return trim(Mage::getStoreConfig(self::XML_PARTNER_API_KEY));
-    }
-
-    /**
-     * @param null $storeId
-     * @return mixed
-     */
-    public function getStatus($storeId = null)
-    {
-        return Mage::getStoreConfig(self::XML_PARTNER_STATUS, $storeId);
     }
 
     /**
@@ -137,23 +209,20 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * 1 - live; 0 - test
-     * @param null $storeId
-     * @return mixed
+     * @return array|mixed
+     * @throws Mage_Core_Exception
      */
-    public function getMode($storeId = null)
+    public function getPartnerInfo()
     {
-        return Mage::getStoreConfig(self::XML_PARTNER_MODE, $storeId);
-    }
+        $scopeID = null;
+        
+        if (Mage::app()->getStore()->isAdmin()) {
+            list($scopeID) = $this->getCurrentStore();
+        }
 
-    /**
-     *
-     * @param null $storeId
-     * @return mixed
-     */
-    public function getWidgetType($storeId = null)
-    {
-        return Mage::getStoreConfig(self::XML_PARTNER_WIDGET_TYPE, $storeId);
+        $partnerInfo = Mage::getStoreConfig(self::XML_PARTNER_INFO, $scopeID);
+
+        return $partnerInfo ? Mage::helper('core')->jsonDecode($partnerInfo) : array();
     }
 
     /**
@@ -242,7 +311,16 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function checkStatus($useStatus = true)
     {
-        return $this->isModuleEnabled() && Mage::getModel('ls_cashpresso/payment_method_cashpresso')->getConfigData('active') && ($useStatus?$this->getStatus():true) && ($apiKey = $this->getAPIKey());
+        return $this->isModuleEnabled() && Mage::getModel('ls_cashpresso/payment_method_cashpresso')->getConfigData('active') && ($useStatus ? $this->getStatus() : true) && ($apiKey = $this->getAPIKey());
+    }
+
+    /**
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getStatus($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PARTNER_STATUS, $storeId);
     }
 
     /**
@@ -300,11 +378,6 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
         return empty($partnerInfo['currency']) ? null : $partnerInfo['currency'];
     }
 
-
-    protected function _getDomain()
-    {
-        return 'https://' . ($this->getMode() ? 'my.cashpresso.com' : 'test.cashpresso.com/frontend') . '/';
-    }
     /**
      * @return string
      */
@@ -315,6 +388,46 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
         $jsSrc = $this->_getDomain() . 'ecommerce/v2/label/c2_ecom_wizard' . $scriptStatic . '.all.min.js';
 
         return $jsSrc;
+    }
+
+    /**
+     *
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getWidgetType($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PARTNER_WIDGET_TYPE, $storeId);
+    }
+
+    protected function _getDomain()
+    {
+        return 'https://' . ($this->getMode() ? 'my.cashpresso.com' : 'test.cashpresso.com/frontend') . '/';
+    }
+
+    /**
+     * 1 - live; 0 - test
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getMode($storeId = null)
+    {
+        if (Mage::app()->getStore()->isAdmin()) {
+
+            list($storeId) = $this->getCurrentStore();
+
+            $collection = Mage::getResourceModel('core/config_data_collection');
+
+            $collection->getSelect()
+                ->where('path = ?', self::XML_PARTNER_MODE)
+                ->where('scope_id = ?', (int)$storeId);
+
+            $config = $collection->load()->getFirstItem();
+
+            return $config->getValue();
+        }
+
+        return Mage::getStoreConfig(self::XML_PARTNER_MODE, $storeId);
     }
 
     /**
@@ -350,31 +463,9 @@ class LimeSoda_Cashpresso_Helper_Data extends Mage_Core_Helper_Abstract
 
         if (isset($partnerInfo['minPaybackAmount']) && isset($partnerInfo['paybackRate'])) {
             $minPayment = round(min($price, max($partnerInfo['minPaybackAmount'],
-                $price * 0.01 * $partnerInfo['paybackRate'])),2);
+                $price * 0.01 * $partnerInfo['paybackRate'])), 2);
         }
 
         return $minPayment;
-    }
-
-    /**
-     * @return int|mixed
-     */
-    public function getCurrentStore()
-    {
-        $website_id = null;
-
-        if (strlen($code = Mage::getSingleton('adminhtml/config_data')->getStore())) // store level
-        {
-            $store_id = Mage::getModel('core/store')->load($code)->getId();
-        } elseif (strlen($code = Mage::getSingleton('adminhtml/config_data')->getWebsite())) // website level
-        {
-            $website_id = Mage::getModel('core/website')->load($code)->getId();
-            $store_id = Mage::app()->getWebsite($website_id)->getDefaultStore()->getId();
-        } else // default level
-        {
-            $store_id = 0;
-        }
-
-        return array($website_id, $store_id);
     }
 }

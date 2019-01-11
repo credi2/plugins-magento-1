@@ -24,18 +24,18 @@ abstract class LimeSoda_Cashpresso_Model_Api_Abstract
 
     /**
      * @param $respond
+     * @param bool $showError
      * @return bool
      */
-    protected function handleRespond($respond)
+    protected function handleRespond($respond, $showError = true)
     {
         if (empty($respond['success'])) {
             $errors = isset($respond['errors']) ? $respond['errors'] : array($respond['error']);
 
             foreach ($errors as $error) {
                 if (!empty($error['type']) && $this->handleError($error['type'])) {
-                    $this->getSession()->addWarning(
-                        $this->_helper()->__($this->handleError($error['type'])) . ' - ' . $error['description']
-                    );
+                    $message = $this->_helper()->__($this->handleError($error['type'])) . ' - ' . $error['description'];
+                    $showError ? $this->getSession()->addWarning($message) : Mage::log($message, Zend_Log::WARN);
                 }
             }
 
@@ -146,7 +146,8 @@ abstract class LimeSoda_Cashpresso_Model_Api_Abstract
     }
 
     /**
-     * @return Mage_Core_Model_Session
+     * @return Mage_Core_Model_Abstract
+     * @throws Mage_Core_Model_Store_Exception
      */
     protected function getSession()
     {

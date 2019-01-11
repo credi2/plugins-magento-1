@@ -5,36 +5,70 @@ class LimeSoda_Cashpresso_Model_Api_Account extends LimeSoda_Cashpresso_Model_Ap
 {
     const METHOD_TARGET_ACCOUNTS = 'partner/targetAccounts';
 
-    public function getTargetAccounts()
+    public function getTargetAccounts($showError = false)
     {
         if ($this->_helper()->isModuleEnabled() && (Mage::app()->getStore()->isAdmin() ? $this->_helper()->getAPIKey() : $this->_helper()->checkStatus(false))) {
-            $request = $this->getRequest(self::METHOD_TARGET_ACCOUNTS);
 
-            $request->setMethod(Varien_Http_Client::POST);
-            $request->setRawData(Mage::helper('core')->jsonEncode(array(
-                'partnerApiKey' => $this->getPartnerApiKey(),
-                'verificationHash' => hash('sha512', $this->getSecretKey() . ';' . $this->getPartnerApiKey())
-            )), 'application/json');
+            $partnerInfo = Mage::helper('ls_cashpresso')->generatePartnerInfo();
 
-            try {
+            if (!empty($partnerInfo['success'])) {
+                $request = $this->getRequest(self::METHOD_TARGET_ACCOUNTS);
+
+                $request->setMethod(Varien_Http_Client::POST);
+                $request->setRawData(Mage::helper('core')->jsonEncode(array(
+                    'partnerApiKey' => $this->getPartnerApiKey(),
+                    'verificationHash' => hash('sha512', $this->getSecretKey() . ';' . $this->getPartnerApiKey())
+                )), 'application/json');
+
+                try {
+                    $response = $request->request();
+
+                    if ($response->isSuccessful()) {
+                        $respond = Mage::helper('core')->jsonDecode($response->getBody());
+
+                        if (is_array($respond)) {
+                            $respond = $this->handleRespond($respond, $showError);
+
+                            if (!empty($respond['targetAccounts'])) {
+                                return $respond['targetAccounts'];
+                            }
+                        }
+                    }
+                } catch (Exception $e) {
+                    Mage::logException($e);
+                }
+            }
+        }
+
+        return array();
+    }
+
+    public function checkRequest()
+    {
+        if ($this->_helper()->isModuleEnabled() && (Mage::app()->getStore()->isAdmin() ? $this->_helper()->getAPIKey() : $this->_helper()->checkStatus(false))) {
+            $partnerInfo = Mage::helper('ls_cashpresso')->generatePartnerInfo();
+
+            if (!empty($partnerInfo['success'])) {
+                $request = $this->getRequest(self::METHOD_TARGET_ACCOUNTS);
+
+                $request->setMethod(Varien_Http_Client::POST);
+                $request->setRawData(Mage::helper('core')->jsonEncode(array(
+                    'partnerApiKey' => $this->getPartnerApiKey(),
+                    'verificationHash' => hash('sha512', $this->getSecretKey() . ';' . $this->getPartnerApiKey())
+                )), 'application/json');
+
                 $response = $request->request();
 
                 if ($response->isSuccessful()) {
                     $respond = Mage::helper('core')->jsonDecode($response->getBody());
 
-                    if (is_array($respond)) {
-                        $respond = $this->handleRespond($respond);
+                    $respond = $this->handleRespond($respond, false);
 
-                        if (!empty($respond['targetAccounts'])) {
-                            return $respond['targetAccounts'];
-                        }
+                    if (!$respond) {
+                        throw new Exception('Cashpresso: Api key or secret key are invalid.');
                     }
                 }
-            } catch (Exception $e) {
-                Mage::logException($e);
             }
         }
-
-        return array();
     }
 }
