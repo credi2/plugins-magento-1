@@ -62,6 +62,10 @@ class LimeSoda_Cashpresso_Model_Api_Account extends LimeSoda_Cashpresso_Model_Ap
                 if ($response->isSuccessful()) {
                     $respond = Mage::helper('core')->jsonDecode($response->getBody());
 
+                    if (!empty($respond['error']['type']) && $respond['error']['type'] == 'INVALID_STATE') {
+                        return true;
+                    }
+
                     $respond = $this->handleRespond($respond, false);
 
                     if (!$respond) {
