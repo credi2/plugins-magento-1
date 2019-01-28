@@ -16,6 +16,7 @@ if (Product && Product.OptionsPrice) {
             var excl;
             var incl;
             var tax;
+
             if ($(pair.value)) {
                 if (pair.value == 'old-price-' + this.productId && this.productOldPrice != this.productPrice) {
                     _productPrice = this.productOldPrice;
@@ -99,7 +100,7 @@ if (Product && Product.OptionsPrice) {
                 if (price < 0) price = 0;
 
                 // \/ cashpresso
-                if (typeof C2EcomWizard !== 'undefined') {
+                if (typeof C2EcomWizard !== 'undefined' && pair.value.indexOf('old-price-') === -1) {
                     if (document.getElementById("c2-financing-label-0")) {
                         if (price > 0) {
                             C2EcomWizard.refreshAmount('c2-financing-label-0', price);
