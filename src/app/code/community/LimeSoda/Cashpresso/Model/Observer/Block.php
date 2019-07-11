@@ -68,7 +68,8 @@ class LimeSoda_Cashpresso_Model_Observer_Block
             /** @var Mage_Sales_Model_Order $order */
             $order = Mage::registry('ls_success_order');
 
-            $purchaseId = $order->getPayment()->getAdditionalData();
+            $additionalData = json_decode($order->getPayment()->getAdditionalData());
+            $purchaseId = isset($additionalData['cashpresso']) ? $additionalData['cashpresso'] : null;
 
             $successMessage = $this->_helper()->getSuccessText();
 
@@ -146,7 +147,8 @@ EOT;
             }
 
             if ($order = Mage::registry('ls_success_order')) {
-                if ($order->getPayment()->getAdditionalData()) {
+                $additionalData = json_decode($order->getPayment()->getAdditionalData());
+                if (isset($additionalData['cashpresso'])) {
                     $block->setTemplate('limesoda/cashpresso/checkout/success.phtml');
                 } else {
                     Mage::unregister('ls_success_order');
