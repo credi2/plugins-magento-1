@@ -13,16 +13,16 @@
 ### 1.1 Composer installation
 Run the composer command in the folder where the composer.json file lies
 
-	composer require limesoda/cashpresso:dev-master
-	
+    composer require limesoda/cashpresso:dev-master
+
 or run the composer command for a specific version:
 
-    composer require limesoda/cashpresso:v1.0.4
-	
+    composer require limesoda/cashpresso:v1.0.5
+
 and then run 
 
     composer update
-	   
+
 ### 1.2 Manual installation using modman
 
 copy sources from the gz archive to the .modman folder.
@@ -238,4 +238,4 @@ Place this code to local.xml file in your theme.
 ## 6. Links
  - [CashPresso API](https://test.cashpresso.com/urlreferral/api/ecommerce/v2?1)
  - [CashPresso](https://www.cashpresso.com/)
- - [Developer contacts](https://www.limesoda.com/kontakt/)
+ - [Developer contacts](https://www.kawa-commerce.com/kontakt/)
