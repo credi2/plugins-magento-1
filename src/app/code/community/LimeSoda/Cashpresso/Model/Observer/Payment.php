@@ -46,7 +46,7 @@ class LimeSoda_Cashpresso_Model_Observer_Payment
         /** @var Mage_Sales_Model_Order_Payment $payment */
         $payment = $observer->getEvent()->getPayment();
 
-        if ($hash = $payment->getOrder()->getPayment()->getAdditionalData()) {
+        if ($payment->getOrder()->getPayment()->getMethod() == 'cashpresso' && $hash = $payment->getOrder()->getPayment()->getAdditionalData()) {
             $purchaseId = Mage::getModel('ls_cashpresso/api_client')->sendOrder($payment->getOrder());
             $payment->getOrder()->getPayment()->setAdditionalData($purchaseId);
         }
