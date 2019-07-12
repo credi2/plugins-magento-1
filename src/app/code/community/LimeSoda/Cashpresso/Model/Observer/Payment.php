@@ -33,7 +33,7 @@ class LimeSoda_Cashpresso_Model_Observer_Payment
                 throw new Mage_Payment_Exception($this->_helper()->__('Please login or register to continue with cashpresso.'));
             }
 
-            $additionalData = json_decode($paymentMethod->getAdditionalData);
+            $additionalData = json_decode($paymentMethod->getAdditionalData, true);
             $additionalData['cashpresso']['token'] = $token;
             $paymentMethod->setAdditionalData(json_encode($additionalData));
         }
@@ -50,7 +50,7 @@ class LimeSoda_Cashpresso_Model_Observer_Payment
 
         if ($payment->getOrder()->getPayment()->getMethod() == 'cashpresso' && $hash = $payment->getOrder()->getPayment()->getAdditionalData()) {
             $purchaseId = Mage::getModel('ls_cashpresso/api_client')->sendOrder($payment->getOrder());
-            $additionalData = json_decode($payment->getOrder()->getPayment()->getAdditionalData());
+            $additionalData = json_decode($payment->getOrder()->getPayment()->getAdditionalData(), true);
             $additionalData['cashpresso']['purchase_id'] = $purchaseId;
             $payment->getOrder()->getPayment()->setAdditionalData(json_encode($additionalData));
         }
