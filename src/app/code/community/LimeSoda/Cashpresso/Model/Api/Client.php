@@ -55,9 +55,10 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
 
         $price = round($order->getGrandTotal(), 2);
 
+        $additionalData = json_decode($order->getPayment()->getAdditionalData(), true);
         $data = array(
             'partnerApiKey' => $this->getPartnerApiKey(),
-            'c2EcomId' => $order->getPayment()->getAdditionalData(),
+            'c2EcomId' => isset($additionalData['cashpresso']['token']) ? $additionalData['cashpresso']['token'] : null,
             'amount' => $price,
             'validUntil' => $this->_helper()->getTimeout(),
             'bankUsage' => $order->getIncrementId(),

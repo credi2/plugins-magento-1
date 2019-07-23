@@ -40,7 +40,9 @@ class LimeSoda_Cashpresso_Model_Observer_Block
 
         $transport = $observer->getEvent()->getTransport();
 
-        if ($block instanceof Mage_Checkout_Block_Onepage_Success && $this->_helper()->checkStatus(false)) {
+        if ($block instanceof Mage_Checkout_Block_Onepage_Success
+            && $this->_helper()->checkStatus(false)
+            && $block->getNameInLayout() == 'checkout.success') {
             $this->addScriptSuccessPage($transport);
         } else if ($block instanceof Mage_Catalog_Block_Product_Price && $this->_helper()->checkStatus()) {
             if (($this->_helper()->getPlaceToShow() == 1 && !Mage::helper('ls_cashpresso/request')->isProductPage()) ||
@@ -68,7 +70,8 @@ class LimeSoda_Cashpresso_Model_Observer_Block
             /** @var Mage_Sales_Model_Order $order */
             $order = Mage::registry('ls_success_order');
 
-            $purchaseId = $order->getPayment()->getAdditionalData();
+            $additionalData = json_decode($order->getPayment()->getAdditionalData(), true);
+            $purchaseId = isset($additionalData['cashpresso']['purchase_id']) ? $additionalData['cashpresso']['purchase_id'] : null;
 
             $successMessage = $this->_helper()->getSuccessText();
 
@@ -139,14 +142,15 @@ EOT;
     {
         $block = $observer->getEvent()->getBlock();
 
-        if ($block instanceof Mage_Checkout_Block_Onepage_Success) {
+        if ($block instanceof Mage_Checkout_Block_Onepage_Success && $block->getNameInLayout() == 'checkout.success') {
 
             if (!$this->_helper()->getAPIKey()) {
                 return;
             }
 
             if ($order = Mage::registry('ls_success_order')) {
-                if ($order->getPayment()->getAdditionalData()) {
+                $additionalData = json_decode($order->getPayment()->getAdditionalData(), true);
+                if ($order->getPayment()->getMethod() == 'cashpresso' && isset($additionalData['cashpresso'])) {
                     $block->setTemplate('limesoda/cashpresso/checkout/success.phtml');
                 } else {
                     Mage::unregister('ls_success_order');
