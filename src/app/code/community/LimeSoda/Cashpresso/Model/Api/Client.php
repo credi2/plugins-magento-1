@@ -132,9 +132,7 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
                 $respond = $this->handleRespond($respond);
 
                 if (empty($respond['purchaseId'])) {
-                    $this->getSession()->addError($this->_helper()->__("Cashpresso: purchaseId is empty"));
-
-                    $purchaseId = null;
+                    throw new Mage_Payment_Model_Info_Exception(implode(PHP_EOL, $this->errorMessages));
                 } else {
                     $purchaseId = $respond['purchaseId'];
                 }
