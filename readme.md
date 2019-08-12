@@ -1,5 +1,5 @@
-# CASHPRESSO 
- [Follow the link for more details about cashpresso.](https://www.cashpresso.com/)
+# cashpresso 
+ [Follow the link for more details about cashpresso.](https://www.cashpresso.com/de/i/business)
  
 ### Table of Contents
 **[1. Installation Instructions](#installation-instructions)**<br>
@@ -236,6 +236,6 @@ Place this code to local.xml file in your theme.
 ``` 
 
 ## 6. Links
- - [CashPresso API](https://test.cashpresso.com/urlreferral/api/ecommerce/v2?1)
- - [CashPresso](https://www.cashpresso.com/)
+ - [cashpresso API](https://partner.cashpresso.com/#/api)
+ - [cashpresso](https://www.cashpresso.com/de/i/business)
  - [Developer contacts](https://www.kawa-commerce.com/kontakt/)
