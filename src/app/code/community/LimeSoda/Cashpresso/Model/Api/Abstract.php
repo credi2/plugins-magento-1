@@ -17,6 +17,8 @@ abstract class LimeSoda_Cashpresso_Model_Api_Abstract
     const CP_ERROR_INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR';
     const CP_ERROR_DUPLICATE_CUSTOMER = 'DUPLICATE_CUSTOMER';
 
+    protected $errorMessages = [];
+
     protected function _helper()
     {
         return Mage::helper('ls_cashpresso');
@@ -35,6 +37,7 @@ abstract class LimeSoda_Cashpresso_Model_Api_Abstract
             foreach ($errors as $error) {
                 if (!empty($error['type']) && $this->handleError($error['type'])) {
                     $message = $this->_helper()->__($this->handleError($error['type'])) . ' - ' . $error['description'];
+                    $this->errorMessages[] = $message;
                     $showError ? $this->getSession()->addWarning($message) : Mage::log($message, Zend_Log::WARN);
                 }
             }
