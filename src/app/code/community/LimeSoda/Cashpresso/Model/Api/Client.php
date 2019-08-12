@@ -129,10 +129,11 @@ class LimeSoda_Cashpresso_Model_Api_Client extends LimeSoda_Cashpresso_Model_Api
 
             if (is_array($respond)) {
 
-                $respond = $this->handleRespond($respond);
+                $respond = $this->handleRespond($respond, false);
 
                 if (empty($respond['purchaseId'])) {
-                    throw new Mage_Payment_Model_Info_Exception(implode(PHP_EOL, $this->errorMessages));
+                    $errorMessage = $this->_helper()->__('Unfortunately something went wrong with the cashpresso financing payment option. Please contact support@cashpresso.com.');
+                    throw new Mage_Payment_Model_Info_Exception($errorMessage);
                 } else {
                     $purchaseId = $respond['purchaseId'];
                 }
