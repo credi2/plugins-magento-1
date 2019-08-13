@@ -10,41 +10,7 @@
 **[6. Links](#links)**<br>
 
 ## 1. Installation Instructions
-### 1.1 Composer installation
-Run the composer command in the folder where the composer.json file lies
-
-    composer require limesoda/cashpresso:dev-master
-
-or run the composer command for a specific version:
-
-    composer require limesoda/cashpresso:v1.0.6
-
-and then run 
-
-    composer update
-
-### 1.2 Manual installation using modman
-
-copy sources from the gz archive to the .modman folder.
-An example:
-
-```
-.modman/cashpresso/src/*
-.modman/cashpresso/composer.json
-.modman/cashpresso/modman
-```
-
-then type 
-
-```modman deploy cashpresso```
-
-### 1.3 Magento Connect Manager
-
-Menu: ```Magento Admin Menu / System / Magento Connect``` 
-
-Find section "**Direct package file upload**" and upload **gz** archive. Then press upload.
-
-### 1.4 Magento Classic installation
+**Magento Classic installation**
 
 1. Copy all files from ```src/app``` to ```app``` folder in your project.
 2. ```src/skin/frontend/base/default/cashpresso/images``` to ```skin/frontend/base/default/cashpresso/images folder in your project```
